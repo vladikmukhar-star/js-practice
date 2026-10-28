@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Форма — JS Practice</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .form-box {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 400px;
+      margin: 24px auto;
+    }
+    .form-box label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .form-box input {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .form-box button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #3b82f6;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .form-box button:hover {
+      background: #2563eb;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      display: none;
+    }
+    #result.is-visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Форма</h1>
+    <nav><a href="../../index.html">← Головна</a></nav>
+  </header>
+
+  <main class="container">
+    <a class="back-link" href="../../index.html">← Назад</a>
+
+    <h2>Проста форма</h2>
+    <p>Завдання: при відправці форми покажи введені дані. Код пиши в <code>script.js</code>.</p>
+
+    <div class="form-box">
+      <form id="user-form">
+        <label for="name">Ім'я</label>
+        <input type="text" id="name" name="name" placeholder="Введи ім'я">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="email@example.com">
+
+        <button type="submit">Надіслати</button>
+      </form>
+
+      <div id="result"></div>
+    </div>
+
+    <div class="task">
+      <h4>Що зробити в script.js</h4>
+      <p>1. Знайди форму #user-form і блок #result</p>
+      <p>2. Повісь обробник на submit</p>
+      <p>3. Всередині виклич event.preventDefault() (щоб сторінка не перезавантажувалась)</p>
+      <p>4. Візьми значення з полів name і email</p>
+      <p>5. Якщо ім'я порожнє — покажи повідомлення про помилку</p>
+      <p>6. Інакше покажи в #result текст: «Привіт, ІМ'Я! Твій email: ...»</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
