@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Слайдер — JS Practice</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .slider {
+      max-width: 500px;
+      margin: 24px auto;
+      text-align: center;
+    }
+    .slider img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #e2e8f0;
+    }
+    .slider-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .slider-controls button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #3b82f6;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .slider-controls button:hover {
+      background: #2563eb;
+    }
+    .slide-info {
+      margin-top: 12px;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Слайдер фото</h1>
+    <nav><a href="../../index.html">← Головна</a></nav>
+  </header>
+
+  <main class="container">
+    <a class="back-link" href="../../index.html">← Назад</a>
+
+    <h2>Слайдер фото</h2>
+    <p>Завдання: перемикай фото кнопками. Код пиши в <code>script.js</code>.</p>
+
+    <div class="slider">
+      <img id="slide-image" src="https://picsum.photos/id/1015/600/400" alt="Слайд">
+      <div class="slide-info">
+        Фото <span id="current">1</span> з <span id="total">5</span>
+      </div>
+      <div class="slider-controls">
+        <button id="btn-prev">← Попереднє</button>
+        <button id="btn-next">Наступне →</button>
+      </div>
+    </div>
+
+    <div class="task">
+      <h4>Що зробити в script.js</h4>
+      <p>1. Зроби масив з 5 посилань на фото (можна picsum.photos/id/1015, 1016...)</p>
+      <p>2. Зроби змінну currentIndex = 0</p>
+      <p>3. При кліку «Наступне» збільшуй індекс (і повертайся на 0 в кінці)</p>
+      <p>4. При кліку «Попереднє» зменшуй індекс (і переходь в кінець, якщо 0)</p>
+      <p>5. Оновлюй src картинки і текст «Фото X з 5»</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
