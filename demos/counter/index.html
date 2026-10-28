@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лічильник — JS Practice</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .counter-box {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      max-width: 320px;
+      margin: 24px auto;
+    }
+    .counter-value {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 16px 0;
+      color: #1e293b;
+    }
+    .counter-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .counter-buttons button {
+      font-size: 1.25rem;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #3b82f6;
+      color: #fff;
+    }
+    .counter-buttons button:hover {
+      background: #2563eb;
+    }
+    .counter-buttons .btn-reset {
+      background: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Лічильник</h1>
+    <nav><a href="../../index.html">← Головна</a></nav>
+  </header>
+
+  <main class="container">
+    <a class="back-link" href="../../index.html">← Назад</a>
+
+    <h2>Лічильник</h2>
+    <p>Завдання: зроби так, щоб кнопки змінювали число. Весь код пиши в <code>script.js</code>.</p>
+
+    <div class="counter-box">
+      <div class="counter-value" id="value">0</div>
+      <div class="counter-buttons">
+        <button id="btn-minus">−</button>
+        <button id="btn-reset" class="btn-reset">Скинути</button>
+        <button id="btn-plus">+</button>
+      </div>
+    </div>
+
+    <div class="task">
+      <h4>Що зробити в script.js</h4>
+      <p>1. Знайди елементи: #value, #btn-plus, #btn-minus, #btn-reset</p>
+      <p>2. Зроби змінну count = 0</p>
+      <p>3. При кліку на + збільшуй count і оновлюй текст</p>
+      <p>4. При кліку на − зменшуй count</p>
+      <p>5. При кліку на «Скинути» став count = 0</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
