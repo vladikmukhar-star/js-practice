@@ -52,8 +52,8 @@ function taskHTML(t) {
     <span class="lvl">${t.level}</span>
     <input type="checkbox" class="chk done" title="Зроблено"> <small>Зроблено</small>
     <pre><code>${esc(t.description)}</code></pre>
-    <label>Моє передбачення (що буде в консолі, до запуску)</label>
-    <textarea class="pred" placeholder="Напиши, що очікуєш…"></textarea>
+    <details class="predbox"><summary>Моє передбачення (необов'язково)</summary>
+    <textarea class="pred" placeholder="Напиши, що очікуєш у консолі…"></textarea></details>
     <label>Мій код</label>
     <textarea class="code" spellcheck="false"></textarea>
     <button class="run">▶ Запустити</button>
