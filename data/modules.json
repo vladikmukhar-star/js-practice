@@ -13,5 +13,10 @@
     "module": 3,
     "title": "Модуль 3: масиви",
     "file": "data/module-3.json"
+  },
+  {
+    "module": 4,
+    "title": "Модуль 4: об'єкти",
+    "file": "data/module-4.json"
   }
 ]

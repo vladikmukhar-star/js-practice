@@ -1,0 +1,454 @@
+{
+  "module": 4,
+  "title": "Модуль 4: об'єкти",
+  "topics": [
+    {
+      "id": "4-1",
+      "title": "Створення об'єкта",
+      "intro": "**Суть.** Об'єкт — це набір пар «ключ: значення» у фігурних дужках. Масив — список під номерами, об'єкт — шафа з підписаними полицями. Читаємо через крапку: `user.name`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst book = {\n  title: 'Кобзар',\n  pages: 300,\n  isRead: false,\n};\nconsole.log(book.title);   // Кобзар\nconsole.log(book.pages);   // 300\nconsole.log(book.year);    // undefined, такого ключа немає\n```",
+      "tasks": [
+        {
+          "id": "4-1-1",
+          "level": "Легке",
+          "description": "Картка студента.\n1. Оголоси через const об'єкт student з ключами name (\"Олена\"), age (19), isActive (true).\n2. Виведи student.\n3. Виведи окремо name, age та isActive через крапку.",
+          "starter": "// Твій код тут",
+          "example": "const car = { brand: 'Audi', year: 2018 };\nconsole.log(car.brand);   // Audi\nconsole.log(car);"
+        },
+        {
+          "id": "4-1-2",
+          "level": "Середнє",
+          "description": "Товар у магазині.\n1. Оголоси через const об'єкт product з ключами title (\"Кава\"), price (150), inStock (true), weight (250).\n2. Виведи рядок через шаблонний рядок у форматі: \"Кава коштує 150 грн\" (значення бери з об'єкта).\n3. Виведи product.discount і запиши в коментарі, що отримав і чому.\n4. Виведи суму price + weight.",
+          "starter": "// Твій код тут",
+          "example": "const pet = { name: 'Рекс', age: 3 };\nconsole.log(`${pet.name}, ${pet.age} роки`);   // Рекс, 3 роки\nconsole.log(pet.color);                         // undefined"
+        },
+        {
+          "id": "4-1-3",
+          "level": "Складніше",
+          "description": "Передбач, потім перевір: що виведе.\n1. Скопіюй код.\n2. Не запускаючи, запиши в коментарі передбачення для: info.a + info.b, info.c, info.a + info.c.\n3. Напиши console.log для кожного сам.\n4. Запусти і порівняй.",
+          "starter": "const info = { a: 5, b: 10, c: '7' };\n\n// Мої передбачення:\n\n",
+          "example": "const o = { x: 1, y: '2' };\nconsole.log(o.x + o.y);   // 12 (число + рядок)"
+        }
+      ]
+    },
+    {
+      "id": "4-2",
+      "title": "Вкладені властивості",
+      "intro": "**Суть.** Значенням ключа може бути інший об'єкт. Заходимо крапками по ланцюжку: `user.address.city`. Якщо проміжного об'єкта немає, буде помилка (читати властивість від `undefined` не можна).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst user = {\n  name: 'Ліза',\n  address: { city: 'Львів', street: { name: 'Ринок', house: 4 } },\n};\nconsole.log(user.address.city);          // Львів\nconsole.log(user.address.street.house);  // 4\n```",
+      "tasks": [
+        {
+          "id": "4-2-1",
+          "level": "Легке",
+          "description": "Адреса.\n1. Оголоси через const об'єкт person: name \"Іван\", contacts — об'єкт з email \"ivan@mail.com\" та phone \"12345\".\n2. Виведи person.contacts.\n3. Виведи окремо email і phone.",
+          "starter": "// Твій код тут",
+          "example": "const o = { n: 1, inner: { k: 'v' } };\nconsole.log(o.inner.k);   // v"
+        },
+        {
+          "id": "4-2-2",
+          "level": "Середнє",
+          "description": "Три рівні.\n1. Оголоси через const об'єкт company: title \"Дім\", office — об'єкт з city \"Київ\" і floor — об'єкт з number 5 та rooms 12.\n2. Виведи city.\n3. Виведи номер поверху.\n4. Виведи рядок: \"Дім, Київ, поверх 5\" з даних об'єкта.",
+          "starter": "// Твій код тут",
+          "example": "const a = { b: { c: { d: 'глибоко' } } };\nconsole.log(a.b.c.d);   // глибоко"
+        },
+        {
+          "id": "4-2-3",
+          "level": "Складніше",
+          "description": "Передбач, потім перевір: помилка.\n1. Скопіюй код.\n2. Напиши console.log для order.customer.name та order.customer.address.city, запиши передбачення.\n3. Напиши console.log для order.delivery.city. Запиши, що буде і чому.\n4. Запусти. Перепиши текст помилки в коментар.",
+          "starter": "const order = {\n  id: 7,\n  customer: { name: 'Марта', address: { city: 'Одеса' } },\n};\n\n// Мої передбачення:\n\n",
+          "example": "const o = { x: { y: 1 } };\nconsole.log(o.x.y);   // 1\n// console.log(o.z.y);  // TypeError, бо o.z це undefined"
+        }
+      ]
+    },
+    {
+      "id": "4-3",
+      "title": "Доступ через квадратні дужки",
+      "intro": "**Суть.** Крім крапки є `obj['key']`. Він потрібен, коли ключ лежить у змінній (`obj[key]`) або містить пробіл/дефіс (`obj['first name']`). Увага: `obj.key` шукає ключ з назвою `key`, а `obj[key]` бере значення змінної `key`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst prices = { apple: 10, pear: 20 };\nconst fruit = 'pear';\nconsole.log(prices['apple']);   // 10\nconsole.log(prices[fruit]);     // 20\nconsole.log(prices.fruit);      // undefined, шукає ключ з назвою fruit\n```",
+      "tasks": [
+        {
+          "id": "4-3-1",
+          "level": "Легке",
+          "description": "Два способи.\n1. Оголоси const об'єкт phone: brand \"Nokia\", model \"3310\".\n2. Виведи brand крапкою.\n3. Виведи model через квадратні дужки з рядком.",
+          "starter": "// Твій код тут",
+          "example": "const t = { a: 1 };\nconsole.log(t.a, t['a']);   // 1 1"
+        },
+        {
+          "id": "4-3-2",
+          "level": "Середнє",
+          "description": "Ключ у змінній.\n1. Оголоси const об'єкт scores: anna 90, bob 75, vika 60.\n2. Оголоси const змінну who зі значенням \"bob\".\n3. Виведи scores[who].\n4. Виведи scores.who і запиши в коментарі, що вийшло і чому.\n5. Зміни who на \"vika\" і виведи ще раз scores[who].",
+          "starter": "// Твій код тут",
+          "example": "const age = { max: 20, ira: 25 };\nconst key = 'ira';\nconsole.log(age[key]);   // 25\nconsole.log(age.key);    // undefined"
+        },
+        {
+          "id": "4-3-3",
+          "level": "Складніше",
+          "description": "Ключ з пробілом + цикл по ключах.\n1. Оголоси const об'єкт menu з ключами \"cold coffee\" (60), \"hot tea\" (40), \"cake\" (80).\n2. Виведи ціну cold coffee (крапкою не вийде, поясни коментарем чому).\n3. Оголоси const масив names = [\"cold coffee\", \"hot tea\", \"cake\"].\n4. У for...of пройди names і виведи рядки у форматі \"cake: 80\" через menu[name].",
+          "starter": "// Твій код тут",
+          "example": "const stock = { 'red pen': 5, 'blue pen': 8 };\nconst names = ['red pen', 'blue pen'];\nfor (const n of names) {\n  console.log(`${n}: ${stock[n]}`);   // red pen: 5, blue pen: 8\n}"
+        }
+      ]
+    },
+    {
+      "id": "4-4",
+      "title": "Зміна значення властивостей",
+      "intro": "**Суть.** Існуючий ключ змінюється присвоєнням: `obj.age = 21` або `obj['age'] = 21`. `const` не заважає: заборонено лише присвоїти змінній інший об'єкт, а вміст міняти можна.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst phone = { model: 'X', battery: 50 };\nphone.battery = 100;\nphone.battery += 5;\nconsole.log(phone);   // battery 105\n```",
+      "tasks": [
+        {
+          "id": "4-4-1",
+          "level": "Легке",
+          "description": "Оновлення профілю.\n1. Оголоси const об'єкт profile: nick \"max\", level 1.\n2. Зміни nick на \"maxim\".\n3. Зміни level на 2.\n4. Виведи об'єкт.",
+          "starter": "// Твій код тут",
+          "example": "const o = { v: 1 };\no.v = 5;\nconsole.log(o);   // v: 5"
+        },
+        {
+          "id": "4-4-2",
+          "level": "Середнє",
+          "description": "Гра.\n1. Оголоси const об'єкт hero: name \"Лев\", hp 100, gold 0.\n2. Герой отримав удар: відніми від hp 30 (через -=).\n3. Герой знайшов скарб: додай до gold 50.\n4. Герой отримав ще один удар на 80: відніми.\n5. Виведи об'єкт. Запиши в коментарі, що очікуєш (hp може стати мінусовим, так і лишай).",
+          "starter": "// Твій код тут",
+          "example": "const p = { coins: 10 };\np.coins *= 3;\np.coins -= 5;\nconsole.log(p.coins);   // 25"
+        },
+        {
+          "id": "4-4-3",
+          "level": "Складніше",
+          "description": "Передбач, потім перевір: const.\n1. Оголоси const об'єкт settings: theme \"light\", size 14.\n2. Зміни theme на \"dark\" і виведи об'єкт.\n3. Спробуй зробити settings = { theme: \"blue\" }. Перепиши помилку в коментар.\n4. Коментарем поясни, чому п.2 спрацював, а п.3 ні.",
+          "starter": "// Твій код тут",
+          "example": "const o = { a: 1 };\no.a = 2;       // можна\n// o = { a: 3 };   // TypeError"
+        }
+      ]
+    },
+    {
+      "id": "4-5",
+      "title": "Додавання властивостей",
+      "intro": "**Суть.** Якщо ключа немає, присвоєння його створює: `obj.newKey = 1`. Видалити ключ: `delete obj.key`. Перевірка, чи є ключ: `'key' in obj` (true або false).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst cat = { name: 'Мурка' };\ncat.age = 4;\ncat['color'] = 'сірий';\nconsole.log(cat);              // name, age, color\nconsole.log('age' in cat);     // true\ndelete cat.age;\nconsole.log('age' in cat);     // false\n```",
+      "tasks": [
+        {
+          "id": "4-5-1",
+          "level": "Легке",
+          "description": "Розширення картки.\n1. Оголоси const порожній об'єкт card = {}.\n2. Додай через крапку title \"Задача\".\n3. Додай через квадратні дужки done false.\n4. Виведи card.",
+          "starter": "// Твій код тут",
+          "example": "const o = {};\no.a = 1;\no['b'] = 2;\nconsole.log(o);   // a, b"
+        },
+        {
+          "id": "4-5-2",
+          "level": "Середнє",
+          "description": "Реєстрація.\n1. Оголоси const об'єкт user: name \"Тоня\".\n2. Додай email \"t@mail.com\" і role \"guest\".\n3. Виведи 'email' in user та 'phone' in user.\n4. Зміни role на \"admin\".\n5. Видали email через delete.\n6. Виведи об'єкт і 'email' in user.",
+          "starter": "// Твій код тут",
+          "example": "const u = { n: 'x' };\nu.age = 5;\nu.age = 6;\ndelete u.n;\nconsole.log(u, 'n' in u);   // age 6, false"
+        },
+        {
+          "id": "4-5-3",
+          "level": "Складніше",
+          "description": "Збирання об'єкта в циклі.\n1. Оголоси const масив words = [\"кіт\", \"собака\", \"риба\"].\n2. Оголоси const порожній об'єкт lengths = {}.\n3. У for...of пройди words і для кожного слова запиши в lengths пару: ключ — слово, значення — його довжина (через квадратні дужки).\n4. Виведи lengths.\n5. Заміни масив на інші три слова, передбач і запусти.",
+          "starter": "// Твій код тут",
+          "example": "const arr = ['a', 'bb'];\nconst res = {};\nfor (const x of arr) {\n  res[x] = x.length;\n}\nconsole.log(res);   // a: 1, bb: 2"
+        }
+      ]
+    },
+    {
+      "id": "4-6",
+      "title": "Короткі властивості",
+      "intro": "**Суть.** Якщо змінна називається так само, як ключ, можна писати коротко: `{ name }` замість `{ name: name }`. Дуже часто в функціях, що повертають об'єкт.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst x = 10;\nconst y = 20;\nconst point = { x, y };   // те саме, що { x: x, y: y }\nconsole.log(point);        // x: 10, y: 20\n```",
+      "tasks": [
+        {
+          "id": "4-6-1",
+          "level": "Легке",
+          "description": "Коротко.\n1. Оголоси const title = \"Книга\" та const pages = 200.\n2. Створи const об'єкт book: з цими двома ключами, використавши короткий запис.\n3. Виведи book.",
+          "starter": "// Твій код тут",
+          "example": "const a = 1;\nconst b = 'two';\nconsole.log({ a, b });   // a: 1, b: two"
+        },
+        {
+          "id": "4-6-2",
+          "level": "Середнє",
+          "description": "Функція створює об'єкт.\n1. Оголоси функцію createUser(name, age), яка повертає об'єкт з name та age (короткий запис).\n2. Виклич двічі: createUser(\"Ася\", 22) і createUser(\"Боря\", 31), результати зберіж у const user1, user2.\n3. Виведи обидва.\n4. Виведи user1.age + user2.age.",
+          "starter": "// Твій код тут",
+          "example": "function createPoint(x, y) {\n  return { x, y };\n}\nconsole.log(createPoint(3, 4));   // x: 3, y: 4"
+        },
+        {
+          "id": "4-6-3",
+          "level": "Складніше",
+          "description": "Змішаний запис.\n1. Оголоси const city = \"Відень\" та const country = \"Австрія\".\n2. Створи const об'єкт place: city і country коротким записом, плюс ключ population зі значенням 2000000 повним записом.\n3. Додай ключ label, значення — рядок \"Відень, Австрія\" із шаблонного рядка на даних об'єкта place.\n4. Виведи place.\n5. Не запускаючи, запиши в коментарі, скільки ключів буде в place.",
+          "starter": "// Твій код тут",
+          "example": "const w = 'сонце';\nconst o = { w, temp: 20 };\no.text = `${o.w}, ${o.temp}`;\nconsole.log(o);   // w, temp, text"
+        }
+      ]
+    },
+    {
+      "id": "4-7",
+      "title": "Обчислювальні властивості",
+      "intro": "**Суть.** У квадратних дужках усередині літерала об'єкта можна обчислювати назву ключа: `{ [key]: value }`. JavaScript візьме значення змінної `key` як назву.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst field = 'color';\nconst car = { [field]: 'red', ['wheels' + 4]: true };\nconsole.log(car);   // color: red, wheels4: true\n```",
+      "tasks": [
+        {
+          "id": "4-7-1",
+          "level": "Легке",
+          "description": "Ключ із змінної.\n1. Оголоси const key = \"language\".\n2. Створи const об'єкт settings, в якому ключ береться з key, а значення \"uk\".\n3. Виведи settings.",
+          "starter": "// Твій код тут",
+          "example": "const k = 'size';\nconsole.log({ [k]: 42 });   // size: 42"
+        },
+        {
+          "id": "4-7-2",
+          "level": "Середнє",
+          "description": "Функція-конструктор пар.\n1. Оголоси функцію makePair(key, value), яка повертає об'єкт з одним ключем: назва береться з key, значення з value.\n2. Виведи makePair(\"age\", 25) і makePair(\"city\", \"Київ\").\n3. Виведи, чим відрізняється результат від { key: value } (запиши в коментарі, що вийде при такому записі).",
+          "starter": "// Твій код тут",
+          "example": "function one(k, v) {\n  return { [k]: v };\n}\nconsole.log(one('x', 1));   // x: 1"
+        },
+        {
+          "id": "4-7-3",
+          "level": "Складніше",
+          "description": "Ключі з префіксом.\n1. Оголоси const prefix = \"user_\".\n2. Створи const об'єкт data з ключами: prefix + \"id\" (значення 1) та prefix + \"name\" (значення \"Дана\").\n3. Виведи data.\n4. Виведи data.user_id та data[prefix + \"name\"].\n5. Не запускаючи, запиши в коментарі, що буде в data.",
+          "starter": "// Твій код тут",
+          "example": "const p = 'item_';\nconst o = { [p + 'a']: 1, [p + 'b']: 2 };\nconsole.log(o.item_a, o[p + 'b']);   // 1 2"
+        }
+      ]
+    },
+    {
+      "id": "4-8",
+      "title": "Object.keys та Object.values",
+      "intro": "**Суть.** `Object.keys(obj)` повертає масив ключів, `Object.values(obj)` повертає масив значень. Далі з ними працюємо як зі звичайними масивами (for...of, length, includes).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst o = { a: 1, b: 2, c: 3 };\nconsole.log(Object.keys(o));     // a, b, c\nconsole.log(Object.values(o));   // 1, 2, 3\nconsole.log(Object.keys(o).length);   // 3\n```",
+      "tasks": [
+        {
+          "id": "4-8-1",
+          "level": "Легке",
+          "description": "Перелік.\n1. Оголоси const об'єкт fruits: apple 5, pear 3, plum 8.\n2. Виведи Object.keys(fruits).\n3. Виведи Object.values(fruits).\n4. Виведи кількість ключів.",
+          "starter": "// Твій код тут",
+          "example": "const o = { x: 1, y: 2 };\nconsole.log(Object.keys(o), Object.values(o));"
+        },
+        {
+          "id": "4-8-2",
+          "level": "Середнє",
+          "description": "Сума і перебір.\n1. Оголоси const об'єкт sales: mon 120, tue 90, wed 200, thu 150.\n2. У for...of по Object.values(sales) порахуй суму і виведи.\n3. У for...of по Object.keys(sales) виведи рядки \"mon: 120\" через sales[key].\n4. Виведи Object.keys(sales).includes(\"fri\").",
+          "starter": "// Твій код тут",
+          "example": "const o = { a: 1, b: 2 };\nlet t = 0;\nfor (const v of Object.values(o)) {\n  t += v;\n}\nconsole.log(t);   // 3"
+        },
+        {
+          "id": "4-8-3",
+          "level": "Складніше",
+          "description": "Найбільше значення і його ключ.\n1. Оголоси const об'єкт votes: cats 14, dogs 22, birds 9, fish 22.\n2. Знайди найбільше значення (цикл по Object.values).\n3. Знайди ключ, у якого воно (цикл по Object.keys). Якщо таких два, візьми перший.\n4. Виведи \"Переміг: dogs (22)\" (значення з коду, а не вручну).\n5. Передбач результат у коментарі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const o = { a: 3, b: 9, c: 5 };\nlet max = 0;\nlet who = '';\nfor (const k of Object.keys(o)) {\n  if (o[k] > max) { max = o[k]; who = k; }\n}\nconsole.log(who, max);   // b 9"
+        }
+      ]
+    },
+    {
+      "id": "4-9",
+      "title": "Створення і обхід масиву об'єктів",
+      "intro": "**Суть.** Дані часто лежать як масив об'єктів: список користувачів, товарів. Обхід: `for (const item of arr)`, всередині `item.name`. Додати: `arr.push({ ... })`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst users = [\n  { name: 'Ол', age: 20 },\n  { name: 'Ін', age: 30 },\n];\nfor (const u of users) {\n  console.log(`${u.name}: ${u.age}`);   // Ол: 20, Ін: 30\n}\nconsole.log(users[1].name);              // Ін\n```",
+      "tasks": [
+        {
+          "id": "4-9-1",
+          "level": "Легке",
+          "description": "Список.\n1. Оголоси const масив cars з трьома об'єктами: { brand, year } (Audi 2015, BMW 2019, Kia 2022).\n2. Виведи cars[1].brand.\n3. У for...of виведи кожен brand.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'x' }, { n: 'y' }];\nfor (const o of a) {\n  console.log(o.n);   // x, y\n}"
+        },
+        {
+          "id": "4-9-2",
+          "level": "Середнє",
+          "description": "Підрахунки.\n1. Оголоси const масив products: { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Какао\", price: 110 }.\n2. У циклі порахуй суму всіх price і виведи.\n3. Додай через push ще один товар: { title: \"Сік\", price: 60 }.\n4. Виведи products.length та останній товар.\n5. Виведи середню ціну (сума / кількість).",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ v: 2 }, { v: 4 }];\nlet s = 0;\nfor (const o of a) s += o.v;\nconsole.log(s / a.length);   // 3"
+        },
+        {
+          "id": "4-9-3",
+          "level": "Складніше",
+          "description": "Передбач.\n1. Скопіюй код.\n2. Не запускаючи, запиши в коментарі, що буде виведено кількома рядками, якщо в циклі для кожного student виводити: student.name, student.marks.length, student.marks[0].\n3. Напиши цикл і console.log сам. Запусти і порівняй.",
+          "starter": "const students = [\n  { name: 'Ася', marks: [5, 4, 5] },\n  { name: 'Борис', marks: [3] },\n  { name: 'Віка', marks: [] },\n];\n\n// Мої передбачення:\n\n",
+          "example": "const a = [{ id: 1, tags: ['x', 'y'] }];\nfor (const o of a) {\n  console.log(o.id, o.tags.length, o.tags[0]);   // 1 2 x\n}"
+        }
+      ]
+    },
+    {
+      "id": "4-10",
+      "title": "Пошук об'єкта за значенням властивості",
+      "intro": "**Суть.** Шаблон пошуку: цикл по масиву, в ньому `if (item.id === шукане)`, при збігу `return item` (або `break`). Якщо цикл закінчився без збігу, повертаємо `null` (або `undefined`).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst list = [{ id: 1, n: 'a' }, { id: 2, n: 'b' }];\nfunction findById(arr, id) {\n  for (const item of arr) {\n    if (item.id === id) {\n      return item;\n    }\n  }\n  return null;\n}\nconsole.log(findById(list, 2));   // id: 2, n: b\nconsole.log(findById(list, 9));   // null\n```",
+      "tasks": [
+        {
+          "id": "4-10-1",
+          "level": "Легке",
+          "description": "Знайти за ім'ям.\n1. Оголоси const масив people: { name: \"Аня\", age: 20 }, { name: \"Богдан\", age: 25 }, { name: \"Віка\", age: 30 }.\n2. Оголоси функцію findByName(list, name), що повертає об'єкт із збігом name, або null.\n3. Виведи findByName(people, \"Віка\") і findByName(people, \"Зоя\").",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ k: 1 }, { k: 2 }];\nfunction byK(list, k) {\n  for (const o of list) {\n    if (o.k === k) return o;\n  }\n  return null;\n}\nconsole.log(byK(a, 2), byK(a, 5));"
+        },
+        {
+          "id": "4-10-2",
+          "level": "Середнє",
+          "description": "Універсальний пошук.\n1. Оголоси const масив goods: { id: 1, title: \"Ніж\", price: 100 }, { id: 2, title: \"Виделка\", price: 60 }, { id: 3, title: \"Ложка\", price: 40 }.\n2. Оголоси функцію findBy(list, key, value), що повертає перший об'єкт, у якого list[i][key] === value (використай квадратні дужки).\n3. Виведи findBy(goods, \"title\", \"Ложка\") і findBy(goods, \"price\", 60).\n4. Виведи findBy(goods, \"id\", 7).",
+          "starter": "// Твій код тут",
+          "example": "function findBy(arr, key, val) {\n  for (const o of arr) {\n    if (o[key] === val) return o;\n  }\n  return null;\n}\nconsole.log(findBy([{ a: 1 }, { a: 2 }], 'a', 2));"
+        },
+        {
+          "id": "4-10-3",
+          "level": "Складніше",
+          "description": "Пошук і використання.\n1. Масив users: { id: 1, name: \"Ася\", balance: 100 }, { id: 2, name: \"Ігор\", balance: 20 }, { id: 3, name: \"Ліна\", balance: 0 }.\n2. Функція hasUser(list, id) повертає true або false.\n3. Функція getBalance(list, id): якщо користувача нема, повертає \"Не знайдено\", інакше його balance.\n4. Виведи hasUser(users, 2), hasUser(users, 9), getBalance(users, 3), getBalance(users, 9).\n5. Чому getBalance(users, 3) не можна перевіряти через if (balance)? Запиши відповідь коментарем.",
+          "starter": "// Твій код тут",
+          "example": "function has(arr, id) {\n  for (const o of arr) {\n    if (o.id === id) return true;\n  }\n  return false;\n}\nconsole.log(has([{ id: 1 }], 1), has([{ id: 1 }], 2));   // true false"
+        }
+      ]
+    },
+    {
+      "id": "4-11",
+      "title": "Методи об'єкта",
+      "intro": "**Суть.** Якщо значення ключа — функція, це метод. Виклик: `obj.method()`. Це той самий `console.log`: об'єкт `console` і його метод `log`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst dog = {\n  name: 'Бім',\n  bark() {\n    console.log('Гав!');\n  },\n  add(a, b) {\n    return a + b;\n  },\n};\ndog.bark();                // Гав!\nconsole.log(dog.add(2, 3));  // 5\n```",
+      "tasks": [
+        {
+          "id": "4-11-1",
+          "level": "Легке",
+          "description": "Перший метод.\n1. Оголоси const об'єкт robot з ключем name \"R2\" та методом sayHi, що виводить \"Привіт!\".\n2. Виклич robot.sayHi().\n3. Виклич ще раз двічі.",
+          "starter": "// Твій код тут",
+          "example": "const cat = {\n  meow() { console.log('Няв'); },\n};\ncat.meow();   // Няв"
+        },
+        {
+          "id": "4-11-2",
+          "level": "Середнє",
+          "description": "Калькулятор.\n1. Оголоси const об'єкт calc з методами: sum(a, b), minus(a, b), mul(a, b), що повертають результат.\n2. Виведи calc.sum(10, 5), calc.minus(10, 5), calc.mul(10, 5).\n3. Виведи calc.sum(calc.mul(2, 3), calc.minus(9, 4)). Запиши в коментарі до запуску очікуване число.",
+          "starter": "// Твій код тут",
+          "example": "const m = {\n  half(n) { return n / 2; },\n  neg(n) { return -n; },\n};\nconsole.log(m.half(m.neg(10)));   // -5"
+        },
+        {
+          "id": "4-11-3",
+          "level": "Складніше",
+          "description": "Метод у масиві об'єктів.\n1. Оголоси const масив animals з двома об'єктами, кожен має name і метод speak(), що виводить звук (ключі різні: \"Мяу\", \"Гав\").\n2. У for...of викличи speak() для кожного.\n3. Виведи typeof animals[0].speak.\n4. Не запускаючи, запиши в коментарі, що виведе typeof.",
+          "starter": "// Твій код тут",
+          "example": "const a = [\n  { n: 1, run() { console.log('біг', this.n); } },\n];\nfor (const o of a) o.run();"
+        }
+      ]
+    },
+    {
+      "id": "4-12",
+      "title": "Доступ до властивостей у методах (this)",
+      "intro": "**Суть.** Усередині методу `this` означає «цей об'єкт, на якому викликали метод». Тож метод може читати й міняти власні властивості: `this.name`. Без `this.` JavaScript шукатиме звичайну змінну і не знайде.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst lamp = {\n  on: false,\n  toggle() {\n    this.on = !this.on;\n  },\n  state() {\n    return this.on ? 'світить' : 'вимкнена';\n  },\n};\nlamp.toggle();\nconsole.log(lamp.state());   // світить\n```",
+      "tasks": [
+        {
+          "id": "4-12-1",
+          "level": "Легке",
+          "description": "Привітання від імені.\n1. Оголоси const об'єкт user: name \"Влад\", метод greet(), що виводить `Привіт, ${this.name}`.\n2. Виклич user.greet().\n3. Зміни user.name на \"Макс\" і виклич ще раз.",
+          "starter": "// Твій код тут",
+          "example": "const p = {\n  n: 'Ол',\n  hi() { console.log(`Я ${this.n}`); },\n};\np.hi();   // Я Ол"
+        },
+        {
+          "id": "4-12-2",
+          "level": "Середнє",
+          "description": "Лічильник.\n1. Оголоси const об'єкт counter: value 0, методи increment() (value + 1), decrement() (value - 1), reset() (value = 0), show() (виводить value).\n2. Виклич: increment тричі, show, decrement, show, reset, show.\n3. Запиши в коментарі до запуску три числа, які очікуєш.",
+          "starter": "// Твій код тут",
+          "example": "const c = {\n  n: 10,\n  up() { this.n += 5; },\n  show() { console.log(this.n); },\n};\nc.up();\nc.show();   // 15"
+        },
+        {
+          "id": "4-12-3",
+          "level": "Складніше",
+          "description": "Гаманець.\n1. Оголоси const об'єкт wallet: balance 100, методи add(sum) (збільшує), pay(sum) (якщо балансу не вистачає, виводить \"Недостатньо коштів\" і нічого не змінює, інакше віднімає), info() (виводить \"Баланс: ...\").\n2. Виклич add(50), pay(30), pay(500), info().\n3. Запиши в коментарі до запуску, що очікуєш у консолі (три рядки).",
+          "starter": "// Твій код тут",
+          "example": "const bank = {\n  money: 10,\n  take(n) {\n    if (n > this.money) {\n      console.log('мало');\n      return;\n    }\n    this.money -= n;\n  },\n};\nbank.take(3);\nbank.take(30);\nconsole.log(bank.money);   // мало, потім 7"
+        }
+      ]
+    },
+    {
+      "id": "4-13",
+      "title": "Зміна за посиланням",
+      "intro": "**Суть.** Об'єкти, як і масиви, копіюються за посиланням. `const b = a` — це один об'єкт з двома назвами. Змінив через `b`, змінилося й `a`. Те саме, коли передаєш об'єкт у функцію: функція змінює оригінал.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst a = { n: 1 };\nconst b = a;\nb.n = 99;\nconsole.log(a.n);   // 99\n\nfunction reset(obj) { obj.n = 0; }\nreset(a);\nconsole.log(b.n);   // 0\n```",
+      "tasks": [
+        {
+          "id": "4-13-1",
+          "level": "Легке",
+          "description": "Дві назви.\n1. Оголоси const об'єкт first: title \"Перший\", likes 0.\n2. Оголоси const second = first.\n3. Збільш second.likes на 5.\n4. Виведи first.likes і second.likes.\n5. Виведи first === second.\n6. Запиши в коментарі до запуску передбачення.",
+          "starter": "// Твій код тут",
+          "example": "const x = { k: 1 };\nconst y = x;\ny.k = 7;\nconsole.log(x.k, x === y);   // 7 true"
+        },
+        {
+          "id": "4-13-2",
+          "level": "Середнє",
+          "description": "Функція міняє об'єкт.\n1. Оголоси функцію makeAdult(person), що ставить person.age = 18 і нічого не повертає.\n2. Оголоси const kid: name \"Тимко\", age 10.\n3. Виклич makeAdult(kid) і виведи kid.\n4. Оголоси функцію setZero(n), що ставить n = 0. Оголоси let score = 9, виклич setZero(score), виведи score.\n5. Коментарем поясни різницю.",
+          "starter": "// Твій код тут",
+          "example": "function boost(o) { o.power = 100; }\nconst hero = { power: 1 };\nboost(hero);\nconsole.log(hero.power);   // 100"
+        },
+        {
+          "id": "4-13-3",
+          "level": "Складніше",
+          "description": "Справжня копія.\n1. Оголоси const original: name \"Орі\", age 20.\n2. Створи const copy1 = original (просто присвоєння).\n3. Створи const copy2 з тими самими ключами руками: { name: original.name, age: original.age }.\n4. Зміни copy1.age на 30 і copy2.name на \"Копія\".\n5. Не запускаючи, запиши в коментарі, що буде в original, copy1, copy2.\n6. Виведи всі три і порівняй.",
+          "starter": "// Твій код тут",
+          "example": "const a = { v: 1 };\nconst b = a;\nconst c = { v: a.v };\nb.v = 5;\nc.v = 9;\nconsole.log(a, b, c);   // v:5  v:5  v:9"
+        }
+      ]
+    },
+    {
+      "id": "4-14",
+      "title": "Масив як властивість об'єкта",
+      "intro": "**Суть.** Значенням ключа може бути масив: `user.skills = ['js', 'css']`. Доступ: `user.skills[0]`, `user.skills.length`, додати: `user.skills.push('git')`. Обхід: `for (const s of user.skills)`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst team = { name: 'А', members: ['Ол', 'Ін'] };\nteam.members.push('Ев');\nconsole.log(team.members.length);   // 3\nconsole.log(team.members[2]);       // Ев\nfor (const m of team.members) {\n  console.log(m);\n}\n```",
+      "tasks": [
+        {
+          "id": "4-14-1",
+          "level": "Легке",
+          "description": "Навички.\n1. Оголоси const об'єкт dev: name \"Ната\", skills — масив \"html\", \"css\".\n2. Виведи dev.skills.\n3. Виведи перший скіл.\n4. Додай \"js\" через push і виведи кількість.",
+          "starter": "// Твій код тут",
+          "example": "const o = { tags: ['a'] };\no.tags.push('b');\nconsole.log(o.tags.length);   // 2"
+        },
+        {
+          "id": "4-14-2",
+          "level": "Середнє",
+          "description": "Клас у школі.\n1. Оголоси const об'єкт group: title \"JS-1\", students — масив \"Аня\", \"Борис\", \"Віка\".\n2. Додай \"Гліб\" через push.\n3. У for...of виведи кожного студента з номером: \"1. Аня\".\n4. Додай у group метод count(), що повертає this.students.length. Виведи group.count().\n5. Додай метод has(name), що повертає true/false (includes). Виведи has(\"Віка\") та has(\"Зоя\").",
+          "starter": "// Твій код тут",
+          "example": "const t = {\n  list: ['x', 'y'],\n  size() { return this.list.length; },\n};\nconsole.log(t.size());   // 2"
+        },
+        {
+          "id": "4-14-3",
+          "level": "Складніше",
+          "description": "Оцінки.\n1. Оголоси const об'єкт pupil: name \"Дан\", marks — порожній масив.\n2. Додай методи: addMark(m) (push), average() (повертає середнє або 0, якщо оцінок немає), best() (повертає найбільшу або null).\n3. Виклич addMark для 4, 5, 3, 5.\n4. Виведи average() та best().\n5. Виведи average() та best() для нового об'єкта з порожнім marks (скопіюй структуру). Запиши в коментарі, що очікуєш для порожнього.",
+          "starter": "// Твій код тут",
+          "example": "const s = {\n  n: [],\n  add(x) { this.n.push(x); },\n  sum() {\n    let t = 0;\n    for (const v of this.n) t += v;\n    return t;\n  },\n};\ns.add(2); s.add(3);\nconsole.log(s.sum());   // 5"
+        }
+      ]
+    },
+    {
+      "id": "4-15",
+      "title": "Зміна об'єкта в масиві",
+      "intro": "**Суть.** Щоб змінити об'єкт у масиві, спочатку його знаходимо (цикл або індекс), а потім міняємо властивість. Оскільки це посилання, зміна видна в масиві одразу.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst list = [{ id: 1, done: false }, { id: 2, done: false }];\nfor (const t of list) {\n  if (t.id === 2) {\n    t.done = true;\n  }\n}\nconsole.log(list);   // другий done: true\nlist[0].done = true; // через індекс\n```",
+      "tasks": [
+        {
+          "id": "4-15-1",
+          "level": "Легке",
+          "description": "Позначити виконаним.\n1. Оголоси const масив tasks: { id: 1, title: \"Помити посуд\", done: false }, { id: 2, title: \"Купити хліб\", done: false }.\n2. Через індекс постав tasks[0].done = true.\n3. Виведи tasks.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 1, ok: false }];\na[0].ok = true;\nconsole.log(a);"
+        },
+        {
+          "id": "4-15-2",
+          "level": "Середнє",
+          "description": "Функція оновлення.\n1. Масив users: { id: 1, name: \"Ася\", age: 20 }, { id: 2, name: \"Ігор\", age: 25 }, { id: 3, name: \"Ліна\", age: 30 }.\n2. Функція birthday(list, id): знаходить користувача за id і збільшує age на 1. Якщо не знайшла, виводить \"Немає такого\".\n3. Виклич birthday(users, 2), birthday(users, 9).\n4. Виведи users.",
+          "starter": "// Твій код тут",
+          "example": "function raise(list, id) {\n  for (const o of list) {\n    if (o.id === id) {\n      o.pay += 100;\n      return;\n    }\n  }\n  console.log('нема');\n}\nconst w = [{ id: 1, pay: 500 }];\nraise(w, 1);\nraise(w, 5);\nconsole.log(w);   // pay: 600, а перед тим 'нема'"
+        },
+        {
+          "id": "4-15-3",
+          "level": "Складніше",
+          "description": "Магазин: склад.\n1. Масив stock: { title: \"Чай\", qty: 5 }, { title: \"Кава\", qty: 0 }, { title: \"Какао\", qty: 12 }.\n2. Функція sell(list, title, count): знайти товар; якщо нема, вивести \"Нема товару\"; якщо qty менша за count, вивести \"Мало на складі\"; інакше відняти count.\n3. Функція restock(list, title, count): додає count до qty; якщо товару нема, додає новий об'єкт у масив з qty = count.\n4. Викликай: sell(stock, \"Чай\", 3), sell(stock, \"Чай\", 3), sell(stock, \"Сік\", 1), restock(stock, \"Кава\", 10), restock(stock, \"Сік\", 4).\n5. Виведи stock.\n6. До запуску запиши в коментарі, що буде в консолі і який буде stock.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ t: 'x', n: 1 }];\nfunction add(list, t, n) {\n  for (const o of list) {\n    if (o.t === t) { o.n += n; return; }\n  }\n  list.push({ t, n });\n}\nadd(a, 'x', 2);\nadd(a, 'y', 5);\nconsole.log(a);   // x: 3, y: 5"
+        }
+      ]
+    },
+    {
+      "id": "4-16",
+      "title": "Підсумкові задачі модуля 4",
+      "intro": "**Суть.** Тут змішано теми 4-1…4-15 і попередні модулі: об'єкти, вкладеність, цикли, методи, посилання. Пиши по кроках.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst shop = { name: 'Мій', items: [{ t: 'a', p: 10 }, { t: 'b', p: 20 }] };\nlet sum = 0;\nfor (const it of shop.items) sum += it.p;\nconsole.log(sum);   // 30\n```",
+      "tasks": [
+        {
+          "id": "4-16-1",
+          "level": "Легка",
+          "description": "Профіль.\n1. Оголоси const об'єкт profile: name \"Влад\", city \"Відень\", skills — масив \"html\", \"css\", \"js\".\n2. Додай ключ age зі значенням 30 (твій).\n3. Додай у skills \"git\".\n4. Виведи рядок: \"Влад з Відня знає 4 технології\" (значення з об'єкта).\n5. Видали ключ age і виведи 'age' in profile.",
+          "starter": "// Твій код тут",
+          "example": "const o = { n: 'x', list: [1] };\no.list.push(2);\nconsole.log(`${o.n}: ${o.list.length}`);   // x: 2"
+        },
+        {
+          "id": "4-16-2",
+          "level": "Середня",
+          "description": "Інвентар.\n1. Масив items: { name: \"Меч\", price: 100, qty: 1 }, { name: \"Щит\", price: 80, qty: 2 }, { name: \"Зілля\", price: 15, qty: 10 }.\n2. Функція total(list): повертає суму price * qty.\n3. Функція findItem(list, name): повертає об'єкт або null.\n4. Функція addQty(list, name, n): збільшує qty (або виводить \"Нема\").\n5. Виведи total, findItem(items, \"Щит\"), потім addQty(items, \"Зілля\", 5) і total ще раз.\n6. Передбач два числа total у коментарі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function sumAll(l) {\n  let s = 0;\n  for (const o of l) s += o.a * o.b;\n  return s;\n}\nconsole.log(sumAll([{ a: 2, b: 3 }, { a: 1, b: 4 }]));   // 10"
+        },
+        {
+          "id": "4-16-3",
+          "level": "Складніша",
+          "description": "Міні-бібліотека.\n1. Оголоси const library: books — порожній масив, методи: addBook(title, author) (push об'єкта { id, title, author, isTaken: false }, id = books.length + 1), takeBook(id) (isTaken = true; якщо нема книги або вже взята, вивести повідомлення), returnBook(id), freeBooks() (повертає НОВИЙ масив книг, які isTaken === false), stats() (повертає об'єкт { total, taken, free }).\n2. Додай три книги, візьми книгу 2, спробуй взяти її ще раз і книгу 9.\n3. Виведи freeBooks() та stats().\n4. Поверни книгу 2 і виведи stats().\n5. Не запускаючи, запиши в коментарі: повідомлення, які будуть, і обидва stats().",
+          "starter": "// Твій код тут",
+          "example": "const box = {\n  items: [],\n  put(n) { this.items.push({ id: this.items.length + 1, n, used: false }); },\n  free() {\n    const r = [];\n    for (const i of this.items) if (!i.used) r.push(i);\n    return r;\n  },\n};\nbox.put('a'); box.put('b');\nbox.items[0].used = true;\nconsole.log(box.free());   // тільки b"
+        }
+      ]
+    }
+  ]
+}
