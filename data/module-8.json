@@ -1,0 +1,496 @@
+{
+  "module": 8,
+  "title": "Модуль 8: деструктуризація, rest/spread, події",
+  "topics": [
+    {
+      "id": "8-1",
+      "title": "Спливання подій",
+      "intro": "**Суть.** Коли подія стається на елементі, вона «спливає» вгору: спершу спрацьовують слухачі самого елемента, потім батька, потім дідуся і так до `document`. Клікнув на кнопку всередині div, значить клікнув і на div. Тому слухач на батьку чує кліки по дітях.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\n// <div id=\"a\"><button id=\"b\"></button></div>\ndocument.querySelector('#a').addEventListener('click', () => console.log('div'));\ndocument.querySelector('#b').addEventListener('click', () => console.log('button'));\n// клік по кнопці: button, потім div\n```",
+      "tasks": [
+        {
+          "id": "8-1-1",
+          "level": "Легке",
+          "description": "1. Повісь на #inner слухач click, що виводить \"inner\".\n2. Повісь на #middle слухач, що виводить \"middle\".\n3. Повісь на #outer слухач, що виводить \"outer\".\n4. Передбач у коментарі до запуску порядок рядків при кліку на кнопку.\n5. Запусти, клікни кнопку у вікні сторінки, порівняй.",
+          "starter": "// Твій код тут",
+          "example": "const a = document.querySelector('#a');\nconst b = document.querySelector('#b');\na.addEventListener('click', () => console.log('a'));\nb.addEventListener('click', () => console.log('b'));",
+          "html": "<div id=\"outer\" style=\"padding:16px;background:#e2e8f0\"><div id=\"middle\" style=\"padding:16px;background:#cbd5e1\"><button id=\"inner\">Натисни</button></div></div>"
+        },
+        {
+          "id": "8-1-2",
+          "level": "Середнє",
+          "description": "1. Ті самі три слухачі, як у попередньому завданні.\n2. Клікни по кнопці, потім по середньому (сірому) блоку поза кнопкою, потім по зовнішньому.\n3. До запуску запиши в коментарі, що буде для кожного з трьох кліків.\n4. Додай слухач click на document, що виводить \"document\". Що змінилось у порядку?",
+          "starter": "// Твій код тут",
+          "example": "document.addEventListener('click', () => console.log('doc'));",
+          "html": "<div id=\"outer\" style=\"padding:16px;background:#e2e8f0\"><div id=\"middle\" style=\"padding:16px;background:#cbd5e1\"><button id=\"inner\">Натисни</button></div></div>"
+        },
+        {
+          "id": "8-1-3",
+          "level": "Складніше",
+          "description": "Фаза занурення.\n1. Є ще третій аргумент addEventListener: { capture: true } (або просто true). Повісь на #outer слухач \"outer-capture\" з capture: true.\n2. Залиш звичайні слухачі outer, middle, inner (bubble).\n3. Передбач у коментарі порядок усіх чотирьох рядків при кліку на кнопку.\n4. Перевір і поясни: capture йде згори вниз, bubble знизу вгору.",
+          "starter": "// Твій код тут",
+          "example": "const el = document.querySelector('div');\nel.addEventListener('click', () => console.log('capture'), true);\nel.addEventListener('click', () => console.log('bubble'));",
+          "html": "<div id=\"outer\" style=\"padding:16px;background:#e2e8f0\"><div id=\"middle\" style=\"padding:16px;background:#cbd5e1\"><button id=\"inner\">Натисни</button></div></div>"
+        }
+      ]
+    },
+    {
+      "id": "8-2",
+      "title": "Цільовий елемент",
+      "intro": "**Суть.** `event.target` — найглибший елемент, у який клікнули. `event.currentTarget` — елемент зі слухачем. На батьківському слухачі вони різні, коли клікнули по дитині. Корисно: `event.target.closest('li')` піднімається вгору від target до найближчого предка за селектором (або `null`).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nlist.addEventListener('click', (event) => {\n  console.log(event.target.tagName);        // наприклад BUTTON\n  console.log(event.currentTarget.id);      // list\n  const li = event.target.closest('li');\n  console.log(li && li.dataset.id);         // id найближчого li\n});\n```",
+      "tasks": [
+        {
+          "id": "8-2-1",
+          "level": "Легке",
+          "description": "1. Повісь на #list один слухач click.\n2. Виведи event.target.tagName та event.currentTarget.id.\n3. Клікай по тексту li, по кнопці x і по порожньому місцю списку. Запиши в коментарі, що виводиться в кожному випадку.",
+          "starter": "// Твій код тут",
+          "example": "const ul = document.querySelector('ul');\nul.addEventListener('click', (e) => console.log(e.target.tagName));",
+          "html": "<ul id=\"list\" style=\"padding:12px;background:#e2e8f0\"><li data-id=\"1\">Один <button class=\"del\">x</button></li><li data-id=\"2\">Два <button class=\"del\">x</button></li><li data-id=\"3\">Три <button class=\"del\">x</button></li></ul>"
+        },
+        {
+          "id": "8-2-2",
+          "level": "Середнє",
+          "description": "closest.\n1. У слухачі на #list знайди li = event.target.closest('li').\n2. Якщо li нема, виведи \"Поза елементами\" і return.\n3. Інакше виведи li.dataset.id.\n4. Клікни по тексту, по кнопці, по відступу списку.",
+          "starter": "// Твій код тут",
+          "example": "const ul = document.querySelector('ul');\nul.addEventListener('click', (e) => {\n  const li = e.target.closest('li');\n  if (!li) return;\n  console.log(li.dataset.id);\n});",
+          "html": "<ul id=\"list\" style=\"padding:12px;background:#e2e8f0\"><li data-id=\"1\">Один <button class=\"del\">x</button></li><li data-id=\"2\">Два <button class=\"del\">x</button></li><li data-id=\"3\">Три <button class=\"del\">x</button></li></ul>"
+        },
+        {
+          "id": "8-2-3",
+          "level": "Складніше",
+          "description": "Підсвітка.\n1. У слухачі на #list: знайди li (closest). Якщо нема, return.\n2. Прибери клас \"active\" в усіх li (цикл по list.children).\n3. Додай \"active\" на знайдений li та колір фону (style.backgroundColor = \"gold\"), а з решти прибери backgroundColor.\n4. Виведи dataset.id та чи був клік саме по кнопці (event.target.tagName === \"BUTTON\").\n5. Передбач у коментарі до запуску вивід для кліку по кнопці другого li.",
+          "starter": "// Твій код тут",
+          "example": "const items = document.querySelectorAll('li');\ndocument.querySelector('ul').addEventListener('click', (e) => {\n  const li = e.target.closest('li');\n  if (!li) return;\n  for (const i of items) i.style.fontWeight = 'normal';\n  li.style.fontWeight = 'bold';\n});",
+          "html": "<ul id=\"list\" style=\"padding:12px;background:#e2e8f0\"><li data-id=\"1\">Один <button class=\"del\">x</button></li><li data-id=\"2\">Два <button class=\"del\">x</button></li><li data-id=\"3\">Три <button class=\"del\">x</button></li></ul>"
+        }
+      ]
+    },
+    {
+      "id": "8-3",
+      "title": "Припинення спливання",
+      "intro": "**Суть.** `event.stopPropagation()` зупиняє подальше спливання: батьківські слухачі цієї події не спрацюють. Використовуй обережно: інші частини коду можуть розраховувати на події вгорі. Не плутай з `preventDefault()` (скасовує дію браузера, а не спливання).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\ninner.addEventListener('click', (event) => {\n  event.stopPropagation();   // зверху ніхто не почує\n  console.log('inner');\n});\nouter.addEventListener('click', () => console.log('outer'));   // не спрацює при кліку по inner\n```",
+      "tasks": [
+        {
+          "id": "8-3-1",
+          "level": "Легке",
+          "description": "1. Повісь на #modal слухач, що виводить \"modal\".\n2. Повісь на #close слухач, що виводить \"close\".\n3. Клікни кнопку. Що в консолі?\n4. Додай у слухач #close виклик event.stopPropagation(). Запусти ще раз і клікни. Що змінилось?",
+          "starter": "// Твій код тут",
+          "example": "const a = document.querySelector('div');\nconst b = document.querySelector('button');\na.addEventListener('click', () => console.log('div'));\nb.addEventListener('click', (e) => {\n  e.stopPropagation();\n  console.log('btn');\n});",
+          "html": "<div id=\"modal\" style=\"padding:20px;background:#fee2e2\"><p>Вікно</p><button id=\"close\">Закрити</button></div><div id=\"overlay\" style=\"padding:20px;background:#e2e8f0;margin-top:8px\">Фон</div>"
+        },
+        {
+          "id": "8-3-2",
+          "level": "Середнє",
+          "description": "Модалка.\n1. На #overlay слухач click, що виводить \"Фон клікнули\" і додає overlay клас \"clicked\".\n2. На #modal слухач click, що виводить \"Клік у вікні\" і викликає stopPropagation().\n3. Додай слухач click на document, що виводить \"document\".\n4. Клікай в усі три місця: у вікно, у кнопку, у фон.\n5. Запиши в коментарі до запуску, що спрацює.",
+          "starter": "// Твій код тут",
+          "example": "document.addEventListener('click', () => console.log('doc'));\ndocument.querySelector('button').addEventListener('click', (e) => e.stopPropagation());",
+          "html": "<div id=\"modal\" style=\"padding:20px;background:#fee2e2\"><p>Вікно</p><button id=\"close\">Закрити</button></div><div id=\"overlay\" style=\"padding:20px;background:#e2e8f0;margin-top:8px\">Фон</div>"
+        },
+        {
+          "id": "8-3-3",
+          "level": "Складніше",
+          "description": "stopPropagation проти preventDefault.\n1. На сторінці зроби посилання: створи через createElement a з href \"#top\" і текстом \"Лінк\" і додай у #overlay.\n2. На overlay повісь click слухач \"overlay\".\n3. На посилання повісь слухач, що викликає лише preventDefault() і виводить \"link\". Клікни: чи спрацює overlay?\n4. Зміни на лише stopPropagation(). Клікни: чи спрацює overlay? Чи перейшов браузер по href (подивись зміну адреси/скрол)?\n5. Запиши в коментарі різницю двох методів своїми словами.",
+          "starter": "// Твій код тут",
+          "example": "const a = document.createElement('a');\na.href = '#x';\na.textContent = 'lnk';\ndocument.body.append(a);\na.addEventListener('click', (e) => e.preventDefault());",
+          "html": "<div id=\"modal\" style=\"padding:20px;background:#fee2e2\"><p>Вікно</p><button id=\"close\">Закрити</button></div><div id=\"overlay\" style=\"padding:20px;background:#e2e8f0;margin-top:8px\">Фон</div>"
+        }
+      ]
+    },
+    {
+      "id": "8-4",
+      "title": "Делегування подій",
+      "intro": "**Суть.** Замість того, щоб вішати слухач на кожен елемент списку, вішаємо **один** на батька. Через `event.target` визначаємо, куди клікнули. Бонус: нові елементи, додані пізніше, теж працюють без нових слухачів. Шаблон: `parent.addEventListener('click', e => { const item = e.target.closest('.item'); if (!item) return; ... })`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nlist.addEventListener('click', (event) => {\n  const btn = event.target.closest('.del');\n  if (!btn) return;                 // клікнули не по кнопці\n  btn.closest('li').remove();       // видаляємо її li\n});\n```",
+      "tasks": [
+        {
+          "id": "8-4-1",
+          "level": "Легке",
+          "description": "Видалення.\n1. Повісь ОДИН слухач click на #list.\n2. Якщо клікнули по кнопці .del, видали її li (closest('li').remove()).\n3. Перевір на всіх трьох li.",
+          "starter": "// Твій код тут",
+          "example": "const ul = document.querySelector('ul');\nul.addEventListener('click', (e) => {\n  const b = e.target.closest('button');\n  if (!b) return;\n  b.closest('li').remove();\n});",
+          "html": "<ul id=\"list\"><li><span>Один</span> <button class=\"del\">x</button></li><li><span>Два</span> <button class=\"del\">x</button></li><li><span>Три</span> <button class=\"del\">x</button></li></ul><form id=\"f\"><input id=\"t\" placeholder=\"Новий\"> <button type=\"submit\">Додати</button></form><p id=\"out\"></p>"
+        },
+        {
+          "id": "8-4-2",
+          "level": "Середнє",
+          "description": "Нові елементи теж працюють.\n1. Залиш делегування з видаленням на #list.\n2. На #f повісь submit: preventDefault, значення #t, якщо не порожнє, створи li (span з текстом + кнопка .del) і додай у #list. Очисти форму.\n3. Додай новий пункт і перевір, що його кнопка x працює (без нового слухача).\n4. Поясни коментарем, чому цього б не було, якби слухачі висіли на кожній кнопці окремо.",
+          "starter": "// Твій код тут",
+          "example": "const ul = document.querySelector('ul');\nul.addEventListener('click', (e) => {\n  if (e.target.matches('span')) e.target.classList.toggle('on');\n});",
+          "html": "<ul id=\"list\"><li><span>Один</span> <button class=\"del\">x</button></li><li><span>Два</span> <button class=\"del\">x</button></li><li><span>Три</span> <button class=\"del\">x</button></li></ul><form id=\"f\"><input id=\"t\" placeholder=\"Новий\"> <button type=\"submit\">Додати</button></form><p id=\"out\"></p>"
+        },
+        {
+          "id": "8-4-3",
+          "level": "Складніше",
+          "description": "Кілька дій одним слухачем.\n1. На #list один слухач click.\n2. Якщо клік по кнопці .del, видали li.\n3. Якщо клік по span, перемкни клас \"done\" у span та перекресли через style.textDecoration.\n4. Веди лічильник: після кожної дії записуй у #out \"Залишилось: N, виконано: M\" (через querySelectorAll).\n5. Виклич функцію оновлення #out на початку, щоб одразу був текст.\n6. Передбач у коментарі до запуску текст #out на початку та після видалення одного li.",
+          "starter": "// Твій код тут",
+          "example": "const box = document.querySelector('ul');\nfunction update() {\n  console.log(box.children.length);\n}\nbox.addEventListener('click', (e) => {\n  const b = e.target.closest('button');\n  if (b) { b.parentElement.remove(); update(); }\n});\nupdate();",
+          "html": "<ul id=\"list\"><li><span>Один</span> <button class=\"del\">x</button></li><li><span>Два</span> <button class=\"del\">x</button></li><li><span>Три</span> <button class=\"del\">x</button></li></ul><form id=\"f\"><input id=\"t\" placeholder=\"Новий\"> <button type=\"submit\">Додати</button></form><p id=\"out\"></p>"
+        }
+      ]
+    },
+    {
+      "id": "8-5",
+      "title": "Деструктуризація об'єктів",
+      "intro": "**Суть.** Запис `const { name, age } = user` одним рядком витягує властивості об'єкта в окремі змінні з такими ж назвами. Замість `const name = user.name; const age = user.age;`. Порядок не важливий. Якщо ключа немає, змінна буде `undefined`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst user = { name: 'Ол', age: 20, city: 'Київ' };\nconst { name, age } = user;\nconsole.log(name, age);   // Ол 20\nconst { country } = user;\nconsole.log(country);     // undefined\n```",
+      "tasks": [
+        {
+          "id": "8-5-1",
+          "level": "Легке",
+          "description": "Витягни.\n1. Оголоси const object book: title \"Кобзар\", author \"Шевченко\", year 1840, pages 300.\n2. Одним рядком витягни title та author через деструктуризацію.\n3. Виведи обидві змінні.\n4. Витягни ще year і pages іншим рядком.",
+          "starter": "// Твій код тут",
+          "example": "const car = { brand: 'Audi', year: 2018 };\nconst { brand, year } = car;\nconsole.log(brand, year);"
+        },
+        {
+          "id": "8-5-2",
+          "level": "Середнє",
+          "description": "Порядок і відсутні ключі.\n1. Оголоси const product: id 7, title \"Чай\", price 80, inStock true.\n2. Витягни у порядку price, id, title (не такому, як у об'єкті).\n3. Виведи все.\n4. Витягни ще ключ discount, якого нема. Виведи.\n5. Зміни змінну price (з let замість const) на 100 і виведи product.price. Чи змінився об'єкт? Запиши передбачення до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const o = { a: 1, b: 2 };\nlet { b, a } = o;\nb = 100;\nconsole.log(a, b, o.b);   // 1 100 2"
+        },
+        {
+          "id": "8-5-3",
+          "level": "Складніше",
+          "description": "Порівняй записи.\n1. Є об'єкт settings: theme \"dark\", fontSize 14, lang \"uk\".\n2. Напиши функцію describeOld(s), що витягує значення через s.theme, s.fontSize, s.lang і повертає рядок \"dark, 14px, uk\".\n3. Напиши describeNew(s), що робить те саме через деструктуризацію всередині функції.\n4. Виведи обидві.\n5. Коментарем напиши, що зручніше і чому.",
+          "starter": "// Твій код тут",
+          "example": "function area(rect) {\n  const { w, h } = rect;\n  return w * h;\n}\nconsole.log(area({ w: 3, h: 4 }));   // 12"
+        }
+      ]
+    },
+    {
+      "id": "8-6",
+      "title": "Перейменування змінної",
+      "intro": "**Суть.** Якщо хочеш змінну з іншою назвою, ніж ключ: `const { name: userName } = user` — береться `user.name`, але змінна називається `userName`. Корисно, коли `name` вже зайнято, або назва ключа незручна.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst user = { name: 'Ол', age: 20 };\nconst { name: userName, age: years } = user;\nconsole.log(userName, years);   // Ол 20\n// console.log(name);            // змінної name нема\n```",
+      "tasks": [
+        {
+          "id": "8-6-1",
+          "level": "Легке",
+          "description": "Нова назва.\n1. Оголоси const person: name \"Влад\", age 30.\n2. Витягни name у змінну fullName, age в змінну years.\n3. Виведи fullName та years.",
+          "starter": "// Твій код тут",
+          "example": "const o = { id: 5 };\nconst { id: userId } = o;\nconsole.log(userId);"
+        },
+        {
+          "id": "8-6-2",
+          "level": "Середнє",
+          "description": "Конфлікт імен.\n1. Є const name = \"глобальне ім'я\".\n2. Є const user = { name: \"Ася\", city: \"Львів\" }.\n3. Витягни user.name так, щоб не було помилки повторного оголошення (name: userName), і city: userCity.\n4. Виведи name, userName, userCity.\n5. Запиши в коментарі, що буде, якщо витягти як const { name } = user (спробуй, запиши помилку, і закоментуй).",
+          "starter": "// Твій код тут",
+          "example": "const title = 'зовнішній';\nconst book = { title: 'внутрішній' };\nconst { title: bookTitle } = book;\nconsole.log(title, bookTitle);"
+        },
+        {
+          "id": "8-6-3",
+          "level": "Складніше",
+          "description": "Два об'єкти одного вигляду.\n1. Оголоси const a = { x: 1, y: 2 } та const b = { x: 10, y: 20 }.\n2. Витягни з a змінні ax, ay, а з b — bx, by (з перейменуванням).\n3. Обчисли відстань між точками: Math.sqrt((bx - ax) ** 2 + (by - ay) ** 2) і виведи (округли до 2 знаків через toFixed).\n4. Передбач у коментарі до запуску результат.",
+          "starter": "// Твій код тут",
+          "example": "const p = { x: 0, y: 0 };\nconst q = { x: 3, y: 4 };\nconst { x: x1, y: y1 } = p;\nconst { x: x2, y: y2 } = q;\nconsole.log(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));   // 5"
+        }
+      ]
+    },
+    {
+      "id": "8-7",
+      "title": "Значення за замовчуванням",
+      "intro": "**Суть.** Якщо ключа нема (значення `undefined`), можна задати запасне значення: `const { theme = 'light' } = settings`. Поєднується з перейменуванням: `{ name: userName = 'гість' }`. Запасне значення спрацьовує лише для `undefined`, а `null`, `0` і `''` лишаються як є.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst settings = { size: 14 };\nconst { size = 10, theme = 'light', lang: language = 'uk' } = settings;\nconsole.log(size, theme, language);   // 14 light uk\n```",
+      "tasks": [
+        {
+          "id": "8-7-1",
+          "level": "Легке",
+          "description": "Запасні значення.\n1. Оголоси const options: color \"red\".\n2. Витягни color (за замовчуванням \"black\"), size (за замовчуванням 12), bold (за замовчуванням false).\n3. Виведи всі три.",
+          "starter": "// Твій код тут",
+          "example": "const o = { a: 1 };\nconst { a = 0, b = 5 } = o;\nconsole.log(a, b);   // 1 5"
+        },
+        {
+          "id": "8-7-2",
+          "level": "Середнє",
+          "description": "Різні перевірки.\n1. Оголоси const data: a 0, b null, c \"\", d undefined (цей ключ запиши явно як d: undefined).\n2. Витягни кожен з запасним значенням 99: { a = 99, b = 99, c = 99, d = 99, e = 99 }.\n3. Виведи всі п'ять.\n4. Передбач у коментарі до запуску, які будуть 99, а які ні, і чому.",
+          "starter": "// Твій код тут",
+          "example": "const o = { x: 0, y: null, z: undefined };\nconst { x = 7, y = 7, z = 7, w = 7 } = o;\nconsole.log(x, y, z, w);   // 0 null 7 7"
+        },
+        {
+          "id": "8-7-3",
+          "level": "Складніше",
+          "description": "Перейменування + запасне значення.\n1. Оголоси функцію showProfile(user), всередині якої: const { name: userName = \"гість\", age = 0, role: userRole = \"user\" } = user.\n2. Функція повертає рядок \"<userName> (<age>) <userRole>\".\n3. Виведи showProfile({ name: \"Влад\", age: 30 }), showProfile({}), showProfile({ role: \"admin\", age: 18 }).\n4. Передбач три рядки до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function f(o) {\n  const { n: name = '?', v = 1 } = o;\n  return `${name}:${v}`;\n}\nconsole.log(f({}), f({ n: 'a', v: 5 }));"
+        }
+      ]
+    },
+    {
+      "id": "8-8",
+      "title": "Глибока деструктуризація",
+      "intro": "**Суть.** Вкладені об'єкти витягуються вкладеним записом: `const { address: { city } } = user`. Увага: змінної `address` при цьому не створюється, лише `city`. Якщо `address` нема, буде помилка. Можна поєднувати: `{ address: { city = 'Невідомо' } = {} }`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst user = { name: 'Ол', address: { city: 'Київ', geo: { lat: 50 } } };\nconst { name, address: { city, geo: { lat } } } = user;\nconsole.log(name, city, lat);   // Ол Київ 50\n// console.log(address);        // ReferenceError\n```",
+      "tasks": [
+        {
+          "id": "8-8-1",
+          "level": "Легке",
+          "description": "Один рівень углиб.\n1. Оголоси const order: id 1, customer { name \"Марта\", phone \"123\" }, total 500.\n2. Одним рядком витягни id, total та name з customer.\n3. Виведи.\n4. Спробуй вивести змінну customer і запиши, що вийшло.",
+          "starter": "// Твій код тут",
+          "example": "const o = { a: { b: 5 } };\nconst { a: { b } } = o;\nconsole.log(b);"
+        },
+        {
+          "id": "8-8-2",
+          "level": "Середнє",
+          "description": "Два рівні.\n1. Оголоси const company: title \"Дім\", office { city \"Київ\", floor { number 5, rooms 12 } }.\n2. Витягни title, city, number, rooms одним рядком.\n3. Виведи.\n4. Витягни number з перейменуванням у floorNumber. Виведи.",
+          "starter": "// Твій код тут",
+          "example": "const o = { x: { y: { z: 'глибоко' } } };\nconst { x: { y: { z } } } = o;\nconsole.log(z);"
+        },
+        {
+          "id": "8-8-3",
+          "level": "Складніше",
+          "description": "Безпечно, якщо немає.\n1. Напиши функцію getCity(user), всередині: const { address: { city = \"Невідомо\" } = {} } = user; повертає city.\n2. Виведи getCity({ address: { city: \"Львів\" } }), getCity({ address: {} }), getCity({}).\n3. Передбач три результати до запуску.\n4. Прибери `= {}` після вкладеного шаблону і запусти getCity({}). Запиши текст помилки в коментар.",
+          "starter": "// Твій код тут",
+          "example": "function f(o) {\n  const { a: { b = 0 } = {} } = o;\n  return b;\n}\nconsole.log(f({ a: { b: 3 } }), f({}));   // 3 0"
+        }
+      ]
+    },
+    {
+      "id": "8-9",
+      "title": "Деструктуризація параметрів",
+      "intro": "**Суть.** Деструктуризувати можна прямо в параметрах функції: `function show({ name, age }) { ... }`. Викликаєш одним об'єктом: `show({ name: 'Ол', age: 20 })`. З запасними значеннями: `function f({ size = 10, color = 'red' } = {})`. Останнє `= {}` дозволяє викликати `f()` без аргументів.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nfunction greet({ name, age = 18 }) {\n  return `${name}, ${age}`;\n}\nconsole.log(greet({ name: 'Ол' }));           // Ол, 18\nconsole.log(greet({ age: 30, name: 'Ін' }));  // Ін, 30\n```",
+      "tasks": [
+        {
+          "id": "8-9-1",
+          "level": "Легке",
+          "description": "У дужках функції.\n1. Напиши функцію showBook({ title, author }), що повертає \"<title> - <author>\".\n2. Виведи showBook({ title: \"Кобзар\", author: \"Шевченко\" }).\n3. Виведи showBook({ author: \"Леся\", title: \"Лісова пісня\" }).",
+          "starter": "// Твій код тут",
+          "example": "function f({ a, b }) { return a + b; }\nconsole.log(f({ b: 2, a: 1 }));"
+        },
+        {
+          "id": "8-9-2",
+          "level": "Середнє",
+          "description": "Запасні значення і порожній виклик.\n1. Напиши функцію createButton({ text = \"OK\", color = \"blue\", size = 14 } = {}), що повертає об'єкт { text, color, size }.\n2. Виведи createButton({ text: \"Надіслати\" }), createButton({ size: 20 }), createButton().\n3. Прибери `= {}` у параметрах і виклич createButton(). Запиши текст помилки в коментар, потім поверни.\n4. Передбач три результати до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function f({ n = 1, m = 2 } = {}) { return n * m; }\nconsole.log(f(), f({ n: 5 }));   // 2 10"
+        },
+        {
+          "id": "8-9-3",
+          "level": "Складніше",
+          "description": "Функції з об'єктами.\n1. Напиши функцію total({ price, qty = 1, discount = 0 }), що повертає price * qty мінус знижка у відсотках.\n2. Напиши функцію fullName({ first, last, middle = \"\" }), що повертає ім'я з пробілами без зайвих (якщо middle порожнє, без подвійного пробілу).\n3. Напиши функцію point({ x = 0, y = 0 } = {}), що повертає відстань від (0,0) до точки.\n4. Виведи по 2-3 виклики кожної, включно з мінімальними об'єктами.\n5. Передбач результати до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function box({ w = 1, h = 1 } = {}) { return w * h; }\nconsole.log(box(), box({ w: 3 }), box({ w: 2, h: 5 }));   // 1 3 10"
+        }
+      ]
+    },
+    {
+      "id": "8-10",
+      "title": "Деструктуризація в колбеках",
+      "intro": "**Суть.** Колбеки методів масиву отримують елемент, і його можна розібрати прямо в параметрах: `users.map(({ name, age }) => `${name}: ${age}`)`. Читається краще, ніж `u => u.name + u.age`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst users = [{ name: 'Ол', age: 20 }, { name: 'Ін', age: 30 }];\nconsole.log(users.map(({ name }) => name));            // Ол, Ін\nconsole.log(users.filter(({ age }) => age > 25));      // Ін\nusers.forEach(({ name, age }) => console.log(name, age));\n```",
+      "tasks": [
+        {
+          "id": "8-10-1",
+          "level": "Легке",
+          "description": "map.\n1. Оголоси const масив products: { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Сік\", price: 60 }.\n2. Через map з деструктуризацією в параметрі отримай масив назв.\n3. Через map отримай масив рядків \"Чай: 80 грн\".",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'x', v: 1 }];\nconsole.log(a.map(({ n, v }) => `${n}${v}`));"
+        },
+        {
+          "id": "8-10-2",
+          "level": "Середнє",
+          "description": "filter, find, forEach.\n1. Використай масив products.\n2. Через filter із деструктуризацією залиш дорожчі за 70.\n3. Через find знайди товар за title \"Сік\" (деструктуризація в параметрі) і виведи його.\n4. Через forEach виведи кожен товар у форматі \"Чай - 80\".\n5. Передбач п.2 до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'x', v: 1 }, { n: 'y', v: 9 }];\nconsole.log(a.filter(({ v }) => v > 5));\nconsole.log(a.find(({ n }) => n === 'x'));"
+        },
+        {
+          "id": "8-10-3",
+          "level": "Складніше",
+          "description": "sort і reduce.\n1. Оголоси const cart: { title: \"Чай\", price: 80, qty: 2 }, { title: \"Кава\", price: 150, qty: 1 }, { title: \"Сік\", price: 60, qty: 3 }.\n2. Відсортуй копію за загальною вартістю (price * qty) від більшої. У колбеку sort витягни поля з обох об'єктів деструктуризацією; ключі однакові, тому для другого об'єкта використай перейменування (price: price2).\n3. Через reduce із деструктуризацією (acc, { price, qty }) порахуй загальну суму.\n4. Передбач порядок назв і суму до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ p: 2, q: 3 }, { p: 5, q: 1 }];\nconsole.log(a.reduce((s, { p, q }) => s + p * q, 0));   // 11"
+        }
+      ]
+    },
+    {
+      "id": "8-11",
+      "title": "Деструктуризація масивів",
+      "intro": "**Суть.** Для масивів дужки квадратні, значення беруться **за позицією**: `const [first, second] = arr`. Можна пропускати: `const [, , third] = arr`. Запасні значення: `const [a = 0] = []`. Класичний обмін змінних: `[a, b] = [b, a]`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst colors = ['red', 'green', 'blue'];\nconst [first, second] = colors;\nconsole.log(first, second);   // red green\nconst [, , last] = colors;\nconsole.log(last);            // blue\nlet a = 1, b = 2;\n[a, b] = [b, a];\nconsole.log(a, b);            // 2 1\n```",
+      "tasks": [
+        {
+          "id": "8-11-1",
+          "level": "Легке",
+          "description": "Перші елементи.\n1. Оголоси const масив fruits: \"яблуко\", \"груша\", \"слива\", \"вишня\".\n2. Витягни перші два в змінні a, b.\n3. Виведи.\n4. Витягни третій і четвертий (пропустивши два перших).",
+          "starter": "// Твій код тут",
+          "example": "const x = [10, 20, 30];\nconst [p, q] = x;\nconsole.log(p, q);"
+        },
+        {
+          "id": "8-11-2",
+          "level": "Середнє",
+          "description": "Запасні значення та split.\n1. Оголоси const рядок date = \"2026-10-30\".\n2. Розріж через split(\"-\") і витягни [year, month, day].\n3. Виведи кожне. Перетвори на числа через Number і виведи суму.\n4. Витягни [a, b, c = \"немає\"] з масиву [1, 2]. Виведи c.",
+          "starter": "// Твій код тут",
+          "example": "const [h, m] = '12:45'.split(':');\nconsole.log(Number(h) * 60 + Number(m));"
+        },
+        {
+          "id": "8-11-3",
+          "level": "Складніше",
+          "description": "Обмін і функції.\n1. Оголоси let x = 5, y = 9. Обміняй значення через деструктуризацію без третьої змінної. Виведи.\n2. Напиши функцію minMax(arr), що повертає масив [min, max] (знайди циклом).\n3. Виклич const [lo, hi] = minMax([4, 9, 1, 7]) і виведи lo та hi.\n4. Напиши функцію divide(a, b), що повертає [частка, остача] (Math.floor і %). Виведи const [q, r] = divide(17, 5).\n5. Передбач до запуску: x, y після обміну, lo/hi, q/r.",
+          "starter": "// Твій код тут",
+          "example": "function pair() { return ['a', 'b']; }\nconst [one, two] = pair();\nconsole.log(one, two);   // a b"
+        }
+      ]
+    },
+    {
+      "id": "8-12",
+      "title": "Оператори rest і spread",
+      "intro": "**Суть.** Три крапки `...` мають два значення. **Spread** розгортає масив/об'єкт у список: `[...a, ...b]`, `Math.max(...nums)`. **Rest** збирає решту в масив: `function f(first, ...others)` та `const [head, ...tail] = arr`, `const { a, ...rest } = obj`. Rest у функції замінює застарілий `arguments`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst nums = [3, 9, 4];\nconsole.log(Math.max(...nums));        // 9\nfunction sum(...numbers) {\n  return numbers.reduce((s, n) => s + n, 0);\n}\nconsole.log(sum(1, 2, 3, 4));          // 10\nconst [head, ...tail] = nums;\nconsole.log(head, tail);               // 3  [9, 4]\n```",
+      "tasks": [
+        {
+          "id": "8-12-1",
+          "level": "Легке",
+          "description": "Spread у виклик.\n1. Оголоси const масив nums: 12, 5, 30, 8.\n2. Виведи Math.max(...nums) та Math.min(...nums).\n3. Виведи Math.max(nums) і запиши в коментарі, що вийшло і чому.",
+          "starter": "// Твій код тут",
+          "example": "const a = [3, 7, 1];\nconsole.log(Math.min(...a));"
+        },
+        {
+          "id": "8-12-2",
+          "level": "Середнє",
+          "description": "Rest у функції.\n1. Напиши функцію sumAll(...numbers), що повертає суму всіх аргументів (for...of).\n2. Виведи sumAll(1, 2), sumAll(10, 20, 30), sumAll().\n3. Напиши функцію logAll(prefix, ...rest), що виводить prefix і кількість решти аргументів.\n4. Виклич logAll(\"A\", 1, 2, 3) і logAll(\"B\").\n5. Коментарем: чим rest краще за arguments (з модуля 3).",
+          "starter": "// Твій код тут",
+          "example": "function count(...a) { return a.length; }\nconsole.log(count(1, 2, 3));   // 3"
+        },
+        {
+          "id": "8-12-3",
+          "level": "Складніше",
+          "description": "Rest у деструктуризації.\n1. Оголоси const масив scores: 90, 75, 60, 85.\n2. Витягни [best, ...others] і виведи best та others.\n3. Оголоси const user: id 1, name \"Ася\", age 20, city \"Київ\".\n4. Витягни { id, ...info } і виведи id та info.\n5. Напиши функцію average(first, ...rest), що повертає середнє всіх аргументів (мінімум один).\n6. Передбач до запуску: others, info, average(10, 20, 30).",
+          "starter": "// Твій код тут",
+          "example": "const [x, ...y] = [1, 2, 3];\nconst { a, ...z } = { a: 1, b: 2, c: 3 };\nconsole.log(x, y, a, z);"
+        }
+      ]
+    },
+    {
+      "id": "8-13",
+      "title": "Копіювання й об'єднання масивів",
+      "intro": "**Суть.** `const copy = [...arr]` створює **нову незалежну** копію (на відміну від `b = a`, який дає те саме посилання). Об'єднати: `[...a, ...b]`; з додатковими елементами: `[0, ...a, 99]`. Копія поверхнева: об'єкти всередині все ще спільні.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst a = [1, 2, 3];\nconst copy = [...a];\ncopy.push(4);\nconsole.log(a, copy);            // [1,2,3]  [1,2,3,4]\nconst merged = [0, ...a, ...[7, 8]];\nconsole.log(merged);             // 0,1,2,3,7,8\n```",
+      "tasks": [
+        {
+          "id": "8-13-1",
+          "level": "Легке",
+          "description": "Справжня копія.\n1. Оголоси const original: 1, 2, 3.\n2. const same = original; const copy = [...original].\n3. Додай 99 в same і 100 в copy (push).\n4. Виведи original, same, copy. Передбач до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1];\nconst c = [...a];\nc.push(2);\nconsole.log(a, c);"
+        },
+        {
+          "id": "8-13-2",
+          "level": "Середнє",
+          "description": "Об'єднання.\n1. Оголоси const a = [1, 2], b = [3, 4], c = [5].\n2. Створи all = [...a, ...b, ...c].\n3. Створи withEdges = [0, ...a, 99, ...b].\n4. Створи reversed копію через [...all].reverse() і виведи all (чи змінився?).\n5. Додай новий елемент у початок масиву без push/unshift: const next = [-1, ...all].",
+          "starter": "// Твій код тут",
+          "example": "const x = [1, 2];\nconst y = [3];\nconsole.log([...x, ...y], [0, ...x]);"
+        },
+        {
+          "id": "8-13-3",
+          "level": "Складніше",
+          "description": "Поверхнева копія.\n1. Оголоси const users: { name: \"Ася\" }, { name: \"Борис\" }.\n2. Зроби const copy = [...users].\n3. Зміни copy[0].name на \"Змінено\" і додай через push у copy третього користувача.\n4. Виведи users і copy.\n5. Передбач до запуску: що буде в users (скільки елементів, яке ім'я першого) і поясни різницю між змінами п.3.\n6. Напиши функцію addItem(list, item), що повертає НОВИЙ масив з додатковим елементом, не змінюючи оригінал. Перевір.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 1 }];\nconst b = [...a];\nb[0].n = 9;\nb.push({ n: 2 });\nconsole.log(a, b);"
+        }
+      ]
+    },
+    {
+      "id": "8-14",
+      "title": "Копіювання й об'єднання об'єктів",
+      "intro": "**Суть.** `const copy = { ...obj }` — нова копія об'єкта. `{ ...a, ...b }` — об'єднання; якщо ключі збігаються, перемагає **останній**. Зміна одного поля без чіпання оригіналу: `{ ...user, age: 31 }`. Копія поверхнева: вкладені об'єкти спільні.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst user = { name: 'Ол', age: 20 };\nconst copy = { ...user };\ncopy.age = 21;\nconsole.log(user.age, copy.age);          // 20 21\nconst updated = { ...user, age: 30, city: 'Київ' };\nconsole.log(updated);                     // name: Ол, age: 30, city: Київ\nconsole.log({ ...user, ...{ name: 'Ін' } }); // name: Ін, age: 20\n```",
+      "tasks": [
+        {
+          "id": "8-14-1",
+          "level": "Легке",
+          "description": "Копія об'єкта.\n1. Оголоси const original: name \"Влад\", age 30.\n2. const same = original; const copy = { ...original }.\n3. Зміни same.age на 31 і copy.name на \"Копія\".\n4. Виведи всі три. Передбач до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = { x: 1 };\nconst b = { ...a };\nb.x = 5;\nconsole.log(a, b);"
+        },
+        {
+          "id": "8-14-2",
+          "level": "Середнє",
+          "description": "Об'єднання і перезапис.\n1. Оголоси const defaults: theme \"light\", size 14, lang \"uk\".\n2. Оголоси const userSettings: theme \"dark\", size 18.\n3. Створи const final = { ...defaults, ...userSettings } і виведи.\n4. Створи const final2 = { ...userSettings, ...defaults } і виведи. Чим відрізняється?\n5. Створи const withTitle = { ...defaults, title: \"Мій сайт\" }.",
+          "starter": "// Твій код тут",
+          "example": "const d = { a: 1, b: 2 };\nconst u = { b: 9 };\nconsole.log({ ...d, ...u });   // a:1 b:9"
+        },
+        {
+          "id": "8-14-3",
+          "level": "Складніше",
+          "description": "Не змінюй оригінал.\n1. Оголоси const state = { user: { name: \"Ася\" }, count: 0, tags: [\"a\"] }.\n2. Напиши функцію inc(state), що повертає новий об'єкт із count + 1 (оригінал не змінюється).\n3. Напиши функцію addTag(state, tag), що повертає новий об'єкт з новим масивом tags (spread).\n4. Виклич по черзі: const s1 = inc(state), s2 = addTag(s1, \"b\"), s3 = inc(s2).\n5. Виведи state, s1, s2, s3 (state має лишитись незмінним).\n6. Зроби const shallow = { ...state } і змін shallow.user.name = \"Змінено\". Виведи state.user.name. Поясни, чому змінилось.\n7. Передбач п.5-6 до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const s = { n: 0 };\nconst inc = (o) => ({ ...o, n: o.n + 1 });\nconst t = inc(s);\nconsole.log(s, t);   // n:0  n:1"
+        }
+      ]
+    },
+    {
+      "id": "8-15",
+      "title": "Додатково: get (геттери)",
+      "intro": "**Суть.** `get` робить метод схожим на властивість: звертаєшся без дужок. У класі чи об'єкті: `get fullName() { return this.first + ' ' + this.last; }` → `user.fullName`. Для запису є `set`. Геттер зручний для значень, які обчислюються з інших полів, і для читання приватних даних.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass User {\n  constructor(first, last) { this.first = first; this.last = last; }\n  get fullName() {\n    return `${this.first} ${this.last}`;\n  }\n}\nconst u = new User('Ол', 'Іванов');\nconsole.log(u.fullName);   // Ол Іванов, без дужок\nconst o = { a: 2, get double() { return this.a * 2; } };\nconsole.log(o.double);     // 4\n```",
+      "tasks": [
+        {
+          "id": "8-15-1",
+          "level": "Легке",
+          "description": "Перший геттер.\n1. Оголоси const rect: w 3, h 4 і getter area, що повертає w * h.\n2. Виведи rect.area (без дужок).\n3. Зміни rect.w на 10 і виведи rect.area ще раз.",
+          "starter": "// Твій код тут",
+          "example": "const c = { r: 2, get d() { return this.r * 2; } };\nconsole.log(c.d);"
+        },
+        {
+          "id": "8-15-2",
+          "level": "Середнє",
+          "description": "Геттер у класі.\n1. Оголоси class Person: constructor(first, last, birthYear), getter fullName (\"Ім'я Прізвище\"), getter age (2026 - birthYear).\n2. Створи двох людей і виведи fullName та age.\n3. Спробуй присвоїти person.fullName = \"Хтось\" і виведи fullName. Запиши в коментарі до запуску, чи зміниться.",
+          "starter": "// Твій код тут",
+          "example": "class T {\n  constructor(a, b) { this.a = a; this.b = b; }\n  get sum() { return this.a + this.b; }\n}\nconsole.log(new T(1, 2).sum);"
+        },
+        {
+          "id": "8-15-3",
+          "level": "Складніше",
+          "description": "get і set разом з приватним.\n1. Оголоси class Temperature з приватним #celsius (constructor(c)).\n2. get fahrenheit() повертає #celsius * 9 / 5 + 32.\n3. set fahrenheit(f) записує у #celsius відповідне значення.\n4. get celsius() повертає #celsius.\n5. Створи new Temperature(0), виведи fahrenheit, потім temp.fahrenheit = 212, виведи celsius.\n6. Передбач результати до запуску, перевір і поясни коментарем, чому підхід безпечніший за звичайне поле.",
+          "starter": "// Твій код тут",
+          "example": "class Z {\n  #v = 1;\n  get v() { return this.#v; }\n  set v(x) { if (x > 0) this.#v = x; }\n}\nconst z = new Z();\nz.v = -5;\nconsole.log(z.v);   // 1\nz.v = 8;\nconsole.log(z.v);   // 8"
+        }
+      ]
+    },
+    {
+      "id": "8-16",
+      "title": "Підсумкові задачі модуля 8",
+      "intro": "**Суть.** Змішано: деструктуризація, rest/spread, копіювання, геттери, делегування, спливання і попередні модулі.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst user = { name: 'Ол', skills: ['js'] };\nconst updated = { ...user, skills: [...user.skills, 'css'] };\nconst { name, skills: [first] } = updated;\nconsole.log(name, first, user.skills.length);   // Ол js 1\n```",
+      "tasks": [
+        {
+          "id": "8-16-1",
+          "level": "Легка",
+          "description": "Профілі.\n1. Оголоси const users: { name: \"Ася\", age: 20, city: \"Київ\" }, { name: \"Борис\", age: 25, city: \"Львів\" }.\n2. Через forEach із деструктуризацією в параметрах виведи \"Ася (20), Київ\".\n3. Створи новий масив, у якому кожному користувачу додано ключ active: true (через map і spread), не змінюючи оригінал. Виведи обидва масиви.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 1 }];\nconsole.log(a.map(o => ({ ...o, ok: true })));"
+        },
+        {
+          "id": "8-16-2",
+          "level": "Середня",
+          "description": "Кошик без мутацій.\n1. Оголоси let cart = [].\n2. Напиши функції (повертають нові масиви): addToCart(cart, item), removeFromCart(cart, title) (filter), changeQty(cart, title, qty) (map + spread для зміненого об'єкта).\n3. Додай чай (80, qty 1), каву (150, qty 2), зміни qty чаю на 3, видали каву. Після кожної дії cart = результат.\n4. Виведи total({ price, qty }) через reduce із деструктуризацією.\n5. Збережи всі проміжні масиви (кроки) в масиві history і виведи history.length та перший крок, щоб переконатись, що вони не змінились.",
+          "starter": "// Твій код тут",
+          "example": "const add = (l, x) => [...l, x];\nconst a = add([], 1);\nconst b = add(a, 2);\nconsole.log(a, b);"
+        },
+        {
+          "id": "8-16-3",
+          "level": "Складніша",
+          "description": "Список із делегуванням.\n1. Є форма #f з input #t і ul #list, #out. Масив tasks (const) об'єктів { id, title, done }, стан змінюй лише через нові масиви (spread/map/filter), що присвоюються в let tasks.\n2. render() очищає #list і створює li для кожного (деструктуризація в циклі: for (const { id, title, done } of tasks)), записує data-id.\n3. submit додає задачу з id = Date.now(); один слухач click на #list: клік по li перемикає done (map + spread), клік по кнопці x видаляє (filter).\n4. #out показує \"Всього: N, виконано: M\".\n5. Відсортуй так, щоб виконані були внизу (копія + sort).\n6. Передбач у коментарі #out після додавання двох задач і виконання однієї.",
+          "starter": "// Твій код тут",
+          "example": "const el = document.querySelector('ul');\nlet items = [{ id: 1, t: 'a' }];\nfunction draw() {\n  el.innerHTML = '';\n  for (const { id, t } of items) {\n    const li = document.createElement('li');\n    li.dataset.id = id;\n    li.textContent = t;\n    el.append(li);\n  }\n}\ndraw();",
+          "html": "<form id=\"f\"><input id=\"t\" placeholder=\"Нова задача\"> <button>Додати</button></form><ul id=\"list\"></ul><p id=\"out\"></p>"
+        }
+      ]
+    },
+    {
+      "id": "8-17",
+      "title": "Фінальні задачі: усі модулі разом",
+      "intro": "**Суть.** Це підсумок усіх восьми модулів: змінні, рядки, функції, умови, цикли, масиви, об'єкти, колбеки і методи масивів, класи, DOM, події, деструктуризація. Пиши по частинах, перевіряй у консолі після кожного кроку.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\n// Усе разом у мініатюрі\nclass Cart {\n  #items = [];\n  add({ title, price, qty = 1 }) {\n    this.#items = [...this.#items, { title, price, qty }];\n  }\n  get total() {\n    return this.#items.reduce((s, { price, qty }) => s + price * qty, 0);\n  }\n}\nconst cart = new Cart();\ncart.add({ title: 'Чай', price: 80, qty: 2 });\nconsole.log(cart.total);   // 160\n```",
+      "tasks": [
+        {
+          "id": "8-17-1",
+          "level": "Легка",
+          "description": "Магазин у консолі.\n1. Масив products (const) із 5 об'єктів: { id, title, price, category, inStock }, мінімум 2 категорії, один товар без наявності.\n2. Функція getTitles(list), що повертає масив назв (map).\n3. Функція onlyInStock(list), що повертає наявні (filter).\n4. Функція byCategory(list, category = \"all\"): якщо \"all\", повертає всі, інакше лише з категорії.\n5. Функція totalPrice(list) через reduce.\n6. Виведи: назви наявних товарів, суму цін наявних, товари категорії з твого вибору, відсортовані за ціною від меншої.\n7. Передбач суму наявних до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ t: 'x', p: 5, ok: true }, { t: 'y', p: 3, ok: false }];\nconsole.log(a.filter(({ ok }) => ok).map(({ t }) => t));"
+        },
+        {
+          "id": "8-17-2",
+          "level": "Середня",
+          "description": "Клас Shop.\n1. class Product: constructor({ title, price, category, qty = 0 }), геттер inStock (qty > 0), метод describe() (\"Чай - 80 грн (є)\").\n2. class Shop: приватний #products, add(params) (створює new Product), find(title), sell(title, count) (змінює qty, виводить повідомлення при нестачі або відсутності), get totalValue (сума price * qty), byCategory(category) (новий масив), sortedBy(field) (новий відсортований масив, field: \"price\" або \"title\").\n3. class DiscountProduct extends Product з discount: перевизнач describe так, щоб показувати ціну зі знижкою (ціна зі знижкою).\n4. Створи магазин із 5 товарами (один DiscountProduct), виконай продажі, виведи totalValue до і після, report().\n5. Спробуй вивести shop.products (не #products). Запиши, що вийшло.\n6. Передбач totalValue до і після.",
+          "starter": "// Твій код тут",
+          "example": "class P {\n  constructor({ t, p = 0 }) { this.t = t; this.p = p; }\n  get cheap() { return this.p < 10; }\n}\nclass D extends P {\n  constructor(o) { super(o); this.off = o.off; }\n}\nconsole.log(new D({ t: 'a', p: 5, off: 2 }).cheap);"
+        },
+        {
+          "id": "8-17-3",
+          "level": "Складніша",
+          "description": "Магазин зі сторінкою (клас + DOM + події + деструктуризація).\n1. Є поля #search, #category (select), #sort (select), блок #cards, #cart (список), #total.\n2. Клас Shop (з попереднього завдання, скопіюй мінімум: масив товарів, filter за пошуком і категорією, sort).\n3. render(list): очищає #cards, для кожного товару (деструктуризація) створює div.card (h3, p ціна, button \"У кошик\" з data-id). Недоступні товари мають кнопку disabled.\n4. input на #search, change на #category і #sort викликають render з актуальними фільтрами (один спільний handler).\n5. Один слухач click на #cards (делегування): кнопка додає товар у кошик (масив cart, без мутацій: spread), якщо вже є, збільшує qty (map + spread).\n6. renderCart(): список li \"Чай x2 - 160 грн\" з кнопкою \"-\" (клас minus). Один слухач click на #cart (делегування): minus зменшує qty, при 0 видаляє (filter).\n7. #total завжди показує суму (reduce).\n8. Передбач у коментарі #total після: додати чай двічі, каву один раз, мінус для чаю.",
+          "starter": "// Твій код тут",
+          "example": "const root = document.querySelector('div');\nlet list = ['a', 'b'];\nfunction draw() {\n  root.innerHTML = '';\n  for (const x of list) {\n    const p = document.createElement('p');\n    p.textContent = x;\n    root.append(p);\n  }\n}\nroot.addEventListener('click', (e) => {\n  const p = e.target.closest('p');\n  if (!p) return;\n  list = list.filter((x) => x !== p.textContent);\n  draw();\n});\ndraw();",
+          "html": "<input id=\"search\" placeholder=\"Пошук\"> <select id=\"category\"><option value=\"all\">Усі</option><option value=\"tea\">Чай</option><option value=\"drink\">Напої</option></select> <select id=\"sort\"><option value=\"title\">За назвою</option><option value=\"price\">За ціною</option></select><div id=\"cards\"></div><h4>Кошик</h4><ul id=\"cart\"></ul><p id=\"total\">Разом: 0 грн</p>"
+        }
+      ]
+    }
+  ]
+}

@@ -18,5 +18,25 @@
     "module": 4,
     "title": "Модуль 4: об'єкти",
     "file": "data/module-4.json"
+  },
+  {
+    "module": 5,
+    "title": "Модуль 5: перебираючі методи масивів",
+    "file": "data/module-5.json"
+  },
+  {
+    "module": 6,
+    "title": "Модуль 6: ООП та класи",
+    "file": "data/module-6.json"
+  },
+  {
+    "module": 7,
+    "title": "Модуль 7: DOM і події",
+    "file": "data/module-7.json"
+  },
+  {
+    "module": 8,
+    "title": "Модуль 8: деструктуризація, rest/spread, події",
+    "file": "data/module-8.json"
   }
 ]

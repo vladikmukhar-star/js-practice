@@ -1,0 +1,426 @@
+{
+  "module": 6,
+  "title": "Модуль 6: ООП та класи",
+  "topics": [
+    {
+      "id": "6-1",
+      "title": "Ключове слово this",
+      "intro": "**Суть.** `this` у методі — це об'єкт, **перед крапкою** в момент виклику: `user.greet()` → this це user. Той самий метод, викликаний на іншому об'єкті, дасть інший this.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst a = { n: 'А', who() { return this.n; } };\nconst b = { n: 'Б', who: a.who };\nconsole.log(a.who());   // А\nconsole.log(b.who());   // Б, той самий код, інший об'єкт перед крапкою\n```",
+      "tasks": [
+        {
+          "id": "6-1-1",
+          "level": "Легке",
+          "description": "Хто викликає.\n1. Оголоси const об'єкт dog: name \"Рекс\", метод say(), що виводить `Я ${this.name}`.\n2. Оголоси const об'єкт cat: name \"Мурка\" і запиши в нього ключ say: dog.say.\n3. Виклич dog.say() та cat.say().",
+          "starter": "// Твій код тут",
+          "example": "const x = { n: 1, show() { console.log(this.n); } };\nconst y = { n: 2, show: x.show };\nx.show();   // 1\ny.show();   // 2"
+        },
+        {
+          "id": "6-1-2",
+          "level": "Середнє",
+          "description": "Лічильник.\n1. Оголоси const counter: count 0, методи inc() (this.count++), dec(), show() (виводить this.count).\n2. Виклич inc тричі, dec один раз, show.\n3. Створи const counter2 з count 100 і тими ж методами (скопіюй: inc: counter.inc, dec: counter.dec, show: counter.show). Виклич counter2.inc() і show.\n4. Виведи counter.count і counter2.count. Запиши в коментарі до запуску, що очікуєш.",
+          "starter": "// Твій код тут",
+          "example": "const a = { v: 0, up() { this.v++; } };\nconst b = { v: 10, up: a.up };\nb.up();\nconsole.log(a.v, b.v);   // 0 11"
+        },
+        {
+          "id": "6-1-3",
+          "level": "Складніше",
+          "description": "Втрата this.\n1. Оголоси const user: name \"Влад\", метод hi(), що виводить `Привіт, ${this.name}`.\n2. Виклич user.hi().\n3. Запиши const f = user.hi; і виклич f(). Скопіюй в коментар, що вийшло (undefined або помилка).\n4. Коментарем поясни, чому в f() немає user перед крапкою.\n5. Передбач до запуску, що буде в п.3.",
+          "starter": "// Твій код тут",
+          "example": "const o = { n: 'x', get() { return this && this.n; } };\nconsole.log(o.get());\nconst g = o.get;\nconsole.log(g());   // undefined"
+        }
+      ]
+    },
+    {
+      "id": "6-2",
+      "title": "Глобальний контекст",
+      "intro": "**Суть.** Поза будь-якими об'єктами `this` — це глобальний об'єкт (у браузері `window`). У звичайній функції, яку викликали без крапки, у нестрогому режимі теж глобальний об'єкт, а в строгому (`'use strict'`) — `undefined`. Класи завжди строгі.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconsole.log(this === globalThis);   // true (вгорі файлу)\nfunction f() { return this === globalThis; }\nconsole.log(f());   // true\nfunction g() {\n  'use strict';\n  return this;\n}\nconsole.log(g());   // undefined\n```",
+      "tasks": [
+        {
+          "id": "6-2-1",
+          "level": "Легке",
+          "description": "Глобальний this.\n1. Виведи this === globalThis.\n2. Оголоси звичайну функцію check(), що повертає this === globalThis.\n3. Виведи check().\n4. До запуску запиши передбачення обох.",
+          "starter": "// Твій код тут",
+          "example": "function t() { return this === globalThis; }\nconsole.log(t());   // true"
+        },
+        {
+          "id": "6-2-2",
+          "level": "Середнє",
+          "description": "Строгий режим.\n1. Оголоси функцію a(), що повертає typeof this.\n2. Оголоси функцію b() з 'use strict' першим рядком, що повертає typeof this.\n3. Виведи a() та b().\n4. Запиши в коментарі до запуску передбачення.\n5. Поясни одним реченням, чому вони різні.",
+          "starter": "// Твій код тут",
+          "example": "function s() {\n  'use strict';\n  return typeof this;\n}\nconsole.log(s());   // undefined"
+        },
+        {
+          "id": "6-2-3",
+          "level": "Складніше",
+          "description": "Метод і функція.\n1. Оголоси const obj: label \"об'єкт\", метод m(), що повертає this === obj.\n2. Оголоси const standalone = obj.m.\n3. Виведи obj.m() і standalone().\n4. Передбач обидва до запуску. Поясни в коментарі.",
+          "starter": "// Твій код тут",
+          "example": "const o = { m() { return this === o; } };\nconst s = o.m;\nconsole.log(o.m(), s());   // true false"
+        }
+      ]
+    },
+    {
+      "id": "6-3",
+      "title": "Контекст у стрілочних функціях",
+      "intro": "**Суть.** У стрілки **немає свого this**: вона бере this з місця, де її написали. Тому стрілка як метод об'єкта не підходить (this буде не об'єкт). Зате стрілка всередині методу чудово бачить this методу.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst o = {\n  n: 'А',\n  list: ['x', 'y'],\n  show() {\n    this.list.forEach(item => {\n      console.log(this.n, item);   // А x, А y, стрілка бачить this методу\n    });\n  },\n};\no.show();\n```",
+      "tasks": [
+        {
+          "id": "6-3-1",
+          "level": "Легке",
+          "description": "Метод зі стрілкою всередині.\n1. Оголоси const team: name \"Альфа\", members масив \"Ол\", \"Ін\", метод show().\n2. У show через members.forEach зі стрілкою виведи `${this.name}: ${member}`.\n3. Виклич show().",
+          "starter": "// Твій код тут",
+          "example": "const o = {\n  t: 'T',\n  a: [1, 2],\n  go() { this.a.forEach(n => console.log(this.t, n)); },\n};\no.go();"
+        },
+        {
+          "id": "6-3-2",
+          "level": "Середнє",
+          "description": "Стрілка як метод.\n1. Оголоси const user: name \"Влад\", метод regular() (звичайний, повертає this.name), метод arrow як стрілка () => this.name.\n2. Виведи user.regular() та user.arrow().\n3. До запуску запиши передбачення і поясни, чому arrow не зміг взяти name.",
+          "starter": "// Твій код тут",
+          "example": "const o = {\n  n: 'x',\n  r() { return this.n; },\n  a: () => typeof this,\n};\nconsole.log(o.r(), o.a());"
+        },
+        {
+          "id": "6-3-3",
+          "level": "Складніше",
+          "description": "Звичайна функція в колбеку.\n1. Оголоси const shop: name \"Мій\", items масив \"a\", \"b\", методи test1 і test2.\n2. У test1 перебери items через forEach(function (item) { console.log(this.name, item); }).\n3. У test2 те саме, але стрілкою.\n4. Виклич test1 і test2. До запуску запиши, що буде в кожному.\n5. Поясни, чому у звичайної функції в колбеку this інший.",
+          "starter": "// Твій код тут",
+          "example": "const o = {\n  n: 'N',\n  l: [1],\n  a() { this.l.forEach(function (x) { console.log(typeof this, x); }); },\n  b() { this.l.forEach(x => console.log(this.n, x)); },\n};\no.a();\no.b();"
+        }
+      ]
+    },
+    {
+      "id": "6-4",
+      "title": "Алгоритм визначення this",
+      "intro": "**Суть.** Як визначити this у функції: 1) стрілка → беремо з місця, де вона написана. 2) Викликана через `obj.method()` → obj. 3) Викликана через `new` → новий об'єкт (далі в класах). 4) Просто `f()` → глобальний або undefined у строгому. Дивимось на **місце виклику**, а не на місце оголошення.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst o = {\n  n: 'o',\n  m() { return this && this.n; },\n};\nconst f = o.m;\nconsole.log(o.m());   // 'o'   (викликали через obj.)\nconsole.log(f());     // undefined (без obj.)\n```",
+      "tasks": [
+        {
+          "id": "6-4-1",
+          "level": "Легке",
+          "description": "Визнач.\n1. Скопіюй код.\n2. Не запускаючи, запиши в коментарі, що виведе кожен виклик: a.say(), b.say(), c().\n3. Додай console.log сам для кожного.\n4. Запусти і порівняй.",
+          "starter": "const a = { name: 'A', say() { return this && this.name; } };\nconst b = { name: 'B', say: a.say };\nconst c = a.say;\n\n// Мої передбачення:\n\n",
+          "example": "const x = { n: 1, f() { return this && this.n; } };\nconst y = { n: 2, f: x.f };\nconsole.log(x.f(), y.f());   // 1 2"
+        },
+        {
+          "id": "6-4-2",
+          "level": "Середнє",
+          "description": "Ланцюг об'єктів.\n1. Оголоси const outer: name \"outer\", inner — об'єкт з name \"inner\" і методом get() { return this.name; }.\n2. Виведи outer.inner.get().\n3. Запиши в коментарі до запуску, чому це \"inner\", а не \"outer\" (що стоїть прямо перед крапкою).",
+          "starter": "// Твій код тут",
+          "example": "const a = { n: 'a', b: { n: 'b', g() { return this.n; } } };\nconsole.log(a.b.g());   // b"
+        },
+        {
+          "id": "6-4-3",
+          "level": "Складніше",
+          "description": "Усе разом.\n1. Скопіюй код.\n2. Не запускаючи, запиши в коментарі, що виведуть виклики o.reg(), loose(), o.arr(), o.nested().\n3. Для кожного вкажи правило: стрілка, obj.method або просто f().\n4. Напиши console.log сам, запусти, порівняй, поясни помилки.",
+          "starter": "const o = {\n  n: 'o',\n  reg() { return this && this.n; },\n  arr: () => typeof this,\n  nested() { return [1].map(() => this.n)[0]; },\n};\nconst loose = o.reg;\n\n// Мої передбачення:\n\n",
+          "example": "const o = {\n  n: 'o',\n  reg() { return this && this.n; },\n  arr: () => typeof this,\n  nested() { return [1].map(() => this.n)[0]; },\n};\nconsole.log(o.reg(), o.nested());   // o o"
+        }
+      ]
+    },
+    {
+      "id": "6-5",
+      "title": "Прототип об'єкта",
+      "intro": "**Суть.** Кожен об'єкт має прихований зв'язок із «прототипом» — іншим об'єктом. Якщо властивості в самому об'єкті немає, JavaScript шукає її в прототипі. Створити зв'язок: `Object.create(proto)`. Перевірити: `Object.getPrototypeOf(obj)`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst animal = { eats: true, hello() { return 'я тварина'; } };\nconst dog = Object.create(animal);\ndog.name = 'Рекс';\nconsole.log(dog.name);    // Рекс (своя)\nconsole.log(dog.eats);    // true (з прототипу)\nconsole.log(dog.hello()); // я тварина\nconsole.log(Object.getPrototypeOf(dog) === animal);   // true\n```",
+      "tasks": [
+        {
+          "id": "6-5-1",
+          "level": "Легке",
+          "description": "Успадкуй.\n1. Оголоси const base: kind \"тварина\", метод info(), що повертає `Це ${this.kind}`.\n2. Створи const cat = Object.create(base).\n3. Виведи cat.kind та cat.info().\n4. Дай cat власне kind \"кіт\" і виведи cat.info().",
+          "starter": "// Твій код тут",
+          "example": "const p = { c: 'p', who() { return this.c; } };\nconst k = Object.create(p);\nconsole.log(k.who());   // p\nk.c = 'k';\nconsole.log(k.who());   // k"
+        },
+        {
+          "id": "6-5-2",
+          "level": "Середнє",
+          "description": "Власне проти прототипного.\n1. Оголоси const proto: a 1, b 2.\n2. Створи const obj = Object.create(proto) і запиши obj.b = 20, obj.c = 30.\n3. Виведи obj.a, obj.b, obj.c.\n4. Виведи Object.keys(obj) та 'a' in obj.\n5. Виведи obj.hasOwnProperty('a') і obj.hasOwnProperty('b').\n6. Запиши передбачення до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const p = { x: 1 };\nconst o = Object.create(p);\no.y = 2;\nconsole.log(Object.keys(o), 'x' in o, o.hasOwnProperty('x'));   // y, true, false"
+        },
+        {
+          "id": "6-5-3",
+          "level": "Складніше",
+          "description": "Ланцюжок прототипів.\n1. Оголоси const a: name \"A\", hi() { return 'hi ' + this.name; }.\n2. Створи const b = Object.create(a), b.name = \"B\".\n3. Створи const c = Object.create(b), c.name = \"C\".\n4. Виведи c.hi(), b.hi(), a.hi().\n5. Видали c.name через delete і виведи c.hi() ще раз.\n6. Передбач усі чотири до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = { n: 'a', g() { return this.n; } };\nconst b = Object.create(a);\nb.n = 'b';\nconst c = Object.create(b);\nconsole.log(c.g());   // b\nc.n = 'c';\nconsole.log(c.g());   // c"
+        }
+      ]
+    },
+    {
+      "id": "6-6",
+      "title": "Об'єктно орієнтоване програмування",
+      "intro": "**Суть.** ООП — спосіб писати код: дані та дії над ними живуть разом в об'єкті. Замість купи окремих змінних і функцій маємо об'єкти-«речі» (користувач, кошик, гра), кожен зі своїм станом і методами. Клас (далі) — це креслення, з якого роблять багато схожих об'єктів.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\n// Без ООП: розсипано\nlet balance = 100;\nfunction pay(n) { balance -= n; }\n// З ООП: разом\nconst wallet = {\n  balance: 100,\n  pay(n) { this.balance -= n; },\n};\nwallet.pay(30);\nconsole.log(wallet.balance);   // 70\n```",
+      "tasks": [
+        {
+          "id": "6-6-1",
+          "level": "Легке",
+          "description": "Перепиши в об'єкт.\n1. Є змінна let hp = 100 і функція hit(n) { hp -= n; }.\n2. Створи const hero: hp 100 і метод hit(n), що користується this.hp.\n3. Виклич hero.hit(30), hero.hit(25) і виведи hero.hp.",
+          "starter": "// Твій код тут",
+          "example": "const car = {\n  speed: 0,\n  go(n) { this.speed += n; },\n};\ncar.go(50);\nconsole.log(car.speed);   // 50"
+        },
+        {
+          "id": "6-6-2",
+          "level": "Середнє",
+          "description": "Два об'єкти одного вигляду.\n1. Оголоси функцію createPlayer(name), що повертає об'єкт з name, score 0 і методом add(n) { this.score += n; }.\n2. Створи const p1 = createPlayer(\"Ася\") та p2 = createPlayer(\"Борис\").\n3. Виклич p1.add(10), p1.add(5), p2.add(7).\n4. Виведи p1 і p2 (score різні).\n5. Виведи p1.add === p2.add і запиши в коментарі, чому так (кожен об'єкт має власну копію функції).",
+          "starter": "// Твій код тут",
+          "example": "function mk(n) {\n  return { n, hits: 0, hit() { this.hits++; } };\n}\nconst a = mk('a');\nconst b = mk('b');\na.hit();\nconsole.log(a.hits, b.hits);   // 1 0"
+        },
+        {
+          "id": "6-6-3",
+          "level": "Складніше",
+          "description": "Банківський рахунок.\n1. Оголоси функцію createAccount(owner, balance = 0), що повертає об'єкт з owner, balance і методами deposit(n), withdraw(n) (не дозволяє піти в мінус, виводить \"Мало коштів\"), info() (виводить \"Влад: 120\").\n2. Створи два рахунки.\n3. Роби операції з обома, перевір, що вони незалежні.\n4. Передбач у коментарі до запуску, що буде в консолі.",
+          "starter": "// Твій код тут",
+          "example": "function acc(b = 0) {\n  return {\n    b,\n    add(n) { this.b += n; },\n  };\n}\nconst x = acc();\nconst y = acc(50);\nx.add(5);\nconsole.log(x.b, y.b);   // 5 50"
+        }
+      ]
+    },
+    {
+      "id": "6-7",
+      "title": "Оголошення класу",
+      "intro": "**Суть.** Клас — креслення для об'єктів. Записується `class Name { ... }`, а об'єкт створюється через `new Name()`. Назву класу пишемо з великої літери. Об'єкт, створений з класу, називають екземпляром.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass Dog {\n  bark() {\n    console.log('Гав');\n  }\n}\nconst d = new Dog();\nd.bark();                      // Гав\nconsole.log(d instanceof Dog); // true\n```",
+      "tasks": [
+        {
+          "id": "6-7-1",
+          "level": "Легке",
+          "description": "Перший клас.\n1. Оголоси class Cat з методом meow(), що виводить \"Няв\".\n2. Створи const c1 = new Cat() та c2 = new Cat().\n3. Виклич c1.meow() і c2.meow().\n4. Виведи c1 === c2.",
+          "starter": "// Твій код тут",
+          "example": "class A {\n  hi() { console.log('hi'); }\n}\nnew A().hi();"
+        },
+        {
+          "id": "6-7-2",
+          "level": "Середнє",
+          "description": "Клас-калькулятор.\n1. Оголоси class Calc з методами sum(a, b), minus(a, b), mul(a, b).\n2. Створи const calc = new Calc().\n3. Виведи calc.sum(2, 3), calc.mul(4, 5), calc.minus(10, 7).\n4. Виведи typeof Calc та typeof calc. Запиши передбачення до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class M {\n  twice(n) { return n * 2; }\n}\nconst m = new M();\nconsole.log(m.twice(4), typeof M, typeof m);   // 8 function object"
+        },
+        {
+          "id": "6-7-3",
+          "level": "Складніше",
+          "description": "Без new.\n1. Оголоси class Box { hello() { return 1; } }.\n2. Спробуй виклик Box() без new. Перепиши помилку в коментар.\n3. Спробуй викликати метод напряму: Box.hello(). Запиши в коментар, що вийшло.\n4. Передбач обидва до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class Z {\n  go() { return 1; }\n}\n// Z();        // TypeError: Class constructor Z cannot be invoked without 'new'\n// Z.go();     // TypeError: Z.go is not a function\nconsole.log(new Z().go());   // 1"
+        }
+      ]
+    },
+    {
+      "id": "6-8",
+      "title": "Конструктор класу",
+      "intro": "**Суть.** `constructor(...)` — спеціальний метод, що викликається при `new`. У ньому записують початкові дані: `this.name = name`. Параметри конструктора — це те, що передаєш у `new Class(...)`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass User {\n  constructor(name, age) {\n    this.name = name;\n    this.age = age;\n  }\n}\nconst u = new User('Ол', 20);\nconsole.log(u);       // name: Ол, age: 20\nconsole.log(u.name);  // Ол\n```",
+      "tasks": [
+        {
+          "id": "6-8-1",
+          "level": "Легке",
+          "description": "Конструктор.\n1. Оголоси class Book з constructor(title, pages), що записує обидва значення в this.\n2. Створи const b1 = new Book(\"Кобзар\", 300) та b2 = new Book(\"Лісова пісня\", 150).\n3. Виведи b1, b2 та b1.title.",
+          "starter": "// Твій код тут",
+          "example": "class P {\n  constructor(x, y) {\n    this.x = x;\n    this.y = y;\n  }\n}\nconsole.log(new P(1, 2));"
+        },
+        {
+          "id": "6-8-2",
+          "level": "Середнє",
+          "description": "Конструктор із початковими значеннями.\n1. Оголоси class Player з constructor(name), де this.name = name, this.score = 0, this.lives = 3.\n2. Створи двох гравців.\n3. Зміни у першого score на 50 і lives на 2.\n4. Виведи обох. Запиши в коментарі до запуску, чи вплине зміна одного на іншого.",
+          "starter": "// Твій код тут",
+          "example": "class C {\n  constructor(n) {\n    this.n = n;\n    this.hits = 0;\n  }\n}\nconst a = new C('a');\nconst b = new C('b');\na.hits = 9;\nconsole.log(a.hits, b.hits);   // 9 0"
+        },
+        {
+          "id": "6-8-3",
+          "level": "Складніше",
+          "description": "Параметр за замовчуванням.\n1. Оголоси class Car з constructor(brand, color = \"сірий\", speed = 0).\n2. Створи const c1 = new Car(\"Audi\"), c2 = new Car(\"BMW\", \"червоний\"), c3 = new Car(\"Kia\", \"синій\", 80).\n3. Виведи всі три.\n4. Створи const c4 = new Car() і виведи. Запиши в коментарі, що буде в brand.\n5. Передбач усі чотири до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class D {\n  constructor(a, b = 5) {\n    this.a = a;\n    this.b = b;\n  }\n}\nconsole.log(new D(1), new D());   // a:1 b:5 і a:undefined b:5"
+        }
+      ]
+    },
+    {
+      "id": "6-9",
+      "title": "Об'єкт параметрів",
+      "intro": "**Суть.** Коли параметрів багато, їх зручно передавати одним об'єктом: `new User({ name: 'Ол', age: 20 })`. Порядок не важливий, і код читається. В конструкторі: `constructor(params) { this.name = params.name; }`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass Hero {\n  constructor(params) {\n    this.name = params.name;\n    this.hp = params.hp ?? 100;   // якщо hp не передали, 100\n  }\n}\nconsole.log(new Hero({ name: 'Лев' }));         // hp: 100\nconsole.log(new Hero({ hp: 50, name: 'Ян' }));  // порядок неважливий\n```",
+      "tasks": [
+        {
+          "id": "6-9-1",
+          "level": "Легке",
+          "description": "Один об'єкт замість трьох аргументів.\n1. Оголоси class Product з constructor(params), що записує params.title, params.price, params.qty.\n2. Створи const p = new Product({ title: \"Чай\", price: 80, qty: 3 }).\n3. Виведи p.\n4. Створи ще один з іншим порядком ключів у об'єкті.",
+          "starter": "// Твій код тут",
+          "example": "class A {\n  constructor(o) {\n    this.x = o.x;\n    this.y = o.y;\n  }\n}\nconsole.log(new A({ y: 2, x: 1 }));"
+        },
+        {
+          "id": "6-9-2",
+          "level": "Середнє",
+          "description": "Значення за замовчуванням.\n1. Оголоси class Settings з constructor(params), де this.theme = params.theme || \"light\", this.size = params.size || 14, this.lang = params.lang || \"uk\".\n2. Створи: new Settings({}), new Settings({ theme: \"dark\" }), new Settings({ size: 20, lang: \"en\" }).\n3. Виведи всі три.\n4. Передбач їх до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class S {\n  constructor(p) {\n    this.mode = p.mode || 'easy';\n  }\n}\nconsole.log(new S({}), new S({ mode: 'hard' }));"
+        },
+        {
+          "id": "6-9-3",
+          "level": "Складніше",
+          "description": "Пастка нуля.\n1. Оголоси class Item з constructor(params), де this.count = params.count || 10.\n2. Створи new Item({ count: 5 }) і new Item({ count: 0 }). Виведи обидва.\n3. Запиши в коментарі до запуску, що буде для count: 0 і чому це може бути неправильно.\n4. Виправ через ?? (this.count = params.count ?? 10) і запусти ще раз.",
+          "starter": "// Твій код тут",
+          "example": "class I {\n  constructor(p) {\n    this.a = p.a || 10;\n    this.b = p.b ?? 10;\n  }\n}\nconsole.log(new I({ a: 0, b: 0 }));   // a:10 b:0"
+        }
+      ]
+    },
+    {
+      "id": "6-10",
+      "title": "Методи класу",
+      "intro": "**Суть.** Методи пишуться в тілі класу (без `function`, без ком). Усередині методу `this` — екземпляр, для якого викликали. Метод може змінювати стан (`this.hp -= 10`) або повертати значення. Метод може викликати інший метод: `this.other()`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass Timer {\n  constructor() { this.sec = 0; }\n  tick() { this.sec++; }\n  show() { return `${this.sec} с`; }\n  tickTwice() { this.tick(); this.tick(); }\n}\nconst t = new Timer();\nt.tickTwice();\nconsole.log(t.show());   // 2 с\n```",
+      "tasks": [
+        {
+          "id": "6-10-1",
+          "level": "Легке",
+          "description": "Лічильник-клас.\n1. Оголоси class Counter: constructor з this.value = 0, методи inc(), dec(), reset(), show() (виводить value).\n2. Створи const c = new Counter().\n3. Виклич inc тричі, show, dec, show, reset, show.",
+          "starter": "// Твій код тут",
+          "example": "class L {\n  constructor() { this.n = 0; }\n  up() { this.n++; }\n}\nconst l = new L();\nl.up(); l.up();\nconsole.log(l.n);   // 2"
+        },
+        {
+          "id": "6-10-2",
+          "level": "Середнє",
+          "description": "Прямокутник.\n1. Оголоси class Rect: constructor(w, h), методи area(), perimeter(), isSquare() (true/false), scale(k) (множить w і h на k).\n2. Створи r = new Rect(3, 4).\n3. Виведи area, perimeter, isSquare.\n4. Виклич scale(2) і виведи area та w, h.\n5. Створи new Rect(5, 5) і виведи isSquare. Передбач усі числа до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class R {\n  constructor(a) { this.a = a; }\n  sq() { return this.a * this.a; }\n}\nconsole.log(new R(3).sq());   // 9"
+        },
+        {
+          "id": "6-10-3",
+          "level": "Складніше",
+          "description": "Магазинний кошик.\n1. Оголоси class Cart з constructor() { this.items = []; }.\n2. Методи: add(title, price, qty = 1) (push об'єкта), remove(title) (залишає всі, крім title; перезапиши this.items через filter), total() (сума price * qty через reduce), count() (кількість товарних одиниць), clear().\n3. Додай чай (80 x 2), каву (150 x 1), сік (60 x 3).\n4. Виведи total() і count(). Видали каву і виведи знову.\n5. Передбач 4 числа до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class Bag {\n  constructor() { this.l = []; }\n  put(n) { this.l.push(n); return this; }\n  sum() { return this.l.reduce((s, x) => s + x, 0); }\n}\nconsole.log(new Bag().put(2).put(5).sum());   // 7"
+        }
+      ]
+    },
+    {
+      "id": "6-11",
+      "title": "Прототип екземпляру",
+      "intro": "**Суть.** Методи класу не копіюються в кожен об'єкт, а лежать в **прототипі**: `Class.prototype`. Всі екземпляри посилаються на нього. Тому `a.method === b.method` дає `true`, а `Object.keys(a)` показує лише власні дані (з constructor).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass A {\n  constructor() { this.x = 1; }\n  hi() { return 'hi'; }\n}\nconst a = new A();\nconst b = new A();\nconsole.log(Object.keys(a));                           // x\nconsole.log(a.hi === b.hi);                            // true\nconsole.log(Object.getPrototypeOf(a) === A.prototype); // true\n```",
+      "tasks": [
+        {
+          "id": "6-11-1",
+          "level": "Легке",
+          "description": "Де лежить метод.\n1. Оголоси class Dog: constructor(name) { this.name = name; }, метод bark().\n2. Створи d1 = new Dog(\"Рекс\"), d2 = new Dog(\"Бім\").\n3. Виведи Object.keys(d1).\n4. Виведи d1.bark === d2.bark.\n5. Передбач обидва до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class K {\n  constructor() { this.v = 1; }\n  m() {}\n}\nconst a = new K();\nconsole.log(Object.keys(a), a.m === new K().m);"
+        },
+        {
+          "id": "6-11-2",
+          "level": "Середнє",
+          "description": "Прототип класу.\n1. Оголоси class User з constructor(name) і методом hello().\n2. Створи u = new User(\"Влад\").\n3. Виведи Object.getPrototypeOf(u) === User.prototype.\n4. Виведи u.hasOwnProperty('name') та u.hasOwnProperty('hello').\n5. Виведи 'hello' in u.\n6. Передбач усі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class U { constructor() { this.a = 1; } f() {} }\nconst u = new U();\nconsole.log(u.hasOwnProperty('a'), u.hasOwnProperty('f'), 'f' in u);   // true false true"
+        },
+        {
+          "id": "6-11-3",
+          "level": "Складніше",
+          "description": "Додати метод у прототип.\n1. Оголоси class Num з constructor(v) { this.v = v; }.\n2. Створи n1 = new Num(5), n2 = new Num(10).\n3. Додай в Num.prototype метод double() { return this.v * 2; } (через присвоєння функції, не в тілі класу).\n4. Виведи n1.double() та n2.double().\n5. Передбач до запуску, чи спрацює для вже створених.",
+          "starter": "// Твій код тут",
+          "example": "class Q { constructor(v) { this.v = v; } }\nconst q = new Q(3);\nQ.prototype.sq = function () { return this.v * this.v; };\nconsole.log(q.sq());   // 9"
+        }
+      ]
+    },
+    {
+      "id": "6-12",
+      "title": "Приватні властивості",
+      "intro": "**Суть.** Властивість із `#` на початку (`#balance`) — приватна: доступна лише всередині класу. Ззовні `obj.#balance` дає помилку, а `obj.balance` — undefined. Її спершу оголошують у тілі класу. Доступ ззовні — через публічні методи.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass Safe {\n  #code;\n  constructor(code) { this.#code = code; }\n  check(c) { return c === this.#code; }\n}\nconst s = new Safe(1234);\nconsole.log(s.check(1234));  // true\nconsole.log(s.code);         // undefined\n// console.log(s.#code);    // SyntaxError, якщо розкоментувати\n```",
+      "tasks": [
+        {
+          "id": "6-12-1",
+          "level": "Легке",
+          "description": "Приховати баланс.\n1. Оголоси class Wallet з приватним #balance (оголоси в тілі класу), constructor(start) ставить його, метод getBalance() повертає.\n2. Створи w = new Wallet(100).\n3. Виведи w.getBalance().\n4. Виведи w.balance та w (чи видно приватне?).",
+          "starter": "// Твій код тут",
+          "example": "class P {\n  #s = 5;\n  get() { return this.#s; }\n}\nconsole.log(new P().get());   // 5"
+        },
+        {
+          "id": "6-12-2",
+          "level": "Середнє",
+          "description": "Контроль доступу.\n1. Оголоси class Account: приватні #owner та #balance; constructor(owner, balance = 0); методи deposit(n), withdraw(n) (не можна більше балансу), getBalance(), getOwner().\n2. Створи рахунок, виконай кілька операцій.\n3. Спробуй змінити баланс ззовні: acc.balance = 1000000. Виведи getBalance() і поясни в коментарі, що змінилося.\n4. Передбач результат п.3 до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class B {\n  #n = 0;\n  add(x) { if (x > 0) this.#n += x; }\n  get() { return this.#n; }\n}\nconst b = new B();\nb.add(5);\nb.n = 999;\nconsole.log(b.get());   // 5"
+        },
+        {
+          "id": "6-12-3",
+          "level": "Складніше",
+          "description": "Лічильник спроб.\n1. Оголоси class Lock: #pin, #tries = 0; constructor(pin); метод open(pin): якщо вже 3 невдалі спроби, повертає \"Заблоковано\"; якщо pin правильний, скидає спроби і повертає \"Відкрито\"; інакше збільшує спроби і повертає \"Невірно\".\n2. Метод triesLeft() повертає 3 - this.#tries (не менше 0).\n3. Створи Lock(1111). Спробуй 2222, 3333, 1111, 4444, 5555, 6666, 1111.\n4. Виведи результат кожної спроби і triesLeft після кожної.\n5. Передбач ланцюжок результатів до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class T {\n  #k = 0;\n  hit() { this.#k++; return this.#k; }\n}\nconst t = new T();\nconsole.log(t.hit(), t.hit());   // 1 2"
+        }
+      ]
+    },
+    {
+      "id": "6-13",
+      "title": "Приватні методи",
+      "intro": "**Суть.** Метод з `#` теж приватний: `#check() { ... }`. Викликається лише зсередини: `this.#check()`. Зручно ховати допоміжну логіку, щоб зовні був лише чистий інтерфейс.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass Bank {\n  #balance = 100;\n  #isEnough(n) { return n <= this.#balance; }\n  pay(n) {\n    if (!this.#isEnough(n)) return 'мало';\n    this.#balance -= n;\n    return 'ок';\n  }\n}\nconst b = new Bank();\nconsole.log(b.pay(30), b.pay(500));   // ок мало\nconsole.log(b.isEnough);              // undefined\n```",
+      "tasks": [
+        {
+          "id": "6-13-1",
+          "level": "Легке",
+          "description": "Допоміжний метод.\n1. Оголоси class Temp: constructor(c) { this.c = c; }, приватний #toF() { return this.c * 9 / 5 + 32; }, публічний show() { return `${this.c}°C = ${this.#toF()}°F`; }.\n2. Створи new Temp(100) і виведи show().\n3. Спробуй t.toF() і запиши, що вийшло.",
+          "starter": "// Твій код тут",
+          "example": "class A {\n  #x() { return 7; }\n  y() { return this.#x(); }\n}\nconsole.log(new A().y());   // 7"
+        },
+        {
+          "id": "6-13-2",
+          "level": "Середнє",
+          "description": "Валідація всередині.\n1. Оголоси class Person: приватний #isValidAge(age) (ціле від 0 до 120); constructor(name, age): якщо вік невалідний, ставить age = 0; метод setAge(age): змінює вік тільки якщо валідний, інакше виводить \"Некоректний вік\"; getInfo().\n2. Створи Person(\"Влад\", 30), Person(\"Хтось\", -5).\n3. Спробуй setAge(150) і setAge(31). Виведи getInfo() для обох.\n4. Передбач до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class V {\n  #ok(n) { return n > 0; }\n  set(n) { return this.#ok(n) ? 'так' : 'ні'; }\n}\nconsole.log(new V().set(5), new V().set(-5));   // так ні"
+        },
+        {
+          "id": "6-13-3",
+          "level": "Складніше",
+          "description": "Журнал.\n1. Оголоси class Logger: приватний масив #log = []; приватний метод #stamp() повертає номер запису (this.#log.length + 1); публічні: info(text) (додає \"1: INFO text\"), error(text) (\"2: ERROR text\"), show() (виводить кожен запис), count().\n2. Виклич кілька разів різні методи, потім show() і count().\n3. Передбач count() і останній запис до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class J {\n  #l = [];\n  #n() { return this.#l.length + 1; }\n  add(t) { this.#l.push(`${this.#n()}: ${t}`); }\n  all() { return this.#l; }\n}\nconst j = new J();\nj.add('a'); j.add('b');\nconsole.log(j.all());   // 1: a, 2: b"
+        }
+      ]
+    },
+    {
+      "id": "6-14",
+      "title": "Наслідування класів",
+      "intro": "**Суть.** `class Child extends Parent` — дочірній клас отримує все від батьківського (методи, прототип). В конструкторі дитини першим рядком обов'язково `super(...)`: він викликає конструктор батька. Методи можна **перевизначити** або доповнити через `super.method()`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass Animal {\n  constructor(name) { this.name = name; }\n  speak() { return `${this.name} робить звук`; }\n}\nclass Dog extends Animal {\n  constructor(name, breed) {\n    super(name);\n    this.breed = breed;\n  }\n  speak() { return super.speak() + ': Гав'; }\n}\nconst d = new Dog('Рекс', 'лабрадор');\nconsole.log(d.speak());           // Рекс робить звук: Гав\nconsole.log(d instanceof Animal); // true\n```",
+      "tasks": [
+        {
+          "id": "6-14-1",
+          "level": "Легке",
+          "description": "Простий extends.\n1. Оголоси class Vehicle: constructor(brand), метод info() повертає `Транспорт: ${this.brand}`.\n2. Оголоси class Car extends Vehicle (без свого конструктора).\n3. Створи new Car(\"Audi\") і виведи info().\n4. Виведи instanceof Car і instanceof Vehicle.",
+          "starter": "// Твій код тут",
+          "example": "class A { hi() { return 'A'; } }\nclass B extends A {}\nconsole.log(new B().hi());   // A"
+        },
+        {
+          "id": "6-14-2",
+          "level": "Середнє",
+          "description": "super в конструкторі.\n1. Оголоси class Employee: constructor(name, salary), метод show() повертає `${name}: ${salary}`.\n2. Оголоси class Manager extends Employee: constructor(name, salary, team) викликає super(name, salary) і додає this.team = team (масив імен). Метод show() перевизнач (напиши свою версію): виклич super.show() і додай \", команда: <кількість>\".\n3. Створи менеджера з двома підлеглими і виведи show().\n4. Спробуй прибрати super() у конструкторі, запусти, перепиши помилку в коментар. Поверни назад.",
+          "starter": "// Твій код тут",
+          "example": "class P {\n  constructor(n) { this.n = n; }\n  s() { return this.n; }\n}\nclass C extends P {\n  constructor(n, k) { super(n); this.k = k; }\n  s() { return super.s() + this.k; }\n}\nconsole.log(new C('a', 1).s());   // a1"
+        },
+        {
+          "id": "6-14-3",
+          "level": "Складніше",
+          "description": "Ієрархія.\n1. Оголоси class Shape: constructor(name), метод area() повертає 0, метод describe() повертає `${this.name}, площа ${this.area()}`.\n2. class Circle extends Shape: constructor(r), метод area() = Math.round(Math.PI * r * r).\n3. class Rect extends Shape: constructor(w, h), area() = w * h.\n4. class Square extends Rect: constructor(side) викликає super(side, side).\n5. Створи по одному об'єкту кожного, склади масив shapes і виведи describe() для кожного через forEach.\n6. Знайди найбільшу площу через reduce.\n7. Передбач площі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "class A { constructor(n) { this.n = n; } d() { return this.n + this.v(); } v() { return 0; } }\nclass B extends A { constructor() { super('B'); } v() { return 5; } }\nconsole.log(new B().d());   // B5"
+        }
+      ]
+    },
+    {
+      "id": "6-15",
+      "title": "Підсумкові задачі модуля 6",
+      "intro": "**Суть.** Змішано: this, класи, конструктор, методи, приватне, наслідування і попередні модулі (масиви, об'єкти, перебираючі методи).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nclass Stack {\n  #items = [];\n  push(x) { this.#items.push(x); }\n  size() { return this.#items.length; }\n}\nconst s = new Stack();\ns.push(1); s.push(2);\nconsole.log(s.size());   // 2\n```",
+      "tasks": [
+        {
+          "id": "6-15-1",
+          "level": "Легка",
+          "description": "Студент.\n1. Оголоси class Student: constructor(name), this.marks = [], методи addMark(m), average() (0 якщо немає оцінок), best().\n2. Створи студента, додай 5, 4, 3, 5.\n3. Виведи average() і best().",
+          "starter": "// Твій код тут",
+          "example": "class X {\n  constructor() { this.a = []; }\n  add(n) { this.a.push(n); }\n}\nconst x = new X();\nx.add(1);\nconsole.log(x.a);"
+        },
+        {
+          "id": "6-15-2",
+          "level": "Середня",
+          "description": "Бібліотека.\n1. class Book: constructor(params) з title, author, year (за замовчуванням 2000), isTaken false.\n2. class Library: приватний #books = []; методи add(params) (створює new Book), take(title) (позначає isTaken, або виводить \"Нема\"/\"Вже взята\"), freeBooks() (повертає масив назв вільних), find(author) (всі книги автора).\n3. Додай 4 книги, візьми дві, виведи freeBooks() та find(...).\n4. Спробуй з'ясувати ззовні lib.books; запиши, що вийшло.",
+          "starter": "// Твій код тут",
+          "example": "class A {\n  #l = [];\n  add(t) { this.#l.push({ t, ok: true }); }\n  names() { return this.#l.map(x => x.t); }\n}\nconst a = new A();\na.add('x');\nconsole.log(a.names());"
+        },
+        {
+          "id": "6-15-3",
+          "level": "Складніша",
+          "description": "Магазин з наслідуванням.\n1. class Product: constructor(title, price), метод finalPrice() повертає price, метод info() повертає `${title}: ${finalPrice()} грн`.\n2. class SaleProduct extends Product: constructor(title, price, discount) — знижка у відсотках, finalPrice() враховує її.\n3. class Shop: приватний #products = []; add(product), cheapest() (повертає найдешевший за finalPrice), totalCost() (сума finalPrice), report() (повертає масив рядків info(), відсортований за finalPrice від меншої).\n4. Створи 2 звичайні й 2 зі знижкою, виведи report(), cheapest().info(), totalCost().\n5. Передбач у коментарі до запуску найдешевший товар і totalCost().",
+          "starter": "// Твій код тут",
+          "example": "class A { constructor(p) { this.p = p; } fp() { return this.p; } }\nclass B extends A { constructor(p, d) { super(p); this.d = d; } fp() { return this.p * (1 - this.d / 100); } }\nconsole.log(new A(100).fp(), new B(100, 20).fp());   // 100 80"
+        }
+      ]
+    }
+  ]
+}

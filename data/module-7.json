@@ -1,0 +1,440 @@
+{
+  "module": 7,
+  "title": "Модуль 7: DOM і події",
+  "topics": [
+    {
+      "id": "7-1",
+      "title": "Пошук елементів",
+      "intro": "**Суть.** Щоб працювати зі сторінкою з JS, елемент треба спершу знайти. `document.querySelector('css-селектор')` повертає **перший** збіг (або `null`). `document.querySelectorAll('...')` повертає **всі** збіги (колекцію, яку можна перебрати через `for...of`). `document.getElementById('id')` шукає за id (без `#`).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst title = document.querySelector('h1');          // за тегом\nconst btn = document.querySelector('#send');         // за id\nconst first = document.querySelector('.card');       // перший .card\nconst all = document.querySelectorAll('.card');     // усі .card\nconsole.log(all.length);\nfor (const card of all) {\n  console.log(card);\n}\n```",
+      "tasks": [
+        {
+          "id": "7-1-1",
+          "level": "Легке",
+          "description": "На сторінці є список фруктів і абзац.\n1. Знайди через querySelector елемент з id note і виведи його.\n2. Знайди через querySelector перший елемент з класом item і виведи.\n3. Знайди через getElementById список list і виведи.\n4. Знайди через querySelector елемент, якого нема (наприклад, #nope), і виведи результат.",
+          "starter": "// Твій код тут",
+          "example": "const el = document.querySelector('.card');\nconsole.log(el);   // перший .card або null",
+          "html": "<ul id=\"list\"><li class=\"item\">Яблуко</li><li class=\"item\">Груша</li><li class=\"item special\">Слива</li></ul><p id=\"note\">Текст</p>"
+        },
+        {
+          "id": "7-1-2",
+          "level": "Середнє",
+          "description": "1. Знайди через querySelectorAll усі елементи з класом item. Виведи кількість.\n2. У for...of виведи textContent кожного.\n3. Знайди елемент із класом special (querySelector('.special')) і виведи його textContent.\n4. Знайди всі li всередині #list одним селектором ('#list li') і виведи кількість.\n5. Знайди li, який одночасно має класи item і special (селектор '.item.special').\n6. Передбач у коментарі до запуску всі результати.",
+          "starter": "// Твій код тут",
+          "example": "const all = document.querySelectorAll('.card');\nfor (const c of all) {\n  console.log(c.textContent);\n}",
+          "html": "<ul id=\"list\"><li class=\"item\">Яблуко</li><li class=\"item\">Груша</li><li class=\"item special\">Слива</li></ul><p id=\"note\">Текст</p>"
+        },
+        {
+          "id": "7-1-3",
+          "level": "Складніше",
+          "description": "Пошук усередині елемента.\n1. Знайди #list і запиши в const list.\n2. Через list.querySelector('.special') знайди елемент всередині list (не на всій сторінці) і виведи.\n3. Через list.querySelectorAll('li') виведи довжину.\n4. Через document.querySelector('#note') порівняй: чи list.querySelector('#note') дасть null? Виведи і поясни в коментарі.\n5. Створи функцію getTexts(selector), що повертає масив textContent усіх елементів за селектором (використай for...of і push). Виведи getTexts('.item').",
+          "starter": "// Твій код тут",
+          "example": "const box = document.querySelector('.box');\nconsole.log(box.querySelector('.in'));   // шукає лише всередині box",
+          "html": "<ul id=\"list\"><li class=\"item\">Яблуко</li><li class=\"item\">Груша</li><li class=\"item special\">Слива</li></ul><p id=\"note\">Текст</p>"
+        }
+      ]
+    },
+    {
+      "id": "7-2",
+      "title": "Готовність DOM",
+      "intro": "**Суть.** Якщо скрипт виконується **до** того, як браузер побудував сторінку, елементи ще не існують і `querySelector` поверне `null`. Рішення: поставити `<script>` у кінець `body` або чекати подію `DOMContentLoaded`: `document.addEventListener('DOMContentLoaded', () => { ... })`. Тут твій код запускається в кінці body, але подію ти все одно можеш слухати.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('DOM готовий');\n  console.log(document.querySelector('h1'));\n});\nconsole.log(document.readyState);   // 'loading' поки сторінка будується\n```",
+      "tasks": [
+        {
+          "id": "7-2-1",
+          "level": "Легке",
+          "description": "1. Виведи document.readyState.\n2. Додай слухача DOMContentLoaded, який виводить \"DOM готовий\".\n3. Виведи після слухача \"Кінець скрипта\".\n4. Передбач у коментарі порядок рядків у консолі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "document.addEventListener('DOMContentLoaded', () => {\n  console.log('ready');\n});\nconsole.log('end of script');",
+          "html": "<h2 id=\"title\">Заголовок</h2><p class=\"text\">Перший абзац</p><p class=\"text\">Другий абзац</p><div id=\"box\" class=\"card\">Коробка</div>"
+        },
+        {
+          "id": "7-2-2",
+          "level": "Середнє",
+          "description": "1. Усередині DOMContentLoaded знайди #title і виведи його textContent.\n2. Там же знайди всі .text і виведи їх кількість.\n3. Поза слухачем (прямо в скрипті) теж знайди #title і виведи.\n4. Поясни коментарем, чому в цій сторінці працюють обидва варіанти (скрипт стоїть у кінці body).",
+          "starter": "// Твій код тут",
+          "example": "document.addEventListener('DOMContentLoaded', () => {\n  console.log(document.querySelector('p').textContent);\n});",
+          "html": "<h2 id=\"title\">Заголовок</h2><p class=\"text\">Перший абзац</p><p class=\"text\">Другий абзац</p><div id=\"box\" class=\"card\">Коробка</div>"
+        },
+        {
+          "id": "7-2-3",
+          "level": "Складніше",
+          "description": "Подія load.\n1. Слухай DOMContentLoaded і window 'load'. У кожному виведи свій текст.\n2. Виведи readyState у кожному з трьох місць: на початку скрипта, у DOMContentLoaded, у load.\n3. Запиши в коментарі до запуску передбачення readyState у кожному місці.\n4. Запусти. Різниця між DOMContentLoaded і load: запиши своїми словами (якщо не впевнений, напиши \"не знаю\").",
+          "starter": "// Твій код тут",
+          "example": "console.log(document.readyState);\ndocument.addEventListener('DOMContentLoaded', () => console.log('dom', document.readyState));\nwindow.addEventListener('load', () => console.log('load', document.readyState));",
+          "html": "<h2 id=\"title\">Заголовок</h2><p class=\"text\">Перший абзац</p><p class=\"text\">Другий абзац</p><div id=\"box\" class=\"card\">Коробка</div>"
+        }
+      ]
+    },
+    {
+      "id": "7-3",
+      "title": "Властивості та атрибути",
+      "intro": "**Суть.** **Атрибут** — те, що написано в HTML (`<input value=\"Влад\">`). **Властивість** — поле JS-об'єкта елемента (`input.value`). Часто вони збігаються, але не завжди: коли користувач ввів текст, `input.value` змінилося, а атрибут `value` лишився початковим. Булеві речі (`checked`, `disabled`) зручніше читати як властивості: `checkbox.checked` це true/false.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst input = document.querySelector('input');\nconsole.log(input.value);                 // поточне значення\nconsole.log(input.getAttribute('value')); // початкове з HTML\nconst box = document.querySelector('[type=checkbox]');\nconsole.log(box.checked);                 // true або false\n```",
+      "tasks": [
+        {
+          "id": "7-3-1",
+          "level": "Легке",
+          "description": "1. Знайди #name і виведи його value.\n2. Знайди #agree і виведи checked.\n3. Знайди #btn і виведи disabled.\n4. Знайди #link і виведи href та target.",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\nconsole.log(i.value, i.type);",
+          "html": "<input id=\"name\" type=\"text\" value=\"Влад\"><input id=\"agree\" type=\"checkbox\"><a id=\"link\" href=\"https://example.com\" target=\"_blank\">Посилання</a><img id=\"pic\" src=\"\" alt=\"Фото\"><button id=\"btn\" disabled>Кнопка</button>"
+        },
+        {
+          "id": "7-3-2",
+          "level": "Середнє",
+          "description": "1. Знайди #name. Зміни його value на \"Максим\" через властивість.\n2. Знайди #agree і постав checked = true.\n3. Знайди #btn і зніми disabled (disabled = false).\n4. Зміни href у #link на \"https://google.com\" і виведи його.\n5. Виведи 'type' in name та name.type.",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\ni.value = 'Нове значення';\nconsole.log(i.value);",
+          "html": "<input id=\"name\" type=\"text\" value=\"Влад\"><input id=\"agree\" type=\"checkbox\"><a id=\"link\" href=\"https://example.com\" target=\"_blank\">Посилання</a><img id=\"pic\" src=\"\" alt=\"Фото\"><button id=\"btn\" disabled>Кнопка</button>"
+        },
+        {
+          "id": "7-3-3",
+          "level": "Складніше",
+          "description": "Властивість проти атрибута.\n1. Знайди #name.\n2. Виведи name.value та name.getAttribute('value').\n3. Зміни name.value = \"Інше\".\n4. Знову виведи обидва. Запиши в коментарі до запуску, що змінилося, а що ні.\n5. Запусти код. Потім у полі на сторінці допиши текст руками, додай у код ще один console.log з обома значеннями і запусти знову. Запиши висновок: яке з двох значень змінюється, коли друкує користувач.",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\nconsole.log(i.value, i.getAttribute('value'));\ni.value = 'нове';\nconsole.log(i.value, i.getAttribute('value'));",
+          "html": "<input id=\"name\" type=\"text\" value=\"Влад\"><input id=\"agree\" type=\"checkbox\"><a id=\"link\" href=\"https://example.com\" target=\"_blank\">Посилання</a><img id=\"pic\" src=\"\" alt=\"Фото\"><button id=\"btn\" disabled>Кнопка</button>"
+        }
+      ]
+    },
+    {
+      "id": "7-4",
+      "title": "textContent, classList, style",
+      "intro": "**Суть.** `el.textContent = 'текст'` читає або замінює текст. `el.classList` керує класами: `add('a')`, `remove('a')`, `toggle('a')` (є — прибрати, нема — додати), `contains('a')` (true/false). `el.style.color = 'red'` задає inline-стиль (властивості у camelCase: `backgroundColor`).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst p = document.querySelector('p');\np.textContent = 'Новий текст';\np.classList.add('active');\np.classList.toggle('big');\nconsole.log(p.classList.contains('active'));   // true\np.style.color = 'tomato';\np.style.backgroundColor = '#eee';\n```",
+      "tasks": [
+        {
+          "id": "7-4-1",
+          "level": "Легке",
+          "description": "1. Заміни textContent у #title на \"Новий заголовок\".\n2. Додай #text клас \"big\" через classList.add.\n3. Виведи classList.contains('big') для #text.\n4. Зміни колір #title на червоний через style.color.",
+          "starter": "// Твій код тут",
+          "example": "const p = document.querySelector('p');\np.textContent = 'Готово';\np.style.color = 'green';",
+          "html": "<h2 id=\"title\">Привіт</h2><p id=\"text\" class=\"note\">Звичайний текст</p><button id=\"btn\" class=\"btn\">Кнопка</button><div id=\"box\" style=\"width:60px;height:60px;background:#cbd5e1\"></div>"
+        },
+        {
+          "id": "7-4-2",
+          "level": "Середнє",
+          "description": "1. Прибери в #text клас \"note\" (classList.remove).\n2. Додай через toggle клас \"hidden\" до #text і виведи contains('hidden'). Виклич toggle ще раз і виведи знову.\n3. Задай #box: width \"120px\", height \"120px\", backgroundColor \"tomato\", borderRadius \"50%\".\n4. Виведи #box.style.width.\n5. Передбач у коментарі до запуску обидва виводи п.2.",
+          "starter": "// Твій код тут",
+          "example": "const b = document.querySelector('div');\nb.style.width = '200px';\nb.style.backgroundColor = 'gold';\nconsole.log(b.style.width);   // 200px",
+          "html": "<h2 id=\"title\">Привіт</h2><p id=\"text\" class=\"note\">Звичайний текст</p><button id=\"btn\" class=\"btn\">Кнопка</button><div id=\"box\" style=\"width:60px;height:60px;background:#cbd5e1\"></div>"
+        },
+        {
+          "id": "7-4-3",
+          "level": "Складніше",
+          "description": "Кнопка-перемикач (поки без подій: просто виклики).\n1. Оголоси функцію setActive(el, isActive), що додає або прибирає клас \"active\" залежно від isActive (if/else з classList).\n2. Виклич setActive(btn, true), виведи classList.contains('active'); виклич setActive(btn, false) і виведи знову.\n3. Оголоси функцію paint(el, color, size), що ставить el.style.backgroundColor = color, el.style.width = size + \"px\", el.style.height = size + \"px\".\n4. Виклич paint(box, \"gold\", 90).\n5. Виведи box.style.cssText і запиши в коментарі, що там є.",
+          "starter": "// Твій код тут",
+          "example": "function mark(el, on) {\n  if (on) el.classList.add('on');\n  else el.classList.remove('on');\n}\nconst b = document.querySelector('button');\nmark(b, true);\nconsole.log(b.className);",
+          "html": "<h2 id=\"title\">Привіт</h2><p id=\"text\" class=\"note\">Звичайний текст</p><button id=\"btn\" class=\"btn\">Кнопка</button><div id=\"box\" style=\"width:60px;height:60px;background:#cbd5e1\"></div>"
+        }
+      ]
+    },
+    {
+      "id": "7-5",
+      "title": "Доступ до атрибутів",
+      "intro": "**Суть.** Методи: `el.getAttribute('name')` (значення або `null`), `el.setAttribute('name', 'value')`, `el.removeAttribute('name')`, `el.hasAttribute('name')`. Для `data-*` атрибутів є зручний `el.dataset`: `<a data-user-id=\"5\">` → `a.dataset.userId` (camelCase, значення завжди рядок).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst a = document.querySelector('a');\nconsole.log(a.getAttribute('href'));\na.setAttribute('target', '_self');\nconsole.log(a.hasAttribute('rel'));    // false\na.removeAttribute('target');\nconsole.log(a.dataset.userId);          // з data-user-id\n```",
+      "tasks": [
+        {
+          "id": "7-5-1",
+          "level": "Легке",
+          "description": "1. Виведи getAttribute('href') та getAttribute('target') для #link.\n2. Виведи getAttribute('alt') та getAttribute('width') для #pic.\n3. Виведи getAttribute('class') для #link (чого очікуєш?).\n4. Виведи hasAttribute('required') для #inp.",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\nconsole.log(i.getAttribute('placeholder'), i.hasAttribute('disabled'));",
+          "html": "<a id=\"link\" href=\"https://example.com\" target=\"_blank\" data-id=\"42\" data-role=\"admin\">Лінк</a><img id=\"pic\" src=\"\" alt=\"Картинка\" width=\"80\"><input id=\"inp\" type=\"text\" placeholder=\"Введи ім'я\" required>"
+        },
+        {
+          "id": "7-5-2",
+          "level": "Середнє",
+          "description": "1. Через setAttribute зміни href у #link на \"https://google.com\".\n2. Через setAttribute додай #link атрибут rel зі значенням \"noopener\".\n3. Видали target у #link через removeAttribute.\n4. Задай #pic src \"https://picsum.photos/80\" і alt \"Фото\".\n5. Виведи dataset.id і dataset.role для #link.\n6. Зміни dataset.role на \"user\" і перевір getAttribute('data-role').",
+          "starter": "// Твій код тут",
+          "example": "const a = document.querySelector('a');\na.setAttribute('title', 'Підказка');\nconsole.log(a.dataset.id, a.getAttribute('title'));",
+          "html": "<a id=\"link\" href=\"https://example.com\" target=\"_blank\" data-id=\"42\" data-role=\"admin\">Лінк</a><img id=\"pic\" src=\"\" alt=\"Картинка\" width=\"80\"><input id=\"inp\" type=\"text\" placeholder=\"Введи ім'я\" required>"
+        },
+        {
+          "id": "7-5-3",
+          "level": "Складніше",
+          "description": "Універсальні функції.\n1. Оголоси функцію toggleAttr(el, name) : якщо атрибут є, видалити і повернути false; якщо нема, поставити порожнє значення (\"\") і повернути true.\n2. Виклич toggleAttr(inp, 'disabled') двічі, виведи результати і hasAttribute після кожного.\n3. Оголоси функцію getData(el) , що повертає масив рядків \"ключ=значення\" для всіх dataset (через Object.keys(el.dataset)). Виведи getData(link).\n4. Передбач у коментарі до запуску обидва результати.",
+          "starter": "// Твій код тут",
+          "example": "function toggleAttr(el, name) {\n  if (el.hasAttribute(name)) { el.removeAttribute(name); return false; }\n  el.setAttribute(name, '');\n  return true;\n}\nconst i = document.querySelector('input');\nconsole.log(toggleAttr(i, 'readonly'), toggleAttr(i, 'readonly'));",
+          "html": "<a id=\"link\" href=\"https://example.com\" target=\"_blank\" data-id=\"42\" data-role=\"admin\">Лінк</a><img id=\"pic\" src=\"\" alt=\"Картинка\" width=\"80\"><input id=\"inp\" type=\"text\" placeholder=\"Введи ім'я\" required>"
+        }
+      ]
+    },
+    {
+      "id": "7-6",
+      "title": "Властивість innerHTML",
+      "intro": "**Суть.** `el.innerHTML` читає або замінює весь HTML всередині елемента рядком: `list.innerHTML = '<li>Новий</li>'`. Старий вміст зникає. `textContent` вставляє як звичайний текст, а `innerHTML` розбирає теги. Не вставляй у innerHTML текст, який ввів користувач (небезпечно), для цього є textContent.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst box = document.querySelector('#box');\nbox.innerHTML = '<h2>Заголовок</h2><p>Абзац</p>';\nconsole.log(box.innerHTML);\nbox.textContent = '<b>не жирний</b>';   // покаже теги як текст\nbox.innerHTML = '';                        // очистити\n```",
+      "tasks": [
+        {
+          "id": "7-6-1",
+          "level": "Легке",
+          "description": "1. Виведи innerHTML елемента #card.\n2. Заміни innerHTML у #list на \"<li>Яблуко</li><li>Груша</li>\".\n3. Виведи кількість li у #list (querySelectorAll).\n4. Очисти #card (innerHTML = \"\").",
+          "starter": "// Твій код тут",
+          "example": "const l = document.querySelector('ul');\nl.innerHTML = '<li>A</li><li>B</li>';\nconsole.log(l.children.length);",
+          "html": "<div id=\"card\"><h3>Картка</h3><p>Опис</p></div><ul id=\"list\"><li>Один</li></ul>"
+        },
+        {
+          "id": "7-6-2",
+          "level": "Середнє",
+          "description": "Список з масиву.\n1. Оголоси const масив fruits: \"Яблуко\", \"Груша\", \"Слива\", \"Вишня\".\n2. Збери рядок html у циклі: на кожному кроці додавай `<li>${fruit}</li>` до let html = \"\".\n3. Запиши html у #list.innerHTML.\n4. Виведи list.children.length.\n5. Потім додай до списку ще один пункт через list.innerHTML += \"<li>Нове</li>\" і виведи довжину.",
+          "starter": "// Твій код тут",
+          "example": "const arr = ['a', 'b'];\nlet html = '';\nfor (const x of arr) {\n  html += `<li>${x}</li>`;\n}\ndocument.querySelector('ul').innerHTML = html;",
+          "html": "<div id=\"card\"><h3>Картка</h3><p>Опис</p></div><ul id=\"list\"><li>Один</li></ul>"
+        },
+        {
+          "id": "7-6-3",
+          "level": "Складніше",
+          "description": "innerHTML проти textContent.\n1. У #card запиши через innerHTML рядок \"<b>Жирний</b> і <i>курсив</i>\".\n2. Виведи card.textContent та card.innerHTML.\n3. У #list запиши через textContent той самий рядок і виведи innerHTML списку (що вийшло з тегами?).\n4. Оголоси масив users: { name: \"Ася\", age: 20 }, { name: \"Борис\", age: 30 }. Збери картки: для кожного `<div class=\"u\"><h4>${name}</h4><p>${age} років</p></div>` і вставити в #card.\n5. Запиши в коментарі до запуску передбачення п.2 та п.3.",
+          "starter": "// Твій код тут",
+          "example": "const d = document.querySelector('div');\nd.innerHTML = '<b>x</b>';\nconsole.log(d.textContent, d.innerHTML);   // x  <b>x</b>",
+          "html": "<div id=\"card\"><h3>Картка</h3><p>Опис</p></div><ul id=\"list\"><li>Один</li></ul>"
+        }
+      ]
+    },
+    {
+      "id": "7-7",
+      "title": "Створення елементів",
+      "intro": "**Суть.** Створити: `document.createElement('li')`. Наповнити: `li.textContent = '...'`, `li.classList.add('x')`. Вставити: `parent.append(el)` (в кінець), `parent.prepend(el)` (на початок), `el.after(x)` / `el.before(x)`. Поки елемент не вставлений у сторінку, його не видно.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst list = document.querySelector('ul');\nconst li = document.createElement('li');\nli.textContent = 'Новий пункт';\nli.classList.add('item');\nlist.append(li);           // в кінець\nlist.prepend('текст');     // на початок можна і рядок\n```",
+      "tasks": [
+        {
+          "id": "7-7-1",
+          "level": "Легке",
+          "description": "1. Створи через createElement елемент li з текстом \"Другий\".\n2. Вставити його в #list через append.\n3. Створи li з текстом \"Нульовий\" і вставити на початок через prepend.\n4. Виведи кількість children у #list.",
+          "starter": "// Твій код тут",
+          "example": "const p = document.createElement('p');\np.textContent = 'Новий абзац';\ndocument.body.append(p);",
+          "html": "<ul id=\"list\"><li>Перший</li></ul><div id=\"out\"></div>"
+        },
+        {
+          "id": "7-7-2",
+          "level": "Середнє",
+          "description": "Список з масиву.\n1. Оголоси масив tasks: \"Прати\", \"Готувати\", \"Вчити JS\".\n2. У for...of для кожного створи li, задай textContent, додай клас \"task\" і append у #list.\n3. Створи button з текстом \"Кнопка\", додай атрибут type = \"button\" через setAttribute і вставити в #out.\n4. Виведи list.children.length і #out.innerHTML.",
+          "starter": "// Твій код тут",
+          "example": "const names = ['a', 'b'];\nconst ul = document.querySelector('ul');\nfor (const n of names) {\n  const li = document.createElement('li');\n  li.textContent = n;\n  ul.append(li);\n}",
+          "html": "<ul id=\"list\"><li>Перший</li></ul><div id=\"out\"></div>"
+        },
+        {
+          "id": "7-7-3",
+          "level": "Складніше",
+          "description": "Картки з масиву об'єктів.\n1. Оголоси const масив products: { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Сік\", price: 60 }.\n2. Для кожного створи div.card, всередині h3 (title), p (\"80 грн\") і button (\"Купити\") і вставити card у #out. Усе через createElement (не innerHTML).\n3. Додай у кожну картку атрибут data-title = назві товару.\n4. Після циклу виведи out.children.length та out.firstElementChild.dataset.title.\n5. Оголоси функцію createCard(product), що повертає готовий елемент (використай її в циклі).",
+          "starter": "// Твій код тут",
+          "example": "function createRow(text) {\n  const li = document.createElement('li');\n  li.textContent = text;\n  return li;\n}\ndocument.querySelector('ul').append(createRow('x'));",
+          "html": "<ul id=\"list\"><li>Перший</li></ul><div id=\"out\"></div>"
+        }
+      ]
+    },
+    {
+      "id": "7-8",
+      "title": "Видалення елементів",
+      "intro": "**Суть.** `el.remove()` видаляє елемент зі сторінки. Щоб прибрати всі дочірні, можна `parent.innerHTML = ''`. Після `remove()` змінна з елементом лишається, але його вже нема на сторінці.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst item = document.querySelector('.old');\nitem.remove();\nfor (const el of document.querySelectorAll('.temp')) {\n  el.remove();\n}\n```",
+      "tasks": [
+        {
+          "id": "7-8-1",
+          "level": "Легке",
+          "description": "1. Видали #msg зі сторінки.\n2. Знайди перший li у #list і видали його.\n3. Виведи кількість li, що залишились.",
+          "starter": "// Твій код тут",
+          "example": "const el = document.querySelector('p');\nel.remove();",
+          "html": "<ul id=\"list\"><li>Один</li><li class=\"old\">Два</li><li>Три</li><li class=\"old\">Чотири</li></ul><div id=\"msg\">Повідомлення <button id=\"close\">x</button></div>"
+        },
+        {
+          "id": "7-8-2",
+          "level": "Середнє",
+          "description": "1. Знайди через querySelectorAll усі .old.\n2. У for...of видали кожен.\n3. Виведи, скільки li залишилось.\n4. Видали останній li (list.lastElementChild.remove()).\n5. Поясни коментарем, чому після remove() змінна old все ще існує.",
+          "starter": "// Твій код тут",
+          "example": "const all = document.querySelectorAll('.x');\nfor (const el of all) el.remove();\nconsole.log(document.querySelectorAll('.x').length);   // 0",
+          "html": "<ul id=\"list\"><li>Один</li><li class=\"old\">Два</li><li>Три</li><li class=\"old\">Чотири</li></ul><div id=\"msg\">Повідомлення <button id=\"close\">x</button></div>"
+        },
+        {
+          "id": "7-8-3",
+          "level": "Складніше",
+          "description": "Очистити і наповнити заново.\n1. Оголоси функцію clearList(list), що видаляє всі li (while (list.firstElementChild) { list.firstElementChild.remove(); }).\n2. Оголоси функцію fill(list, arr), що створює li для кожного елемента масиву.\n3. Виклич clearList(list), виведи children.length.\n4. Виклич fill(list, [\"A\", \"B\", \"C\"]), виведи children.length.\n5. Виклич fill ще раз з [\"X\"] і виведи тексти всіх li. Передбач у коментарі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function clear(el) {\n  while (el.firstElementChild) {\n    el.firstElementChild.remove();\n  }\n}\nconst u = document.querySelector('ul');\nclear(u);\nconsole.log(u.children.length);   // 0",
+          "html": "<ul id=\"list\"><li>Один</li><li class=\"old\">Два</li><li>Три</li><li class=\"old\">Чотири</li></ul><div id=\"msg\">Повідомлення <button id=\"close\">x</button></div>"
+        }
+      ]
+    },
+    {
+      "id": "7-9",
+      "title": "Події та метод addEventListener",
+      "intro": "**Суть.** Подія — те, що сталося: клік, ввід, натискання клавіші. `el.addEventListener('click', function)` каже: «коли на цьому елементі станеться click, виклич функцію». Функцію передаємо **без дужок** (це колбек). Одному елементу можна повісити багато слухачів.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst btn = document.querySelector('button');\nbtn.addEventListener('click', () => {\n  console.log('Клік!');\n});\n// з винесеною функцією:\nfunction onClick() { console.log('ще клік'); }\nbtn.addEventListener('click', onClick);\n```",
+      "tasks": [
+        {
+          "id": "7-9-1",
+          "level": "Легке",
+          "description": "1. Повісь на #btn слухача click, який виводить \"Клік!\".\n2. Запусти код, потім клікни кнопку у вікні \"Сторінка\" кілька разів.\n3. Повісь на #box слухач mouseenter, що виводить \"Наведено\".",
+          "starter": "// Твій код тут",
+          "example": "const b = document.querySelector('button');\nb.addEventListener('click', () => console.log('hi'));",
+          "html": "<button id=\"btn\">Натисни</button><p id=\"out\">0</p><div id=\"box\" style=\"width:80px;height:80px;background:#cbd5e1;margin-top:8px\"></div>"
+        },
+        {
+          "id": "7-9-2",
+          "level": "Середнє",
+          "description": "Лічильник кліків.\n1. Оголоси let count = 0.\n2. На #btn повісь слухач click: збільшуй count і записуй його в #out через textContent.\n3. Клікни кнопку кілька разів у вікні сторінки.\n4. Повісь на #box слухач click: якщо box.style.backgroundColor дорівнює \"tomato\", постав \"#cbd5e1\", інакше постав \"tomato\".",
+          "starter": "// Твій код тут",
+          "example": "let n = 0;\nconst b = document.querySelector('button');\nb.addEventListener('click', () => {\n  n++;\n  console.log(n);\n});",
+          "html": "<button id=\"btn\">Натисни</button><p id=\"out\">0</p><div id=\"box\" style=\"width:80px;height:80px;background:#cbd5e1;margin-top:8px\"></div>"
+        },
+        {
+          "id": "7-9-3",
+          "level": "Складніше",
+          "description": "Кілька слухачів і видалення.\n1. Оголоси функцію onClick(), що виводить \"Клік!\".\n2. Повісь її на #btn через addEventListener.\n3. Повісь на #btn ще одну анонімну стрілку, що виводить \"Другий слухач\".\n4. Додай ще слухач на #out click, який видаляє onClick з кнопки через btn.removeEventListener('click', onClick).\n5. Клікни кнопку, потім клікни на цифру в #out, потім кнопку ще раз. Запиши в коментарі до запуску, що буде в консолі.\n6. Поясни, чому removeEventListener не спрацює зі стрілкою, написаною прямо в addEventListener.",
+          "starter": "// Твій код тут",
+          "example": "function a() { console.log('A'); }\nconst b = document.querySelector('button');\nb.addEventListener('click', a);\nb.removeEventListener('click', a);",
+          "html": "<button id=\"btn\">Натисни</button><p id=\"out\">0</p><div id=\"box\" style=\"width:80px;height:80px;background:#cbd5e1;margin-top:8px\"></div>"
+        }
+      ]
+    },
+    {
+      "id": "7-10",
+      "title": "Подія submit",
+      "intro": "**Суть.** Форма відправляється подією `submit`. Браузер за замовчуванням перезавантажує сторінку, тому в обробнику першим рядком пишемо `event.preventDefault()`. Значення полів: `form.elements.name.value` (за атрибутом `name`) або `form.querySelector('#id').value`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst form = document.querySelector('form');\nform.addEventListener('submit', (event) => {\n  event.preventDefault();\n  const email = form.elements.email.value;\n  console.log(email);\n  form.reset();\n});\n```",
+      "tasks": [
+        {
+          "id": "7-10-1",
+          "level": "Легке",
+          "description": "1. Повісь на #form слухач submit.\n2. Першим рядком виклич event.preventDefault().\n3. Виведи \"Надіслано\".\n4. Введи щось у форму на сторінці й натисни кнопку. Переконайся, що сторінка не перезавантажилась.",
+          "starter": "// Твій код тут",
+          "example": "const f = document.querySelector('form');\nf.addEventListener('submit', (e) => {\n  e.preventDefault();\n  console.log('ok');\n});",
+          "html": "<form id=\"form\"><input id=\"name\" name=\"name\" type=\"text\" placeholder=\"Ім'я\"><input id=\"age\" name=\"age\" type=\"number\" placeholder=\"Вік\"><button type=\"submit\">Надіслати</button></form><ul id=\"log\"></ul>"
+        },
+        {
+          "id": "7-10-2",
+          "level": "Середнє",
+          "description": "Зчитування полів.\n1. У submit виведи значення name і age (form.elements.name.value, form.elements.age.value).\n2. Склади об'єкт user: { name, age } (age перетвори на число через Number).\n3. Виведи user.\n4. Після виведення очисти форму через form.reset().",
+          "starter": "// Твій код тут",
+          "example": "const f = document.querySelector('form');\nf.addEventListener('submit', (e) => {\n  e.preventDefault();\n  console.log(f.elements.city.value);\n  f.reset();\n});",
+          "html": "<form id=\"form\"><input id=\"name\" name=\"name\" type=\"text\" placeholder=\"Ім'я\"><input id=\"age\" name=\"age\" type=\"number\" placeholder=\"Вік\"><button type=\"submit\">Надіслати</button></form><ul id=\"log\"></ul>"
+        },
+        {
+          "id": "7-10-3",
+          "level": "Складніше",
+          "description": "Валідація і список.\n1. У submit: прочитай name (обріж пробіли через trim()) та age.\n2. Якщо name порожнє або age менше 1, виведи в консоль \"Помилка\" і зроби return (нічого не додавай).\n3. Інакше створи li з текстом \"Ася, 20\" (із значень) і додай у #log.\n4. Очисти форму.\n5. Перевір: надішли порожню форму; потім дані; потім ще раз. Запиши в коментарі до запуску, що очікуєш.",
+          "starter": "// Твій код тут",
+          "example": "const f = document.querySelector('form');\nconst log = document.querySelector('ul');\nf.addEventListener('submit', (e) => {\n  e.preventDefault();\n  const t = f.elements.t.value.trim();\n  if (!t) return;\n  const li = document.createElement('li');\n  li.textContent = t;\n  log.append(li);\n  f.reset();\n});",
+          "html": "<form id=\"form\"><input id=\"name\" name=\"name\" type=\"text\" placeholder=\"Ім'я\"><input id=\"age\" name=\"age\" type=\"number\" placeholder=\"Вік\"><button type=\"submit\">Надіслати</button></form><ul id=\"log\"></ul>"
+        }
+      ]
+    },
+    {
+      "id": "7-11",
+      "title": "Події input і change",
+      "intro": "**Суть.** `input` спрацьовує при **кожній зміні** значення (на кожну літеру). `change` спрацьовує, коли користувач **завершив** зміну (для тексту: після виходу з поля; для select і checkbox: одразу при виборі). Значення: `event.target.value`, для галочки `event.target.checked`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst input = document.querySelector('input');\ninput.addEventListener('input', (event) => {\n  console.log(event.target.value);   // кожна літера\n});\ninput.addEventListener('change', (event) => {\n  console.log('змінено:', event.target.value);   // після blur\n});\n```",
+      "tasks": [
+        {
+          "id": "7-11-1",
+          "level": "Легке",
+          "description": "1. На #text повісь слухач input, що виводить поточне значення.\n2. Введи кілька літер у полі.\n3. На #sel повісь слухач change, що виводить вибране значення.\n4. Змінюй вибір у списку.",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\ni.addEventListener('input', (e) => console.log(e.target.value));",
+          "html": "<input id=\"text\" type=\"text\" placeholder=\"Пиши тут\"><select id=\"sel\"><option value=\"uk\">Українська</option><option value=\"en\">English</option></select><label><input id=\"chk\" type=\"checkbox\"> Згоден</label><p id=\"out\">—</p>"
+        },
+        {
+          "id": "7-11-2",
+          "level": "Середнє",
+          "description": "Жива підказка.\n1. На #text повісь input: записуй у #out рядок \"Довжина: N\" (довжина value).\n2. На #chk повісь change: виводь в #out \"Згоден\" або \"Не згоден\" залежно від checked.\n3. На #sel повісь change: записуй в #out вибраний value.\n4. Перевір усе у вікні сторінки.",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\nconst o = document.querySelector('p');\ni.addEventListener('input', (e) => {\n  o.textContent = e.target.value.toUpperCase();\n});",
+          "html": "<input id=\"text\" type=\"text\" placeholder=\"Пиши тут\"><select id=\"sel\"><option value=\"uk\">Українська</option><option value=\"en\">English</option></select><label><input id=\"chk\" type=\"checkbox\"> Згоден</label><p id=\"out\">—</p>"
+        },
+        {
+          "id": "7-11-3",
+          "level": "Складніше",
+          "description": "input проти change.\n1. На #text повісь і input, і change. Кожен виводить свій текст та значення.\n2. Запиши в коментарі до запуску передбачення: скільки разів що спрацює, якщо ввести \"abc\" і клікнути поза полем.\n3. Перевір.\n4. Додай обмеження: у input-слухачі, якщо довжина більша за 10, обрізати value (e.target.value = e.target.value.slice(0, 10)) і вивести \"Занадто довго\".",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\ni.addEventListener('input', (e) => {\n  if (e.target.value.length > 5) {\n    e.target.value = e.target.value.slice(0, 5);\n  }\n});",
+          "html": "<input id=\"text\" type=\"text\" placeholder=\"Пиши тут\"><select id=\"sel\"><option value=\"uk\">Українська</option><option value=\"en\">English</option></select><label><input id=\"chk\" type=\"checkbox\"> Згоден</label><p id=\"out\">—</p>"
+        }
+      ]
+    },
+    {
+      "id": "7-12",
+      "title": "Події клавіатури",
+      "intro": "**Суть.** `keydown` — клавішу натиснули, `keyup` — відпустили. У події: `event.key` (символ або назва: `'a'`, `'Enter'`, `'Escape'`, `'ArrowRight'`), `event.code` (фізична клавіша: `'KeyA'`). Слухати можна на полі вводу або на `document`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\ndocument.addEventListener('keydown', (event) => {\n  console.log(event.key, event.code);\n  if (event.key === 'Escape') {\n    console.log('Вихід');\n  }\n});\n```",
+      "tasks": [
+        {
+          "id": "7-12-1",
+          "level": "Легке",
+          "description": "1. На #field повісь keydown, що виводить event.key.\n2. Клікни в поле і тисни різні клавіші: літери, Enter, Backspace, стрілки.\n3. Запиши в коментарі, що виводить пробіл (подивись у консолі).",
+          "starter": "// Твій код тут",
+          "example": "const i = document.querySelector('input');\ni.addEventListener('keydown', (e) => console.log(e.key));",
+          "html": "<input id=\"field\" type=\"text\" placeholder=\"Натискай клавіші\"><p id=\"out\">—</p><div id=\"box\" style=\"width:40px;height:40px;background:tomato;position:relative;left:0\"></div>"
+        },
+        {
+          "id": "7-12-2",
+          "level": "Середнє",
+          "description": "1. На document повісь keydown. Якщо event.key === \"Enter\", виводь \"Enter!\".\n2. Якщо \"Escape\", очищай поле #field (value = \"\").\n3. Записуй у #out останню натиснуту клавішу.\n4. Перевір у вікні (спершу клікни у вікно сторінки, щоб воно було в фокусі).",
+          "starter": "// Твій код тут",
+          "example": "document.addEventListener('keydown', (e) => {\n  if (e.key === 'a') console.log('літера a');\n});",
+          "html": "<input id=\"field\" type=\"text\" placeholder=\"Натискай клавіші\"><p id=\"out\">—</p><div id=\"box\" style=\"width:40px;height:40px;background:tomato;position:relative;left:0\"></div>"
+        },
+        {
+          "id": "7-12-3",
+          "level": "Складніше",
+          "description": "Рух по стрілках.\n1. Оголоси let x = 0.\n2. На document повісь keydown: на ArrowRight збільшуй x на 10, на ArrowLeft зменшуй на 10 (не менше 0).\n3. Після кожної зміни записуй box.style.left = x + \"px\".\n4. Додай #out текст \"x = ...\".\n5. Передбач у коментарі, що буде з x, якщо натиснути вправо 3 рази, вліво 5 разів.\n6. Перевір.",
+          "starter": "// Твій код тут",
+          "example": "let pos = 0;\ndocument.addEventListener('keydown', (e) => {\n  if (e.key === 'ArrowDown') pos += 5;\n  console.log(pos);\n});",
+          "html": "<input id=\"field\" type=\"text\" placeholder=\"Натискай клавіші\"><p id=\"out\">—</p><div id=\"box\" style=\"width:40px;height:40px;background:tomato;position:relative;left:0\"></div>"
+        }
+      ]
+    },
+    {
+      "id": "7-13",
+      "title": "event, element і target",
+      "intro": "**Суть.** Колбек події отримує **об'єкт події** (її прийнято називати `event` або `e`). У ньому: `event.target` — елемент, на який **реально клікнули**; `event.currentTarget` — елемент, на якому **висить слухач**; `event.type` — тип події (`'click'`); `event.preventDefault()` — скасувати стандартну дію. Слухач можна повісити один раз на батька, а `target` покаже, у що влучили.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst card = document.querySelector('.card');\ncard.addEventListener('click', (event) => {\n  console.log(event.type);                 // click\n  console.log(event.target);               // у що клікнули (може бути вкладений елемент)\n  console.log(event.currentTarget);        // card, на ньому слухач\n  console.log(event.target.tagName);       // назва тегу, наприклад BUTTON\n});\n```",
+      "tasks": [
+        {
+          "id": "7-13-1",
+          "level": "Легке",
+          "description": "1. Повісь на #card слухач click із параметром event.\n2. Виведи event.type, event.target.tagName, event.currentTarget.id.\n3. Клікай по різних частинах картки: заголовок, кнопки, порожнє місце.\n4. Запиши в коментарі, чим target відрізняється від currentTarget.",
+          "starter": "// Твій код тут",
+          "example": "const c = document.querySelector('div');\nc.addEventListener('click', (e) => {\n  console.log(e.type, e.target.tagName);\n});",
+          "html": "<div id=\"card\" class=\"card\" style=\"padding:12px;background:#e2e8f0\"><h3 id=\"title\">Картка</h3><button class=\"btn\" data-id=\"1\">Кнопка 1</button><button class=\"btn\" data-id=\"2\">Кнопка 2</button></div>"
+        },
+        {
+          "id": "7-13-2",
+          "level": "Середнє",
+          "description": "Яка кнопка.\n1. Повісь на кожну .btn окремий слухач (через querySelectorAll і for...of) один і той самий колбек onBtn(event).\n2. У onBtn виведи event.target.dataset.id і event.target.textContent.\n3. Зміни у onBtn колір кнопки на \"tomato\" через event.target.style.backgroundColor.\n4. Клікай різні кнопки.",
+          "starter": "// Твій код тут",
+          "example": "function onClick(e) {\n  console.log(e.target.dataset.id);\n}\nfor (const b of document.querySelectorAll('button')) {\n  b.addEventListener('click', onClick);\n}",
+          "html": "<div id=\"card\" class=\"card\" style=\"padding:12px;background:#e2e8f0\"><h3 id=\"title\">Картка</h3><button class=\"btn\" data-id=\"1\">Кнопка 1</button><button class=\"btn\" data-id=\"2\">Кнопка 2</button></div>"
+        },
+        {
+          "id": "7-13-3",
+          "level": "Складніше",
+          "description": "Один слухач на всіх.\n1. Повісь ОДИН слухач click на #card (не на кнопки).\n2. У ньому: якщо event.target.tagName не \"BUTTON\", виведи \"не кнопка\" і return.\n3. Інакше виведи \"Кнопка \" + dataset.id і додай target клас \"clicked\" (потім через toggle).\n4. Виведи також, чи event.target === event.currentTarget.\n5. Передбач у коментарі до запуску результат для кліку по заголовку, по кнопці 2, по порожньому місцю картки.\n6. Перевір.",
+          "starter": "// Твій код тут",
+          "example": "const w = document.querySelector('div');\nw.addEventListener('click', (e) => {\n  if (e.target.tagName !== 'BUTTON') return;\n  console.log(e.target.textContent);\n});",
+          "html": "<div id=\"card\" class=\"card\" style=\"padding:12px;background:#e2e8f0\"><h3 id=\"title\">Картка</h3><button class=\"btn\" data-id=\"1\">Кнопка 1</button><button class=\"btn\" data-id=\"2\">Кнопка 2</button></div>"
+        }
+      ]
+    },
+    {
+      "id": "7-14",
+      "title": "Підсумкові задачі модуля 7",
+      "intro": "**Суть.** Змішано: пошук, створення, видалення, класи, атрибути, події, форми, клавіатура, event.target і попередні модулі.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst list = document.querySelector('ul');\nconst form = document.querySelector('form');\nform.addEventListener('submit', (e) => {\n  e.preventDefault();\n  const li = document.createElement('li');\n  li.textContent = form.elements.t.value;\n  list.append(li);\n  form.reset();\n});\n```",
+      "tasks": [
+        {
+          "id": "7-14-1",
+          "level": "Легка",
+          "description": "Лічильник.\n1. Є #minus, #plus, #reset і #value з числом 0.\n2. Повісь слухачі: plus збільшує значення на 1, minus зменшує, reset обнуляє. Записуй у #value через textContent.\n3. Якщо значення більше 0, колір #value зелений, менше 0 червоний, 0 чорний.",
+          "starter": "// Твій код тут",
+          "example": "const b = document.querySelector('button');\nb.addEventListener('click', () => console.log('hi'));",
+          "html": "<button id=\"minus\">-</button> <span id=\"value\">0</span> <button id=\"plus\">+</button> <button id=\"reset\">Скинути</button>"
+        },
+        {
+          "id": "7-14-2",
+          "level": "Середня",
+          "description": "Список справ.\n1. Є форма #form з полем #task та кнопкою, а також порожній #list.\n2. На submit: preventDefault, обріж текст, якщо порожній, нічого не роби. Інакше створи li з текстом і кнопкою \"x\" всередині, додай в #list, очисти форму.\n3. Один слухач click на #list (делегування через target): якщо клікнули на кнопку \"x\", видали її li. Якщо клікнули на сам li (не кнопку), перемкни клас \"done\".\n4. Виведи в консоль кількість задач після кожної зміни.",
+          "starter": "// Твій код тут",
+          "example": "const ul = document.querySelector('ul');\nul.addEventListener('click', (e) => {\n  if (e.target.tagName === 'LI') e.target.classList.toggle('done');\n});",
+          "html": "<form id=\"form\"><input id=\"task\" type=\"text\" placeholder=\"Нова задача\"> <button>Додати</button></form><ul id=\"list\"></ul>"
+        },
+        {
+          "id": "7-14-3",
+          "level": "Складніша",
+          "description": "Міні-галерея з фільтром.\n1. Є масив products (оголоси сам): { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Сік\", price: 60 }, { title: \"Какао\", price: 110 }.\n2. Функція render(list) очищає #cards і створює картку div.card (h3, p з ціною, button \"У кошик\" з data-title) для кожного товару через createElement.\n3. Поле #search (input): на кожну літеру фільтруй products за назвою (toLowerCase, includes) і викликай render.\n4. Select #sort (change): \"price-asc\", \"price-desc\", \"title\" — сортує копію масиву і викликає render.\n5. Один слухач click на #cards: якщо клікнули на кнопку, додай товар у масив cart і онови текст #count (\"У кошику: N\").\n6. Передбач у коментарі до запуску, що буде в #count після двох кліків.",
+          "starter": "// Твій код тут",
+          "example": "const box = document.querySelector('div');\nconst data = ['a', 'b'];\nfunction draw(arr) {\n  box.innerHTML = '';\n  for (const x of arr) {\n    const p = document.createElement('p');\n    p.textContent = x;\n    box.append(p);\n  }\n}\ndraw(data);",
+          "html": "<input id=\"search\" placeholder=\"Пошук\"> <select id=\"sort\"><option value=\"title\">За назвою</option><option value=\"price-asc\">Дешевші першими</option><option value=\"price-desc\">Дорожчі першими</option></select> <span id=\"count\">У кошику: 0</span><div id=\"cards\"></div>"
+        }
+      ]
+    }
+  ]
+}

@@ -47,6 +47,35 @@ function runCode(code, out) {
   w.postMessage(code);
 }
 
+// DOM-завдання: сторінка + код у sandbox-iframe, console.log летить у нашу консоль
+function runDom(code, html, frame, out) {
+  out.innerHTML = '';
+  const add = (cls, text) => { const d = document.createElement('div'); if (cls) d.className = cls; d.textContent = text; out.appendChild(d); out.scrollTop = out.scrollHeight; };
+  const token = 'jsp' + Math.random().toString(36).slice(2);
+  const bridge = `<script>
+    (function(){
+      var T=${JSON.stringify(token)};
+      function fmt(v){ if(typeof v==='string') return v; if(v instanceof Element) return '<'+v.tagName.toLowerCase()+(v.id?'#'+v.id:'')+(v.className&&typeof v.className==='string'?'.'+v.className.split(' ').join('.'):'')+'>'; if(v===undefined) return 'undefined'; if(typeof v==='function') return String(v); try{ return JSON.stringify(v) }catch(e){ return String(v) } }
+      function send(t,a){ parent.postMessage({T:T,t:t,s:Array.prototype.map.call(a,fmt).join(' ')},'*'); }
+      console.log=function(){send('log',arguments)};
+      console.warn=function(){send('log',arguments)};
+      console.error=function(){send('err',arguments)};
+      window.addEventListener('error',function(e){ send('err',[e.message]); });
+      window.addEventListener('unhandledrejection',function(e){ send('err',[String(e.reason)]); });
+    })();
+  <\/script>`;
+  const page = '<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:system-ui,sans-serif;padding:10px;margin:0}</style></head><body>' + bridge + html + '<script>\n' + code.replace(/<\/script/gi, '<\\/script') + '\n<\/script></body></html>';
+  const onMsg = e => {
+    if (e.source !== frame.contentWindow || !e.data || e.data.T !== token) return;
+    add(e.data.t === 'err' ? 'err' : '', e.data.s);
+  };
+  if (frame._h) window.removeEventListener('message', frame._h);
+  frame._h = onMsg;
+  window.addEventListener('message', onMsg);
+  frame.srcdoc = page;
+  setTimeout(() => { if (!out.children.length) add('info', '(консоль порожня; події, що спрацюють пізніше, з’являться тут)'); }, 400);
+}
+
 function taskHTML(t) {
   return `<div class="task" data-id="${t.id}">
     <span class="lvl">${t.level}</span>
@@ -56,6 +85,7 @@ function taskHTML(t) {
     <textarea class="pred" placeholder="Напиши, що очікуєш у консолі…"></textarea></details>
     <label>Мій код</label>
     <textarea class="code" spellcheck="false"></textarea>
+    ${t.html ? '<div class="stage"><div class="stage-label">Сторінка (клікай прямо тут)</div><iframe class="frame" sandbox="allow-scripts"></iframe></div>' : ''}
     <button class="run">▶ Запустити</button>
     <button class="sec reset">Скинути код</button>
     <div class="out"><span class="info">Тут буде консоль</span></div>
@@ -87,7 +117,10 @@ async function main() {
     pred.oninput = () => store.set(K('pred'), pred.value);
     chk.onchange = () => store.set(K('done'), chk.checked ? '1' : '');
     code.onkeydown = e => { if (e.key === 'Tab') { e.preventDefault(); document.execCommand('insertText', false, '  '); } };
-    el.querySelector('.run').onclick = () => runCode(code.value, el.querySelector('.out'));
+    el.querySelector('.run').onclick = () => t.html
+      ? runDom(code.value, t.html, el.querySelector('.frame'), el.querySelector('.out'))
+      : runCode(code.value, el.querySelector('.out'));
+    if (t.html) el.querySelector('.frame').srcdoc = '<!doctype html><body style="font-family:system-ui;padding:10px">' + t.html + '</body>';
     el.querySelector('.reset').onclick = () => { if (confirm('Скинути код до початкового?')) { code.value = t.starter || ''; store.set(K('code'), code.value); } };
   });
 }

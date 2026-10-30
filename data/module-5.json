@@ -1,0 +1,398 @@
+{
+  "module": 5,
+  "title": "Модуль 5: перебираючі методи масивів",
+  "topics": [
+    {
+      "id": "5-1",
+      "title": "Колбек функції",
+      "intro": "**Суть.** Колбек — це функція, яку ти передаєш іншій функції як аргумент, щоб та викликала її коли треба. Передаємо **без дужок**: `run(hello)`, а не `run(hello())`. З дужками функція виконається одразу, а в `run` піде її результат.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nfunction hello() { console.log('Привіт'); }\nfunction run(cb) {\n  console.log('до');\n  cb();\n  console.log('після');\n}\nrun(hello);   // до, Привіт, після\n```",
+      "tasks": [
+        {
+          "id": "5-1-1",
+          "level": "Легке",
+          "description": "Перший колбек.\n1. Оголоси функцію sayHi, що виводить \"Привіт\".\n2. Оголоси функцію callTwice(cb), яка викликає cb() двічі.\n3. Виклич callTwice(sayHi).",
+          "starter": "// Твій код тут",
+          "example": "function ping() { console.log('ping'); }\nfunction thrice(cb) { cb(); cb(); cb(); }\nthrice(ping);   // три рази ping"
+        },
+        {
+          "id": "5-1-2",
+          "level": "Середнє",
+          "description": "Колбек з аргументами.\n1. Оголоси функцію double(n), що повертає n * 2.\n2. Оголоси функцію applyTo(value, cb), що повертає cb(value).\n3. Виведи applyTo(5, double).\n4. Оголоси функцію square(n) (n * n) і виведи applyTo(5, square).\n5. Виведи applyTo(\"ab\", функція, що повертає довжину рядка) — оголоси її окремо як getLen.",
+          "starter": "// Твій код тут",
+          "example": "function inc(n) { return n + 1; }\nfunction doIt(v, cb) { return cb(v); }\nconsole.log(doIt(10, inc));   // 11"
+        },
+        {
+          "id": "5-1-3",
+          "level": "Складніше",
+          "description": "З дужками і без.\n1. Оголоси функцію getName(), що повертає \"Ася\".\n2. Оголоси функцію show(x), що виводить typeof x і сам x.\n3. Виклич show(getName) та show(getName()).\n4. Запиши в коментарі до запуску, що буде в кожному випадку, і поясни різницю.\n5. Запусти і порівняй.",
+          "starter": "// Твій код тут",
+          "example": "function f() { return 7; }\nfunction show(x) { console.log(typeof x, x); }\nshow(f);\nshow(f());"
+        }
+      ]
+    },
+    {
+      "id": "5-2",
+      "title": "Метод forEach",
+      "intro": "**Суть.** `arr.forEach(callback)` викликає колбек для **кожного** елемента масиву. Колбек отримує `(element, index, array)`. Нічого не повертає (результат завжди `undefined`). Це заміна `for` для простого перебору.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst nums = [10, 20, 30];\nnums.forEach(function (n, i) {\n  console.log(i, n);   // 0 10, 1 20, 2 30\n});\n```",
+      "tasks": [
+        {
+          "id": "5-2-1",
+          "level": "Легке",
+          "description": "Вивід.\n1. Оголоси const масив colors: \"red\", \"green\", \"blue\".\n2. Через forEach виведи кожен колір.\n3. Тим же forEach виведи у форматі \"1: red\" (індекс + 1).",
+          "starter": "// Твій код тут",
+          "example": "const a = ['x', 'y'];\na.forEach(function (v) { console.log(v); });"
+        },
+        {
+          "id": "5-2-2",
+          "level": "Середнє",
+          "description": "Сума і лічильник.\n1. Оголоси const масив prices: 120, 45, 300, 80.\n2. Оголоси let total = 0.\n3. Через forEach додай кожну ціну до total.\n4. Виведи total.\n5. Оголоси let expensive = 0 і через forEach порахуй, скільки цін більші за 100. Виведи.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1, 2, 3];\nlet t = 0;\na.forEach(function (n) { t += n; });\nconsole.log(t);   // 6"
+        },
+        {
+          "id": "5-2-3",
+          "level": "Складніше",
+          "description": "forEach і результат.\n1. Оголоси const масив words: \"js\", \"css\", \"html\".\n2. Збережи в const result результат words.forEach(...) (у колбеку просто виводь слово).\n3. Виведи result.\n4. Запиши в коментарі до запуску, що буде в result, і чому з forEach не отримати новий масив.\n5. Оголоси const масив upper = []. Через forEach заповни його словами в верхньому регістрі (toUpperCase) через push. Виведи upper.",
+          "starter": "// Твій код тут",
+          "example": "const a = ['q'];\nconst r = a.forEach(function (x) { return x; });\nconsole.log(r);   // undefined"
+        }
+      ]
+    },
+    {
+      "id": "5-3",
+      "title": "Стрілочні функції",
+      "intro": "**Суть.** Короткий запис функції: `(a, b) => { return a + b; }`. З одним параметром дужки можна не писати: `n => { ... }`. Це той самий функціональний вираз, але коротше. Зберігаємо у змінну: `const sum = (a, b) => { return a + b; };`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst sum = (a, b) => {\n  return a + b;\n};\nconst hi = name => {\n  return `Привіт, ${name}`;\n};\nconsole.log(sum(2, 3));   // 5\nconsole.log(hi('Ол'));    // Привіт, Ол\n```",
+      "tasks": [
+        {
+          "id": "5-3-1",
+          "level": "Легке",
+          "description": "Перепиши.\n1. Оголоси звичайну функцію square(n) з return n * n.\n2. Оголоси const square2 як стрілочну функцію з тим самим результатом.\n3. Виведи square(6) та square2(6).",
+          "starter": "// Твій код тут",
+          "example": "const dbl = n => {\n  return n * 2;\n};\nconsole.log(dbl(8));   // 16"
+        },
+        {
+          "id": "5-3-2",
+          "level": "Середнє",
+          "description": "Три стрілки.\n1. Оголоси const стрілочні функції: add(a, b), isEven(n) (повертає true/false), greet(name) (повертає рядок \"Привіт, <ім'я>!\").\n2. Виведи add(4, 9), isEven(7), isEven(10), greet(\"Влад\").",
+          "starter": "// Твій код тут",
+          "example": "const full = (a, b) => {\n  return `${a} ${b}`;\n};\nconsole.log(full('Іван', 'Петренко'));"
+        },
+        {
+          "id": "5-3-3",
+          "level": "Складніше",
+          "description": "Без параметрів і параметри за замовчуванням.\n1. Оголоси const стрілку getRandomPercent = () => { ... }, що повертає Math.round(Math.random() * 100).\n2. Виведи її двічі (числа будуть різні).\n3. Оголоси const стрілку price = (base, tax = 20) => { ... }, що повертає base + base * tax / 100.\n4. Виведи price(100), price(100, 10).\n5. Запиши в коментарі своїми словами, чим стрілка відрізняється від звичайного function за записом (якщо не знаєш, напиши \"не знаю\").",
+          "starter": "// Твій код тут",
+          "example": "const rnd = () => {\n  return Math.round(Math.random() * 10);\n};\nconst tax = (n, p = 10) => {\n  return n + n * p / 100;\n};\nconsole.log(rnd() <= 10, tax(100));   // true 110"
+        }
+      ]
+    },
+    {
+      "id": "5-4",
+      "title": "Неявне повернення",
+      "intro": "**Суть.** Якщо тіло стрілки — один вираз, можна прибрати `{ }` і `return`: `n => n * 2`. Результат виразу повертається автоматично. Якщо поставив `{ }`, `return` обов'язковий, інакше буде `undefined`. Щоб повернути об'єкт, обгортай у круглі дужки: `() => ({ a: 1 })`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst double = n => n * 2;\nconst sum = (a, b) => a + b;\nconst makeUser = name => ({ name, active: true });\nconsole.log(double(4));       // 8\nconsole.log(sum(2, 3));       // 5\nconsole.log(makeUser('Ол'));  // name: Ол, active: true\n```",
+      "tasks": [
+        {
+          "id": "5-4-1",
+          "level": "Легке",
+          "description": "Скороти.\n1. Оголоси const square = n => { return n * n; } .\n2. Оголоси const square2 з тим же результатом, але без { } та return.\n3. Виведи обидва для числа 7.",
+          "starter": "// Твій код тут",
+          "example": "const f = n => { return n + 1; };\nconst g = n => n + 1;\nconsole.log(f(1), g(1));   // 2 2"
+        },
+        {
+          "id": "5-4-2",
+          "level": "Середнє",
+          "description": "Різні повернення.\n1. Оголоси const стрілки в один рядок: isAdult(age) (age >= 18), full(first, last) (\"first last\"), cube(n) (n ** 3).\n2. Виведи isAdult(20), isAdult(10), full(\"Ася\", \"Лис\"), cube(3).\n3. Оголоси const makeBook = (title, pages) => ... що повертає об'єкт { title, pages } (не забудь круглі дужки). Виведи makeBook(\"Кобзар\", 300).",
+          "starter": "// Твій код тут",
+          "example": "const neg = n => -n;\nconst pt = (x, y) => ({ x, y });\nconsole.log(neg(5), pt(1, 2));"
+        },
+        {
+          "id": "5-4-3",
+          "level": "Складніше",
+          "description": "Пастка.\n1. Скопіюй код.\n2. Не запускаючи, запиши в коментарі, що виведе кожен з трьох console.log, який ти напишеш для a(5), b(5), c(5).\n3. Напиши console.log сам, запусти, порівняй.\n4. Коментарем поясни, чому одне з трьох вийшло \"дивним\".",
+          "starter": "const a = n => { n + 1 };\nconst b = n => n + 1;\nconst c = n => { return n + 1 };\n\n// Мої передбачення:\n\n",
+          "example": "const x = n => { n * 2 };\nconst y = n => n * 2;\nconst z = n => { return n * 2 };\nconsole.log(x(4), y(4), z(4));   // undefined 8 8"
+        }
+      ]
+    },
+    {
+      "id": "5-5",
+      "title": "Стрілочні функції як аргументи",
+      "intro": "**Суть.** Стрілку можна написати прямо в дужках виклику, без імені: `run(n => n * 2)`. Такий запис називають анонімною функцією. Часто зручніше за окрему функцію, якщо вона потрібна лише тут.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nfunction apply(value, cb) {\n  return cb(value);\n}\nconsole.log(apply(5, n => n * 3));        // 15\nconsole.log(apply('ab', s => s + '!'));   // ab!\n```",
+      "tasks": [
+        {
+          "id": "5-5-1",
+          "level": "Легке",
+          "description": "Передай стрілку.\n1. Оголоси функцію apply(value, cb) { return cb(value); }.\n2. Виведи apply(10, n => n + 5).\n3. Виведи apply(\"js\", s => s.toUpperCase()).",
+          "starter": "// Твій код тут",
+          "example": "function run(v, f) { return f(v); }\nconsole.log(run(3, n => n * n));   // 9"
+        },
+        {
+          "id": "5-5-2",
+          "level": "Середнє",
+          "description": "Дві функції в аргументах.\n1. Оголоси функцію combine(a, b, cb), що повертає cb(a, b).\n2. Виведи combine(4, 5, (x, y) => x + y).\n3. Виведи combine(4, 5, (x, y) => x * y).\n4. Виведи combine(\"Ася\", \"Лис\", (x, y) => `${x} ${y}`).\n5. Виведи combine(10, 3, (x, y) => x > y ? x : y).",
+          "starter": "// Твій код тут",
+          "example": "function join2(a, b, f) { return f(a, b); }\nconsole.log(join2(2, 3, (a, b) => a - b));   // -1"
+        },
+        {
+          "id": "5-5-3",
+          "level": "Складніше",
+          "description": "Повтор дії.\n1. Оголоси функцію repeat(times, action), яка в циклі for викликає action(i) для i від 0 до times - 1.\n2. Виклич repeat(3, i => console.log(\"Крок\", i)).\n3. Створи const масив squares = [] і виклич repeat(5, i => squares.push(i * i)). Виведи squares.\n4. Передбач у коментарі, що буде в squares, до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function rep(n, f) {\n  for (let i = 0; i < n; i++) f(i);\n}\nconst acc = [];\nrep(4, i => acc.push(i + 10));\nconsole.log(acc);   // 10, 11, 12, 13"
+        }
+      ]
+    },
+    {
+      "id": "5-6",
+      "title": "Стрілочні функції як колбек",
+      "intro": "**Суть.** Найчастіше стрілку пишуть як колбек для методів масиву: `arr.forEach(item => { ... })`. Інколи колбеку потрібен індекс: `(item, index) => ...`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst names = ['Ол', 'Ін'];\nnames.forEach((name, i) => {\n  console.log(`${i + 1}. ${name}`);   // 1. Ол, 2. Ін\n});\n```",
+      "tasks": [
+        {
+          "id": "5-6-1",
+          "level": "Легке",
+          "description": "Перебери.\n1. Оголоси const масив cities: \"Київ\", \"Львів\", \"Одеса\".\n2. Через forEach зі стрілкою виведи кожне місто.\n3. Через forEach із (city, i) виведи \"1) Київ\" і так далі.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1, 2];\na.forEach(n => console.log(n * 10));   // 10, 20"
+        },
+        {
+          "id": "5-6-2",
+          "level": "Середнє",
+          "description": "Збір даних.\n1. Оголоси const масив marks: 5, 3, 4, 5, 2.\n2. Оголоси let fives = 0 і через forEach порахуй п'ятірки.\n3. Оголоси let min = marks[0] і через forEach знайди найменшу оцінку.\n4. Виведи обидва числа.",
+          "starter": "// Твій код тут",
+          "example": "const a = [3, 9, 1];\nlet max = a[0];\na.forEach(n => {\n  if (n > max) max = n;\n});\nconsole.log(max);   // 9"
+        },
+        {
+          "id": "5-6-3",
+          "level": "Складніше",
+          "description": "forEach по масиву об'єктів.\n1. Оголоси const масив users: { name: \"Ася\", age: 17 }, { name: \"Борис\", age: 25 }, { name: \"Віка\", age: 40 }.\n2. Через forEach виведи для кожного \"Ася: неповнолітня\" або \"Борис: дорослий\".\n3. Через forEach порахуй середній вік і виведи.\n4. Через forEach збільш age кожного на 1 (змінює оригінал) і виведи users.\n5. Запиши в коментарі до запуску середній вік (до збільшення).",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 1 }, { n: 2 }];\na.forEach(o => { o.n *= 10; });\nconsole.log(a);   // n: 10, n: 20"
+        }
+      ]
+    },
+    {
+      "id": "5-7",
+      "title": "Метод map",
+      "intro": "**Суть.** `arr.map(callback)` створює **новий** масив такої ж довжини: для кожного елемента бере те, що повернув колбек. Оригінал не змінюється. Колбек **мусить повертати** значення.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst nums = [1, 2, 3];\nconst doubled = nums.map(n => n * 2);\nconsole.log(doubled);   // 2, 4, 6\nconsole.log(nums);      // 1, 2, 3, без змін\n```",
+      "tasks": [
+        {
+          "id": "5-7-1",
+          "level": "Легке",
+          "description": "Перший map.\n1. Оголоси const масив prices: 100, 250, 80.\n2. Через map зроби новий масив withTax, де кожна ціна збільшена на 20% (price * 1.2).\n3. Виведи prices і withTax.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1, 2];\nconst b = a.map(n => n + 100);\nconsole.log(a, b);"
+        },
+        {
+          "id": "5-7-2",
+          "level": "Середнє",
+          "description": "Різні перетворення.\n1. Оголоси const масив words: \"js\", \"html\", \"css\".\n2. Через map зроби масив lengths (довжини слів).\n3. Зроби масив upper (слова великими).\n4. Зроби масив labels з рядків \"#js\", \"#html\", \"#css\".\n5. Зроби масив indexed з \"0: js\", \"1: html\", \"2: css\" (використай індекс другим параметром).\n6. Виведи все.",
+          "starter": "// Твій код тут",
+          "example": "const a = ['a', 'bb'];\nconsole.log(a.map(s => s.length));   // 1, 2\nconsole.log(a.map((s, i) => i + s)); // 0a, 1bb"
+        },
+        {
+          "id": "5-7-3",
+          "level": "Складніше",
+          "description": "Пастка map.\n1. Оголоси const масив nums: 1, 2, 3, 4.\n2. Зроби const r1 = nums.map(n => { n * 2 }); виведи r1.\n3. Зроби const r2 = nums.map(n => { return n * 2 }); виведи r2.\n4. Зроби const r3 = nums.map(n => n % 2 === 0); виведи r3.\n5. До запуску запиши в коментарі, що буде в r1, r2, r3, і що r1 каже про забутий return.\n6. Запусти і порівняй.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1, 2];\nconsole.log(a.map(n => { n }));        // undefined, undefined\nconsole.log(a.map(n => n > 1));         // false, true"
+        }
+      ]
+    },
+    {
+      "id": "5-8",
+      "title": "Метод map і масив об'єктів",
+      "intro": "**Суть.** Типове використання: взяти з масиву об'єктів лише одну властивість (`users.map(u => u.name)`) або створити нові об'єкти, не чіпаючи старі (нові об'єкти пишемо руками: `users.map(u => ({ name: u.name }))`).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst users = [{ name: 'Ол', age: 20 }, { name: 'Ін', age: 30 }];\nconst names = users.map(u => u.name);\nconst cards = users.map(u => ({ title: u.name, old: u.age > 25 }));\nconsole.log(names);   // Ол, Ін\nconsole.log(cards);\n```",
+      "tasks": [
+        {
+          "id": "5-8-1",
+          "level": "Легке",
+          "description": "Вибери одне поле.\n1. Оголоси const масив products: { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Какао\", price: 110 }.\n2. Через map зроби масив titles (лише назви).\n3. Через map зроби масив prices.\n4. Виведи обидва.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'x', v: 1 }, { n: 'y', v: 2 }];\nconsole.log(a.map(o => o.n));   // x, y"
+        },
+        {
+          "id": "5-8-2",
+          "level": "Середнє",
+          "description": "Нові об'єкти.\n1. Використай масив products з попереднього завдання (скопіюй).\n2. Через map зроби масив sale: кожен об'єкт має ключі title та salePrice (price * 0.9).\n3. Через map зроби масив labels з рядків \"Чай - 80 грн\".\n4. Виведи products (чи змінились?) та sale.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'x', p: 100 }];\nconst b = a.map(o => ({ n: o.n, p: o.p / 2 }));\nconsole.log(a, b);   // a без змін"
+        },
+        {
+          "id": "5-8-3",
+          "level": "Складніше",
+          "description": "Змінюємо оригінал чи ні.\n1. Оголоси const масив tasks: { id: 1, done: false }, { id: 2, done: false }.\n2. Зроби const r1 = tasks.map(t => { t.done = true; return t; }); (змінює оригінал).\n3. Зроби const r2 = tasks.map(t => ({ id: t.id, done: false })); (нові об'єкти).\n4. До запуску запиши в коментарі: що буде в tasks після r1, чи r1 === tasks, чи r1[0] === tasks[0]; для r2 те саме.\n5. Виведи ці перевірки і порівняй.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ v: 1 }];\nconst b = a.map(o => ({ v: o.v }));\nconsole.log(a === b, a[0] === b[0]);   // false false"
+        }
+      ]
+    },
+    {
+      "id": "5-9",
+      "title": "Метод filter",
+      "intro": "**Суть.** `arr.filter(callback)` створює **новий** масив лише з тих елементів, для яких колбек повернув true (або truthy). Оригінал не змінюється. Довжина нового може бути менша, або взагалі 0.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst nums = [5, 12, 8, 20];\nconst big = nums.filter(n => n > 10);\nconsole.log(big);    // 12, 20\nconsole.log(nums);   // без змін\n```",
+      "tasks": [
+        {
+          "id": "5-9-1",
+          "level": "Легке",
+          "description": "Парні.\n1. Оголоси const масив nums: 1, 2, 3, 4, 5, 6, 7, 8.\n2. Через filter створи evens (парні).\n3. Створи big (більші за 5).\n4. Виведи обидва.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1, 5, 10];\nconsole.log(a.filter(n => n >= 5));   // 5, 10"
+        },
+        {
+          "id": "5-9-2",
+          "level": "Середнє",
+          "description": "Слова.\n1. Оголоси const масив words: \"apple\", \"kiwi\", \"banana\", \"fig\", \"avocado\".\n2. Створи long (довжина більша за 4).\n3. Створи withA (слова, що починаються на \"a\", через startsWith).\n4. Створи noI (слова, де немає літери \"i\", через includes і !).\n5. Виведи все. Запиши в коментарі до запуску, що очікуєш.",
+          "starter": "// Твій код тут",
+          "example": "const w = ['ab', 'cde', 'a'];\nconsole.log(w.filter(s => s.length === 1));   // a"
+        },
+        {
+          "id": "5-9-3",
+          "level": "Складніше",
+          "description": "Filter повертає масив.\n1. Оголоси const масив nums: 3, 8, 15.\n2. Зроби const r1 = nums.filter(n => n > 100); виведи r1 і r1.length.\n3. Зроби const r2 = nums.filter(n => n); виведи r2.\n4. Зроби const r3 = [0, 1, '', 'a', null, 5].filter(x => x); виведи r3.\n5. До запуску запиши в коментарі r1, r2, r3 і поясни, чому r3 такий.",
+          "starter": "// Твій код тут",
+          "example": "const a = [0, 'x', false, 7];\nconsole.log(a.filter(v => v));   // x, 7\nconsole.log([1].filter(n => n > 5).length);   // 0"
+        }
+      ]
+    },
+    {
+      "id": "5-10",
+      "title": "Фільтрування масиву об'єктів",
+      "intro": "**Суть.** Той самий filter, але умова за властивістю: `users.filter(u => u.age >= 18)`. Умови можна поєднувати через `&&` та `||`. Нові масиви містять **ті самі** об'єкти, не копії.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst users = [{ n: 'Ол', age: 15, ok: true }, { n: 'Ін', age: 30, ok: false }];\nconsole.log(users.filter(u => u.age >= 18));          // Ін\nconsole.log(users.filter(u => u.ok && u.age < 18));    // Ол\n```",
+      "tasks": [
+        {
+          "id": "5-10-1",
+          "level": "Легке",
+          "description": "Дорогі товари.\n1. Оголоси const масив goods: { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Какао\", price: 110 }, { title: \"Сік\", price: 60 }.\n2. Через filter створи expensive (price > 100).\n3. Створи cheap (price <= 100).\n4. Виведи обидва.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ v: 1 }, { v: 9 }];\nconsole.log(a.filter(o => o.v > 5));"
+        },
+        {
+          "id": "5-10-2",
+          "level": "Середнє",
+          "description": "Дві умови.\n1. Оголоси const масив cars: { brand: \"Audi\", year: 2015, price: 12000 }, { brand: \"BMW\", year: 2020, price: 30000 }, { brand: \"Kia\", year: 2022, price: 18000 }, { brand: \"Audi\", year: 2021, price: 28000 }.\n2. Створи audis (brand === \"Audi\").\n3. Створи newAndCheap (year >= 2020 і price < 25000).\n4. Створи notAudi (не Audi) і виведи їх кількість.\n5. Виведи назви марок з newAndCheap через map. Передбач у коментарі до запуску, що буде в newAndCheap.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ k: 'x', n: 1 }, { k: 'y', n: 5 }];\nconsole.log(a.filter(o => o.k === 'y' && o.n > 3).map(o => o.k));"
+        },
+        {
+          "id": "5-10-3",
+          "level": "Складніше",
+          "description": "Пошук і видалення.\n1. Оголоси let users: { id: 1, name: \"Ася\" }, { id: 2, name: \"Борис\" }, { id: 3, name: \"Віка\" }.\n2. Оголоси функцію removeUser(list, id), що повертає НОВИЙ масив без користувача з таким id (через filter).\n3. Виведи removeUser(users, 2) і users (початковий не змінився).\n4. Присвой users = removeUser(users, 1) і виведи.\n5. Оголоси функцію search(list, text), що повертає користувачів, чиє name містить text (без урахування регістру, toLowerCase і includes). Виведи search(users, \"в\").",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ id: 1 }, { id: 2 }];\nconst drop = (l, id) => l.filter(o => o.id !== id);\nconsole.log(drop(a, 1), a);"
+        }
+      ]
+    },
+    {
+      "id": "5-11",
+      "title": "Методи find, reduce та sort",
+      "intro": "**Суть.** `find(cb)` повертає **перший** елемент, для якого true, або `undefined`. `reduce((acc, item) => ..., start)` згортає масив в одне значення (суму, об'єкт). `sort()` сортує **на місці** (змінює масив); для чисел потрібен колбек `(a, b) => a - b`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst nums = [5, 12, 8];\nconsole.log(nums.find(n => n > 6));                 // 12\nconsole.log(nums.reduce((acc, n) => acc + n, 0));   // 25\nconsole.log([10, 9, 1].sort());                     // 1, 10, 9 (як рядки!)\nconsole.log([10, 9, 1].sort((a, b) => a - b));      // 1, 9, 10\n```",
+      "tasks": [
+        {
+          "id": "5-11-1",
+          "level": "Легке",
+          "description": "Find.\n1. Оголоси const масив users: { id: 1, name: \"Ася\" }, { id: 2, name: \"Борис\" }, { id: 3, name: \"Віка\" }.\n2. Через find знайди користувача з id 2 і виведи.\n3. Знайди користувача з id 9 і виведи, запиши в коментарі що вийшло.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ id: 5 }, { id: 6 }];\nconsole.log(a.find(o => o.id === 6), a.find(o => o.id === 1));"
+        },
+        {
+          "id": "5-11-2",
+          "level": "Середнє",
+          "description": "Reduce.\n1. Оголоси const масив prices: 120, 45, 300, 80.\n2. Через reduce порахуй суму.\n3. Через reduce знайди найбільше число.\n4. Оголоси const масив cart: { title: \"Чай\", price: 80, qty: 2 }, { title: \"Кава\", price: 150, qty: 1 }, { title: \"Сік\", price: 60, qty: 3 }.\n5. Через reduce порахуй загальну суму price * qty. Виведи. Запиши в коментарі очікувані результати.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1, 2, 3];\nconsole.log(a.reduce((s, n) => s + n, 0));            // 6\nconsole.log(a.reduce((m, n) => n > m ? n : m, a[0])); // 3"
+        },
+        {
+          "id": "5-11-3",
+          "level": "Складніше",
+          "description": "Sort.\n1. Оголоси const масив nums: 10, 9, 100, 1, 25.\n2. Скопіюй масив через nums.slice() у const copy1 і виклич copy1.sort(). Виведи copy1.\n3. Створи copy2 = nums.slice() і виклич copy2.sort((a, b) => a - b). Виведи.\n4. Створи copy3 і відсортуй за спаданням ((a, b) => b - a).\n5. До запуску запиши в коментарі, що буде в кожному, і поясни, чому copy1 \"неправильний\".\n6. Виведи nums (чи змінився?).",
+          "starter": "// Твій код тут",
+          "example": "const a = [30, 4, 200];\nconst c = a.slice();\nconsole.log(c.sort());                 // 200, 30, 4\nconsole.log(c.sort((x, y) => x - y));  // 4, 30, 200"
+        }
+      ]
+    },
+    {
+      "id": "5-12",
+      "title": "Сортування об'єктів",
+      "intro": "**Суть.** Для сортування за властивістю: `arr.sort((a, b) => a.age - b.age)` для чисел, а для рядків `a.name.localeCompare(b.name)`. Колбек повертає число: від'ємне — a перед b, додатне — a після b, 0 — рівні. `sort` змінює оригінал, тому часто роблять копію через `slice()`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst users = [{ n: 'Ін', age: 30 }, { n: 'Ол', age: 20 }];\nconst byAge = users.slice().sort((a, b) => a.age - b.age);\nconst byName = users.slice().sort((a, b) => a.n.localeCompare(b.n));\nconsole.log(byAge);    // Ол, Ін\nconsole.log(byName);   // Ін, Ол\n```",
+      "tasks": [
+        {
+          "id": "5-12-1",
+          "level": "Легке",
+          "description": "За ціною.\n1. Оголоси const масив goods: { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Сік\", price: 60 }.\n2. Створи cheapFirst (копія slice(), відсортована за зростанням ціни).\n3. Створи expensiveFirst (за спаданням).\n4. Виведи обидва і goods.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ v: 3 }, { v: 1 }];\nconsole.log(a.slice().sort((x, y) => x.v - y.v));"
+        },
+        {
+          "id": "5-12-2",
+          "level": "Середнє",
+          "description": "За текстом.\n1. Оголоси const масив people: { name: \"Богдан\", age: 25 }, { name: \"Аня\", age: 31 }, { name: \"Віка\", age: 19 }.\n2. Відсортуй копію за ім'ям (localeCompare).\n3. Відсортуй копію за віком від старшого до молодшого.\n4. Виведи назви в порядку обох сортувань через map. Передбач у коментарі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'б' }, { n: 'а' }];\nconsole.log(a.slice().sort((x, y) => x.n.localeCompare(y.n)).map(o => o.n));"
+        },
+        {
+          "id": "5-12-3",
+          "level": "Складніше",
+          "description": "Два критерії.\n1. Оголоси const масив students: { name: \"Аня\", mark: 5 }, { name: \"Борис\", mark: 4 }, { name: \"Віка\", mark: 5 }, { name: \"Гліб\", mark: 3 }, { name: \"Даня\", mark: 4 }.\n2. Відсортуй копію: спочатку за mark від більшої до меншої, а при рівних mark за ім'ям за алфавітом (у колбеку: якщо mark різні, повертай b.mark - a.mark, інакше a.name.localeCompare(b.name)).\n3. Виведи \"1. Аня (5)\" і так далі для кожного через forEach.\n4. До запуску запиши порядок імен у коментарі.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'б', s: 1 }, { n: 'а', s: 1 }, { n: 'в', s: 2 }];\nconst r = a.slice().sort((x, y) => {\n  if (x.s !== y.s) return y.s - x.s;\n  return x.n.localeCompare(y.n);\n});\nconsole.log(r.map(o => o.n));   // в, а, б"
+        }
+      ]
+    },
+    {
+      "id": "5-13",
+      "title": "Ланцюжки методів",
+      "intro": "**Суть.** Методи, що повертають масив (map, filter, sort), можна ставити ланцюжком: `arr.filter(...).map(...).sort(...)`. Кожен наступний працює з результатом попереднього. Читай зліва направо: «відфільтрував, потім перетворив, потім відсортував».\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst users = [{ n: 'Ол', age: 15 }, { n: 'Ін', age: 30 }, { n: 'Ев', age: 22 }];\nconst names = users\n  .filter(u => u.age >= 18)\n  .map(u => u.n)\n  .sort();\nconsole.log(names);   // Ев, Ін\n```",
+      "tasks": [
+        {
+          "id": "5-13-1",
+          "level": "Легке",
+          "description": "filter + map.\n1. Оголоси const масив goods: { title: \"Чай\", price: 80 }, { title: \"Кава\", price: 150 }, { title: \"Какао\", price: 110 }, { title: \"Сік\", price: 60 }.\n2. Одним ланцюжком отримай назви товарів дорожчих за 100.\n3. Виведи.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'x', v: 1 }, { n: 'y', v: 9 }];\nconsole.log(a.filter(o => o.v > 5).map(o => o.n));"
+        },
+        {
+          "id": "5-13-2",
+          "level": "Середнє",
+          "description": "Три кроки.\n1. Оголоси const масив cars: { brand: \"Audi\", price: 12000 }, { brand: \"BMW\", price: 30000 }, { brand: \"Kia\", price: 18000 }, { brand: \"Skoda\", price: 9000 }.\n2. Ланцюжком: залиш дешевші за 20000, відсортуй за ціною від меншої, візьми з кожного рядок \"Skoda - 9000\". Виведи масив рядків.\n3. Ланцюжком порахуй суму цін дорожчих за 10000 (filter + map + reduce, або filter + reduce).\n4. Передбач результат до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ n: 'a', p: 5 }, { n: 'b', p: 1 }];\nconsole.log(a.slice().sort((x, y) => x.p - y.p).map(o => `${o.n}:${o.p}`));   // b:1, a:5"
+        },
+        {
+          "id": "5-13-3",
+          "level": "Складніше",
+          "description": "Магазин.\n1. Оголоси const масив orders: { id: 1, customer: \"Аня\", total: 500, paid: true }, { id: 2, customer: \"Борис\", total: 120, paid: false }, { id: 3, customer: \"Аня\", total: 300, paid: true }, { id: 4, customer: \"Віка\", total: 900, paid: true }, { id: 5, customer: \"Борис\", total: 80, paid: true }.\n2. Знайди загальну суму оплачених замовлень (filter + reduce).\n3. Знайди ім'я клієнта з найбільшим оплаченим замовленням (sort + [0]).\n4. Створи масив імен клієнтів із неоплаченими замовленнями.\n5. Створи масив рядків для оплачених замовлень більше 200, відсортований за total від більшого: \"#4 Віка 900\".\n6. До запуску запиши результати 2-3 в коментарі.",
+          "starter": "// Твій код тут",
+          "example": "const o = [{ v: 1, ok: true }, { v: 5, ok: true }, { v: 9, ok: false }];\nconsole.log(o.filter(x => x.ok).reduce((s, x) => s + x.v, 0));   // 6"
+        }
+      ]
+    },
+    {
+      "id": "5-14",
+      "title": "Підсумкові задачі модуля 5",
+      "intro": "**Суть.** Тут змішано колбеки, стрілки, forEach, map, filter, find, reduce, sort і попередні модулі. Пиши по кроках.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst a = [3, 1, 2];\nconsole.log(a.filter(n => n > 1).map(n => n * 10).sort((x, y) => x - y));   // 20, 30\n```",
+      "tasks": [
+        {
+          "id": "5-14-1",
+          "level": "Легка",
+          "description": "Оцінки.\n1. Оголоси const масив marks: 5, 3, 4, 2, 5, 4.\n2. Виведи тільки позитивні (>= 3).\n3. Виведи суму всіх.\n4. Виведи середнє.\n5. Виведи масив, де кожна оцінка збільшена на 1, але не більше 5.",
+          "starter": "// Твій код тут",
+          "example": "const a = [1, 5];\nconsole.log(a.map(n => Math.min(n + 1, 5)));   // 2, 5"
+        },
+        {
+          "id": "5-14-2",
+          "level": "Середня",
+          "description": "Список справ.\n1. Оголоси const масив tasks: { id: 1, title: \"Прати\", done: true, priority: 2 }, { id: 2, title: \"Готувати\", done: false, priority: 1 }, { id: 3, title: \"Вчити JS\", done: false, priority: 3 }, { id: 4, title: \"Спати\", done: true, priority: 1 }.\n2. Створи масив назв невиконаних, відсортований за priority від більшого.\n3. Знайди задачу з id 3.\n4. Порахуй кількість виконаних.\n5. Створи масив рядків \"[x] Прати\" або \"[ ] Готувати\" для всіх.\n6. Передбач у коментарі результат п.2.",
+          "starter": "// Твій код тут",
+          "example": "const a = [{ t: 'a', d: false, p: 1 }, { t: 'b', d: false, p: 2 }];\nconsole.log(a.filter(x => !x.d).sort((x, y) => y.p - x.p).map(x => x.t));   // b, a"
+        },
+        {
+          "id": "5-14-3",
+          "level": "Складніша",
+          "description": "Статистика продажів.\n1. Оголоси const масив sales: { product: \"Чай\", qty: 5, price: 80 }, { product: \"Кава\", qty: 2, price: 150 }, { product: \"Чай\", qty: 3, price: 80 }, { product: \"Сік\", qty: 10, price: 60 }, { product: \"Кава\", qty: 4, price: 150 }.\n2. Створи об'єкт totals (через reduce або forEach), де ключ — product, значення — загальна виручка (qty * price). Не бійся циклів, головне, щоб вийшло.\n3. Через Object.keys(totals) отримай масив назв і відсортуй їх за виручкою від більшої.\n4. Виведи \"1. Сік - 600\" і так далі.\n5. Передбач у коментарі totals до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const s = [{ p: 'a', n: 2 }, { p: 'b', n: 1 }, { p: 'a', n: 3 }];\nconst t = {};\ns.forEach(x => {\n  t[x.p] = (t[x.p] || 0) + x.n;\n});\nconsole.log(t);   // a: 5, b: 1"
+        }
+      ]
+    }
+  ]
+}
