@@ -1,0 +1,16 @@
+.topic{background:#fff;border-radius:12px;padding:20px;margin:24px 0;box-shadow:0 1px 3px #0001}
+.topic h2{margin-bottom:8px}
+.intro pre,.task pre{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;overflow:auto;font-size:14px}
+.intro code{background:#e2e8f0;padding:1px 5px;border-radius:4px}
+.task{border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin:16px 0}
+.task .lvl{font-size:12px;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:99px}
+.task textarea{width:100%;min-height:200px;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:10px;border:1px solid #cbd5e1;border-radius:8px;tab-size:2}
+.task textarea.pred{min-height:60px;font-family:inherit}
+.task label{display:block;font-weight:600;margin:10px 0 4px}
+.task button{background:#2563eb;color:#fff;border:0;padding:8px 16px;border-radius:8px;cursor:pointer;margin:8px 8px 0 0}
+.task button.sec{background:#64748b}
+.out{background:#0f172a;color:#e2e8f0;padding:10px;border-radius:8px;min-height:40px;margin-top:8px;font:14px ui-monospace,monospace;white-space:pre-wrap}
+.out .err{color:#f87171}
+.out .info{color:#94a3b8}
+details{margin-top:10px}
+.done{display:inline-block;margin-left:8px}

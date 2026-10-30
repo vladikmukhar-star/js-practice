@@ -1,0 +1,12 @@
+[
+  {
+    "module": 1,
+    "title": "Модуль 1: основи та функції",
+    "file": "data/module-1.json"
+  },
+  {
+    "module": 2,
+    "title": "Модуль 2: розгалуження і цикли",
+    "file": "data/module-2.json"
+  }
+]
