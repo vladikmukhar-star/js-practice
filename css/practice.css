@@ -14,3 +14,4 @@
 .out .info{color:#94a3b8}
 details{margin-top:10px}
 .done{display:inline-block;margin-left:8px}
+.intro pre code,.task pre code{background:none;padding:0;color:inherit;border-radius:0}
