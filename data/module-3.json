@@ -1,0 +1,342 @@
+{
+  "module": 3,
+  "title": "Модуль 3: масиви",
+  "topics": [
+    {
+      "id": "3-1",
+      "title": "Доступ до елементів",
+      "intro": "**Суть.** Масив — це список значень у квадратних дужках. Кожне значення має номер (індекс). Рахунок іде з **0**: перший елемент має індекс 0. Останній елемент: `arr[arr.length - 1]`. Якщо індексу немає, буде `undefined`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst fruits = ['яблуко', 'груша', 'слива'];\nconsole.log(fruits[0]);                 // яблуко\nconsole.log(fruits[2]);                 // слива\nconsole.log(fruits.length);             // 3\nconsole.log(fruits[fruits.length - 1]); // слива\nconsole.log(fruits[5]);                 // undefined\n```",
+      "tasks": [
+        {
+          "id": "3-1-1",
+          "level": "Легке",
+          "description": "Список гостей.\n1. Оголоси через const масив guests зі значеннями \"Анна\", \"Богдан\", \"Віка\", \"Гліб\".\n2. Виведи перший елемент.\n3. Виведи третій елемент.\n4. Виведи довжину масиву.\n5. Виведи елемент з індексом 10.\n6. Перед кожним виведенням у коментарі запиши, що очікуєш.",
+          "starter": "// Твій код тут",
+          "example": "const colors = ['red', 'green', 'blue'];\nconsole.log(colors[1]);       // green\nconsole.log(colors.length);   // 3\nconsole.log(colors[9]);       // undefined"
+        },
+        {
+          "id": "3-1-2",
+          "level": "Середнє",
+          "description": "Останній елемент.\n1. Оголоси через const масив prices зі значеннями 120, 80, 300, 45, 210.\n2. Виведи останній елемент, використавши prices.length (не пиши число 4).\n3. Виведи передостанній елемент так само через length.\n4. Виведи суму першого і останнього елементів.\n5. Додай у масив ще одне число 99 (поки що просто зміни рядок оголошення на початку) і запусти код ще раз. Чи змінилися рядки 2-4 без правок?",
+          "starter": "// Твій код тут",
+          "example": "const list = [5, 6, 7, 8];\nconsole.log(list[list.length - 1]);   // 8\nconsole.log(list[list.length - 2]);   // 7\nconsole.log(list[0] + list[list.length - 1]); // 13"
+        },
+        {
+          "id": "3-1-3",
+          "level": "Складніше",
+          "description": "Передбач і перевір.\n1. Скопіюй масив нижче.\n2. Не запускаючи, запиши в коментарі, що буде для кожного з шести виразів: data[0] + data[1], data[2] + data[3], data[1] + data[2], data[4], data.length, data[data.length].\n3. Виведи кожен вираз через console.log (рядки пиши сам).\n4. Запусти код і порівняй. Біля кожного невірного передбачення коментарем напиши чому.",
+          "starter": "const data = [10, 20, '30', '40'];\n\n// Мої передбачення:\n// 1.\n// 2.\n// 3.\n// 4.\n// 5.\n// 6.\n",
+          "example": "const nums = [1, 2, 3];\nconsole.log(nums[0] + nums[1]);   // 3\nconsole.log(nums[3]);             // undefined\nconsole.log(nums[nums.length]);   // undefined, бо останній індекс length - 1"
+        }
+      ]
+    },
+    {
+      "id": "3-2",
+      "title": "Зміна значення елементів",
+      "intro": "**Суть.** Елемент масиву можна замінити: `arr[0] = 'нове'`. Масив, оголошений через `const`, змінювати **можна** (заборонено лише присвоїти змінній зовсім інший масив). Якщо записати в індекс, якого немає, масив стане довшим.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst pets = ['кіт', 'пес', 'риба'];\npets[1] = 'хом\\'як';\nconsole.log(pets);          // [\"кіт\", \"хом'як\", \"риба\"]\npets[3] = 'папуга';\nconsole.log(pets.length);   // 4\n```",
+      "tasks": [
+        {
+          "id": "3-2-1",
+          "level": "Легке",
+          "description": "Виправлення в списку.\n1. Оголоси через const масив cities зі значеннями \"Київ\", \"Львів\", \"Одеса\".\n2. Заміни \"Львів\" на \"Харків\" через індекс.\n3. Виведи весь масив.\n4. Заміни останній елемент на \"Дніпро\" через cities.length.\n5. Виведи масив ще раз.",
+          "starter": "// Твій код тут",
+          "example": "const items = ['a', 'b', 'c'];\nitems[0] = 'z';\nconsole.log(items);   // z, b, c"
+        },
+        {
+          "id": "3-2-2",
+          "level": "Середнє",
+          "description": "Лічильник у масиві.\n1. Оголоси через const масив scores зі значеннями 10, 20, 30.\n2. Збільш перший елемент на 5 (одним рядком, використай +=).\n3. Подвій другий елемент (*=).\n4. Заміни третій елемент на суму перших двох.\n5. Виведи масив.\n6. Запиши в коментарі, що очікував, до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const arr = [1, 2, 3];\narr[0] += 9;\narr[1] *= 4;\narr[2] = arr[0] + arr[1];\nconsole.log(arr);   // 10, 8, 18"
+        },
+        {
+          "id": "3-2-3",
+          "level": "Складніше",
+          "description": "Const і масив.\n1. Оголоси через const масив box зі значеннями 1, 2, 3.\n2. Запиши 100 в box[5].\n3. Виведи box і box.length.\n4. Після цього спробуй записати: box = [0]. Перепиши текст помилки в коментар.\n5. Коментарем поясни, чому п.2 спрацював, а п.4 ні.\n6. Не запускаючи, запиши в коментарі, що буде на місці індексів 3 і 4.",
+          "starter": "// Твій код тут",
+          "example": "const q = ['x'];\nq[3] = 'y';\nconsole.log(q.length);   // 4\nconsole.log(q[1]);       // undefined"
+        }
+      ]
+    },
+    {
+      "id": "3-3",
+      "title": "Присвоєння за посиланням і за значенням",
+      "intro": "**Суть.** Числа, рядки, boolean копіюються **за значенням**: це два незалежні числа. Масив копіюється **за посиланням**: `b = a` не створює новий масив, а ставить другу назву на той самий масив. Змінив через `b`, змінилося й `a`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nlet x = 5;\nlet y = x;\ny = 99;\nconsole.log(x);   // 5, незалежні\n\nconst a = [1, 2];\nconst b = a;\nb[0] = 100;\nconsole.log(a);   // [100, 2], бо a і b це один масив\nconsole.log(a === b); // true\n```",
+      "tasks": [
+        {
+          "id": "3-3-1",
+          "level": "Легке",
+          "description": "Число проти масиву.\n1. Оголоси через let змінну n1 зі значенням 10.\n2. Оголоси через let змінну n2 і запиши в неї n1.\n3. Зміни n2 на 50.\n4. Виведи n1 і n2.\n5. Оголоси через const масив a1 зі значеннями 1, 2, 3.\n6. Оголоси через const масив a2 і запиши в нього a1.\n7. Зміни a2[0] на 50.\n8. Виведи a1 і a2.\n9. Перед запуском у коментарі запиши, що очікуєш в обох випадках.",
+          "starter": "// Твій код тут",
+          "example": "let p = 1;\nlet q = p;\nq = 7;\nconsole.log(p, q);   // 1  7\nconst m = ['a'];\nconst n = m;\nn[0] = 'b';\nconsole.log(m, n);   // [\"b\"]  [\"b\"]"
+        },
+        {
+          "id": "3-3-2",
+          "level": "Середнє",
+          "description": "Порівняння масивів.\n1. Оголоси через const масиви first = [1, 2] та second = [1, 2] (окремо, двічі напиши літерал).\n2. Оголоси const third = first.\n3. Виведи first === second.\n4. Виведи first === third.\n5. Запиши в коментарі до запуску передбачення і поясни, чому саме так.",
+          "starter": "// Твій код тут",
+          "example": "const u = [3];\nconst v = [3];\nconst w = u;\nconsole.log(u === v);   // false, два різні масиви\nconsole.log(u === w);   // true, той самий масив"
+        },
+        {
+          "id": "3-3-3",
+          "level": "Складніше",
+          "description": "Функція змінює масив.\n1. Оголоси функцію addZero(list), яка робить list[0] = 0 (нічого не повертає).\n2. Оголоси const масив data зі значеннями 5, 6, 7.\n3. Не запускаючи, запиши в коментарі: що буде в data після addZero(data)?\n4. Виклич addZero(data) і виведи data.\n5. Оголоси функцію resetNumber(num), яка робить num = 0.\n6. Оголоси let score зі значенням 9, виклич resetNumber(score) і виведи score.\n7. Коментарем поясни різницю між п.4 і п.6.",
+          "starter": "// Твій код тут",
+          "example": "function setFirst(arr) {\n  arr[0] = 'X';\n}\nconst letters = ['a', 'b'];\nsetFirst(letters);\nconsole.log(letters);   // X, b"
+        }
+      ]
+    },
+    {
+      "id": "3-4",
+      "title": "Методи join, split, concat, includes, push",
+      "intro": "**Суть.** `push(x)` додає елемент у кінець (змінює масив, повертає нову довжину). `join(роздільник)` склеює масив в один рядок. `split(роздільник)` розрізає рядок на масив. `concat(other)` повертає **новий** масив зі склеєних двох. `includes(x)` повертає true або false.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst arr = ['a', 'b'];\narr.push('c');\nconsole.log(arr);                // a, b, c\nconsole.log(arr.join('-'));      // a-b-c\nconsole.log('x,y,z'.split(','));  // x, y, z\nconsole.log(arr.concat([1, 2])); // a, b, c, 1, 2\nconsole.log(arr.includes('b'));  // true\n```",
+      "tasks": [
+        {
+          "id": "3-4-1",
+          "level": "Легке",
+          "description": "Покупки.\n1. Оголоси через const масив cart зі значеннями \"хліб\", \"молоко\".\n2. Додай через push \"сир\".\n3. Виведи масив.\n4. Виведи cart.includes(\"молоко\").\n5. Виведи cart.includes(\"масло\").\n6. Виведи cart.join(\", \").",
+          "starter": "// Твій код тут",
+          "example": "const bag = ['ручка'];\nbag.push('зошит');\nconsole.log(bag.includes('зошит'));   // true\nconsole.log(bag.join(' + '));         // ручка + зошит"
+        },
+        {
+          "id": "3-4-2",
+          "level": "Середнє",
+          "description": "Рядок у масив і назад.\n1. Оголоси через const рядок tags зі значенням \"js,html,css\".\n2. Розріж його через split(\",\") у const масив list.\n3. Виведи list і list.length.\n4. Додай у list через push \"git\".\n5. Склей list назад у рядок через join(\" | \") і виведи.\n6. Виведи tags (чи змінився початковий рядок?).",
+          "starter": "// Твій код тут",
+          "example": "const word = 'a-b-c';\nconst parts = word.split('-');\nparts.push('d');\nconsole.log(parts.join(''));   // abcd\nconsole.log(word);             // a-b-c, рядок не змінився"
+        },
+        {
+          "id": "3-4-3",
+          "level": "Складніше",
+          "description": "Concat не змінює оригінал.\n1. Оголоси через const масиви a = [1, 2] та b = [3, 4].\n2. Оголоси const c = a.concat(b).\n3. Оголоси const d = a.concat(b, [5]).\n4. Не запускаючи, запиши в коментарі, що буде в a, b, c, d.\n5. Виведи кожен масив окремим console.log.\n6. Тепер зроби a.push(b) і виведи a. Запиши в коментарі, чим результат відрізняється від concat і чому.",
+          "starter": "// Твій код тут",
+          "example": "const x = [1];\nconst y = [2];\nconst z = x.concat(y);\nconsole.log(x, z);   // [1]  [1, 2]\nx.push(y);\nconsole.log(x);      // [1, [2]], масив усередині масиву"
+        }
+      ]
+    },
+    {
+      "id": "3-5",
+      "title": "Обхід масиву циклом for",
+      "intro": "**Суть.** Цикл `for` проходить по індексах: від 0 до `arr.length - 1`. У тілі циклу `arr[i]` — поточний елемент. Умова `i < arr.length` (саме менше, не менше-або-рівно).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst names = ['Ол', 'Ін', 'Ев'];\nfor (let i = 0; i < names.length; i++) {\n  console.log(i, names[i]);   // 0 Ол, 1 Ін, 2 Ев\n}\n```",
+      "tasks": [
+        {
+          "id": "3-5-1",
+          "level": "Легке",
+          "description": "Вивід усіх.\n1. Оголоси через const масив days зі значеннями \"пн\", \"вт\", \"ср\", \"чт\", \"пт\".\n2. Напиши for від 0 до days.length.\n3. На кожному кроці виведи days[i].\n4. Перед запуском у коментарі запиши, скільки рядків буде в консолі.",
+          "starter": "// Твій код тут",
+          "example": "const xs = ['a', 'b'];\nfor (let i = 0; i < xs.length; i++) {\n  console.log(xs[i]);   // a, потім b\n}"
+        },
+        {
+          "id": "3-5-2",
+          "level": "Середнє",
+          "description": "Сума і найбільше.\n1. Оголоси через const масив nums зі значеннями 4, 19, 7, 12, 3.\n2. Оголоси let sum = 0.\n3. У циклі for додавай кожен елемент до sum.\n4. Після циклу виведи sum.\n5. Оголоси let max = nums[0]. У ще одному циклі: якщо поточний елемент більший за max, запиши його в max.\n6. Виведи max.",
+          "starter": "// Твій код тут",
+          "example": "const a = [2, 8, 5];\nlet total = 0;\nfor (let i = 0; i < a.length; i++) {\n  total += a[i];\n}\nconsole.log(total);   // 15"
+        },
+        {
+          "id": "3-5-3",
+          "level": "Складніше",
+          "description": "Тільки парні, і запис у новий масив.\n1. Оголоси через const масив source зі значеннями 1, 2, 3, 4, 5, 6, 7, 8.\n2. Оголоси const масив evens = [] (порожній).\n3. У for пройди source. Якщо елемент парний (елемент % 2 === 0), додай його в evens через push.\n4. Після циклу виведи evens.\n5. Виведи evens.length.\n6. Заміни source на 11, 13, 15 і запусти ще раз. Що буде в evens? Запиши передбачення до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const src = [5, 10, 15, 20];\nconst big = [];\nfor (let i = 0; i < src.length; i++) {\n  if (src[i] > 8) {\n    big.push(src[i]);\n  }\n}\nconsole.log(big);   // 10, 15, 20"
+        }
+      ]
+    },
+    {
+      "id": "3-6",
+      "title": "Цикл for...of",
+      "intro": "**Суть.** `for (const item of arr)` бере елементи по одному, без індексів. Коротше й безпечніше за звичайний `for`, коли індекс не потрібен. Якщо потрібен індекс, використовуй звичайний `for`.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst toys = ['м\\'яч', 'лего'];\nfor (const toy of toys) {\n  console.log(toy);   // м'яч, потім лего\n}\n```",
+      "tasks": [
+        {
+          "id": "3-6-1",
+          "level": "Легке",
+          "description": "Те саме, але коротше.\n1. Оголоси через const масив animals зі значеннями \"кіт\", \"пес\", \"лис\".\n2. Напиши for...of і виведи кожну тварину.\n3. Виведи перед кожною тваринкою слово \"Тварина:\" (одним console.log, через шаблонний рядок).",
+          "starter": "// Твій код тут",
+          "example": "const fr = ['a', 'b'];\nfor (const f of fr) {\n  console.log(`Літера: ${f}`);   // Літера: a, Літера: b\n}"
+        },
+        {
+          "id": "3-6-2",
+          "level": "Середнє",
+          "description": "Підрахунок.\n1. Оголоси через const масив words зі значеннями \"js\", \"html\", \"css\", \"git\", \"npm\".\n2. Оголоси let longCount = 0.\n3. У for...of: якщо довжина слова більша за 2, збільш longCount на 1.\n4. Виведи longCount.\n5. Перед запуском запиши передбачення в коментарі.",
+          "starter": "// Твій код тут",
+          "example": "const w = ['ab', 'abc', 'abcd'];\nlet c = 0;\nfor (const x of w) {\n  if (x.length > 2) c++;\n}\nconsole.log(c);   // 2"
+        },
+        {
+          "id": "3-6-3",
+          "level": "Складніше",
+          "description": "Вибір інструмента.\n1. Оголоси через const масив temps зі значеннями 12, 25, -3, 30, 18.\n2. Через for...of знайди суму всіх значень і виведи її.\n3. Через for (з індексом) виведи рядки у форматі \"День 1: 12\", \"День 2: 25\" і так далі.\n4. Коментарем поясни, чому п.3 не можна зробити через for...of так само просто.",
+          "starter": "// Твій код тут",
+          "example": "const m = [7, 8];\nfor (let i = 0; i < m.length; i++) {\n  console.log(`№${i + 1}: ${m[i]}`);   // №1: 7, №2: 8\n}"
+        }
+      ]
+    },
+    {
+      "id": "3-7",
+      "title": "Псевдомасив arguments",
+      "intro": "**Суть.** Усередині звичайної функції (`function`) є спеціальна змінна `arguments`. Це всі передані значення, навіть якщо в дужках параметрів не оголошено. Вона схожа на масив: є `arguments.length` та `arguments[0]`, але методів масиву (push, join) у неї **немає**.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nfunction show() {\n  console.log(arguments.length);   // скільки передали\n  console.log(arguments[0]);       // перший аргумент\n}\nshow('a', 'b', 'c');   // 3, потім a\n```",
+      "tasks": [
+        {
+          "id": "3-7-1",
+          "level": "Легке",
+          "description": "Скільки аргументів.\n1. Оголоси звичайну функцію countArgs без параметрів, яка виводить arguments.length.\n2. Виклич її: countArgs(); countArgs(1); countArgs(1, 2, 3, 4).\n3. Перед запуском у коментарі запиши три очікувані числа.",
+          "starter": "// Твій код тут",
+          "example": "function howMany() {\n  console.log(arguments.length);\n}\nhowMany('x', 'y');   // 2"
+        },
+        {
+          "id": "3-7-2",
+          "level": "Середнє",
+          "description": "Сума будь-якої кількості.\n1. Оголоси звичайну функцію sumAll без параметрів.\n2. Усередині оголоси let total = 0.\n3. У циклі for пройди arguments і додай кожен до total.\n4. Поверни total (return).\n5. Виклич і виведи: sumAll(1, 2), sumAll(10, 20, 30), sumAll().",
+          "starter": "// Твій код тут",
+          "example": "function multiplyAll() {\n  let result = 1;\n  for (let i = 0; i < arguments.length; i++) {\n    result *= arguments[i];\n  }\n  return result;\n}\nconsole.log(multiplyAll(2, 3, 4));   // 24"
+        },
+        {
+          "id": "3-7-3",
+          "level": "Складніше",
+          "description": "Чого немає в arguments.\n1. Оголоси звичайну функцію tryJoin без параметрів.\n2. Усередині виведи arguments.join(\"-\"). Виклич tryJoin(1, 2, 3).\n3. Перепиши текст помилки в коментар і поясни своїми словами, чому так.\n4. Перероби функцію: створи const масив list = [], у циклі for додай через push кожен arguments[i], після циклу виведи list.join(\"-\").\n5. Виклич tryJoin(1, 2, 3) ще раз.",
+          "starter": "// Твій код тут",
+          "example": "function demo() {\n  const copy = [];\n  for (let i = 0; i < arguments.length; i++) {\n    copy.push(arguments[i]);\n  }\n  console.log(copy.includes('b'));   // true для demo('a', 'b')\n}\ndemo('a', 'b');"
+        }
+      ]
+    },
+    {
+      "id": "3-8",
+      "title": "Параметри за замовчуванням",
+      "intro": "**Суть.** Якщо параметр не передали, він дорівнює `undefined`. Можна задати значення за замовчуванням: `function f(name = 'гість')`. Воно використовується лише коли аргумент **не передано** (або передано undefined).\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nfunction hello(name = 'друже') {\n  console.log(`Привіт, ${name}`);\n}\nhello('Іра');   // Привіт, Іра\nhello();        // Привіт, друже\n```",
+      "tasks": [
+        {
+          "id": "3-8-1",
+          "level": "Легке",
+          "description": "Привітання.\n1. Оголоси функцію greet(name) без значення за замовчуванням.\n2. Усередині виведи `Привіт, ${name}`.\n3. Виклич greet(\"Влад\") і greet().\n4. Подивись, що вийшло для greet(), і запиши в коментар.\n5. Додай значення за замовчуванням \"гість\" і запусти ще раз.",
+          "starter": "// Твій код тут",
+          "example": "function bye(who = 'всім') {\n  console.log(`Бувай, ${who}`);\n}\nbye();        // Бувай, всім\nbye('Макс');  // Бувай, Макс"
+        },
+        {
+          "id": "3-8-2",
+          "level": "Середнє",
+          "description": "Ціна з податком.\n1. Оголоси функцію withTax(price, rate = 20), яка повертає price + price * rate / 100.\n2. Виклич і виведи: withTax(100), withTax(100, 10), withTax(200, 0).\n3. Передбач три результати в коментарі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function area(w, h = w) {\n  return w * h;\n}\nconsole.log(area(3));      // 9\nconsole.log(area(3, 5));   // 15"
+        },
+        {
+          "id": "3-8-3",
+          "level": "Складніше",
+          "description": "Пастка з нулем і undefined.\n1. Оголоси функцію power(base, exp = 2), яка повертає base ** exp.\n2. Виведи power(3), power(3, 3), power(3, 0), power(3, undefined).\n3. Запиши в коментарі передбачення до запуску.\n4. Запусти і порівняй.\n5. Коментарем поясни, чому power(3, 0) не використало значення за замовчуванням.",
+          "starter": "// Твій код тут",
+          "example": "function pad(text, ch = '*') {\n  return ch + text + ch;\n}\nconsole.log(pad('a'));        // *a*\nconsole.log(pad('a', ''));    // a, порожній рядок теж значення"
+        }
+      ]
+    },
+    {
+      "id": "3-9",
+      "title": "Функціональний вираз",
+      "intro": "**Суть.** Функцію можна записати в змінну: `const sum = function (a, b) { return a + b; };`. Викликається так само: `sum(1, 2)`. На відміну від `function sum() {}` (declaration), такий вираз **не можна викликати до рядка, де його оголошено**.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst double = function (n) {\n  return n * 2;\n};\nconsole.log(double(4));   // 8\nconst copy = double;\nconsole.log(copy(10));    // 20\n```",
+      "tasks": [
+        {
+          "id": "3-9-1",
+          "level": "Легке",
+          "description": "Перший вираз.\n1. Оголоси через const змінну square, в яку запиши функцію (function expression) з параметром n, що повертає n * n.\n2. Виведи square(5) та square(12).\n3. Запиши в коментарі до запуску очікувані числа.",
+          "starter": "// Твій код тут",
+          "example": "const minus = function (a, b) {\n  return a - b;\n};\nconsole.log(minus(10, 3));   // 7"
+        },
+        {
+          "id": "3-9-2",
+          "level": "Середнє",
+          "description": "Два способи оголошення.\n1. Оголоси звичайну функцію (declaration) hello1, що виводить \"привіт 1\".\n2. Оголоси через const функціональний вираз hello2, що виводить \"привіт 2\".\n3. ПЕРЕД оголошеннями (на самому початку файлу) виклич hello1().\n4. Там же виклич hello2(). Скопіюй помилку в коментар.\n5. Перенеси виклик hello2() після оголошення і перевір, що працює.\n6. Коментарем поясни різницю одним реченням.",
+          "starter": "// Твій код тут",
+          "example": "hi1();\nfunction hi1() { console.log('A'); }   // працює\n// hi2();   // помилка, якщо розкоментувати\nconst hi2 = function () { console.log('B'); };\nhi2();       // B"
+        },
+        {
+          "id": "3-9-3",
+          "level": "Складніше",
+          "description": "Функція в змінній, змінній у масиві.\n1. Оголоси через const два функціональні вирази: add (a + b) та mul (a * b).\n2. Оголоси const масив tools = [add, mul].\n3. Через цикл for пройди tools і для кожного виведи результат виклику tools[i](3, 4).\n4. Запиши в коментарі до запуску, які два числа очікуєш.\n5. Запусти і порівняй.",
+          "starter": "// Твій код тут",
+          "example": "const inc = function (x) { return x + 1; };\nconst dec = function (x) { return x - 1; };\nconst fns = [inc, dec];\nfor (let i = 0; i < fns.length; i++) {\n  console.log(fns[i](10));   // 11, потім 9\n}"
+        }
+      ]
+    },
+    {
+      "id": "3-10",
+      "title": "Область видимості (функції та вкладеність)",
+      "intro": "**Суть.** Змінна, оголошена всередині функції, видна **лише там**. Вкладена функція бачить змінні зовнішньої (як ти бачиш свою кімнату і коридор), але зовнішня не бачить змінних вкладеної. Якщо імена однакові, береться найближча зсередини.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nconst city = 'Відень';\nfunction outer() {\n  const street = 'Ring';\n  function inner() {\n    console.log(city, street);   // Відень Ring, бачить обох\n  }\n  inner();\n}\nouter();\n// console.log(street);   // ReferenceError\n```",
+      "tasks": [
+        {
+          "id": "3-10-1",
+          "level": "Легке",
+          "description": "Кімната і коридор.\n1. Оголоси глобальну const змінну hall зі значенням \"коридор\".\n2. Оголоси функцію room(), всередині якої const bed зі значенням \"ліжко\".\n3. Усередині room виведи hall та bed.\n4. Виклич room().\n5. Поза функцією виведи bed. Скопіюй помилку в коментар.",
+          "starter": "// Твій код тут",
+          "example": "const sky = 'небо';\nfunction yard() {\n  const tree = 'дерево';\n  console.log(sky, tree);   // небо дерево\n}\nyard();"
+        },
+        {
+          "id": "3-10-2",
+          "level": "Середнє",
+          "description": "Однакові імена.\n1. Оголоси глобальну const name зі значенням \"глобальне\".\n2. Оголоси функцію test(), яка має свою const name зі значенням \"локальне\" і виводить її.\n3. Виклич test().\n4. Поза функцією виведи name.\n5. Передбач обидва виводи у коментарі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const v = 1;\nfunction f() {\n  const v = 2;\n  console.log(v);   // 2\n}\nf();\nconsole.log(v);     // 1"
+        },
+        {
+          "id": "3-10-3",
+          "level": "Складніше",
+          "description": "Три рівні.\n1. Скопіюй код нижче.\n2. Не запускаючи, запиши в коментарі, що виведе кожен console.log у функціях a, b, c (або помилку, якщо змінної не видно).\n3. Запусти. Якщо буде помилка, прибери рядок з помилкою і запусти ще раз.\n4. Порівняй і поясни кожну різницю коментарем.",
+          "starter": "const one = 'ГЛОБАЛ';\nfunction a() {\n  const two = 'A';\n  function b() {\n    const three = 'B';\n    console.log(one, two, three);\n  }\n  b();\n  console.log(one, two, three);\n}\na();\n\n// Мої передбачення:\n// Пояснення:",
+          "example": "const g = 'G';\nfunction f1() {\n  const x = 'X';\n  function f2() {\n    console.log(g, x);   // G X\n  }\n  f2();\n}\nf1();"
+        }
+      ]
+    },
+    {
+      "id": "3-11",
+      "title": "Стек викликів",
+      "intro": "**Суть.** Коли функція викликає іншу, JavaScript запам'ятовує, де зупинився, виконує нову функцію, а потім повертається назад. Це як стопка тарілок: остання покладена знімається першою. Порядок виведення в консолі показує цей шлях: усередину, потім назад.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nfunction first() {\n  console.log('first start');\n  second();\n  console.log('first end');\n}\nfunction second() {\n  console.log('second');\n}\nfirst();\n// first start, second, first end\n```",
+      "tasks": [
+        {
+          "id": "3-11-1",
+          "level": "Легке",
+          "description": "Порядок.\n1. Скопіюй код нижче.\n2. Не запускаючи, запиши в коментарі повний порядок рядків у консолі.\n3. Запусти і порівняй.",
+          "starter": "function a() {\n  console.log('a1');\n  b();\n  console.log('a2');\n}\nfunction b() {\n  console.log('b');\n}\na();\nconsole.log('кінець');\n\n// Мій порядок:",
+          "example": "function p() {\n  console.log(1);\n  q();\n  console.log(3);\n}\nfunction q() {\n  console.log(2);\n}\np();   // 1, 2, 3"
+        },
+        {
+          "id": "3-11-2",
+          "level": "Середнє",
+          "description": "Власний ланцюжок.\n1. Оголоси три функції: one(), two(), three().\n2. one виводить \"one start\", викликає two, виводить \"one end\".\n3. two виводить \"two start\", викликає three, виводить \"two end\".\n4. three виводить \"three\".\n5. Запиши в коментарі до запуску порядок із 5 рядків.\n6. Виклич one() і порівняй.",
+          "starter": "// Твій код тут",
+          "example": "function x() {\n  console.log('x1');\n  y();\n  console.log('x2');\n}\nfunction y() {\n  console.log('y');\n}\nx();   // x1, y, x2"
+        },
+        {
+          "id": "3-11-3",
+          "level": "Складніше",
+          "description": "Повернення значень по ланцюжку.\n1. Оголоси функцію inc(n), що повертає n + 1.\n2. Оголоси функцію twice(n), що повертає inc(inc(n)).\n3. Оголоси функцію four(n), що повертає twice(twice(n)).\n4. Не запускаючи, запиши в коментарі, що поверне four(10) і скільки разів всього викликалась inc.\n5. Виведи four(10) і порівняй.\n6. Додай console.log('inc', n) у inc, щоб побачити кожен виклик, і порівняй з передбаченням.",
+          "starter": "// Твій код тут",
+          "example": "function plus2(n) { return n + 2; }\nfunction plus4(n) { return plus2(plus2(n)); }\nconsole.log(plus4(1));   // 5"
+        }
+      ]
+    },
+    {
+      "id": "3-12",
+      "title": "Підсумкові задачі модуля 3",
+      "intro": "**Суть.** Тут змішано теми 3-1…3-11 (і модулів 1-2): масиви, цикли, методи, функції, параметри. Пиши по кроках, перевіряй у консолі після кожного.\n\n**Приклад на тему (інші значення, ніж у завданнях):**\n```js\nfunction maxOf(list) {\n  let m = list[0];\n  for (const x of list) {\n    if (x > m) m = x;\n  }\n  return m;\n}\nconsole.log(maxOf([3, 9, 4]));   // 9\n```",
+      "tasks": [
+        {
+          "id": "3-12-1",
+          "level": "Легка",
+          "description": "Кошик магазину.\n1. Оголоси const масив cart = [] (порожній).\n2. Додай через push три товари: \"чай\", \"цукор\", \"хліб\".\n3. Оголоси функцію hasItem(list, item), що повертає list.includes(item).\n4. Виведи hasItem(cart, \"чай\") і hasItem(cart, \"сіль\").\n5. Виведи cart.join(\", \").\n6. Заміни перший товар на \"кава\" і виведи cart.",
+          "starter": "// Твій код тут",
+          "example": "const bag = [];\nbag.push('a');\nbag.push('b');\nfunction has(l, x) { return l.includes(x); }\nconsole.log(has(bag, 'a'), has(bag, 'z'));   // true false"
+        },
+        {
+          "id": "3-12-2",
+          "level": "Середня",
+          "description": "Статистика оцінок.\n1. Оголоси const рядок raw зі значенням \"5,3,4,5,2,5\".\n2. Розріж його через split у масив marks (елементи будуть рядками).\n3. Напиши функцію average(list), що проходить циклом for і рахує суму, перетворюючи кожен елемент через Number(), і повертає суму / list.length.\n4. Напиши функцію countOf(list, value = \"5\"), що повертає, скільки разів value зустрічається в list.\n5. Виведи average(marks), countOf(marks), countOf(marks, \"2\").\n6. Передбач результати до запуску.",
+          "starter": "// Твій код тут",
+          "example": "const s = '2,4,6';\nconst arr = s.split(',');\nlet sum = 0;\nfor (let i = 0; i < arr.length; i++) {\n  sum += Number(arr[i]);\n}\nconsole.log(sum / arr.length);   // 4"
+        },
+        {
+          "id": "3-12-3",
+          "level": "Складніша",
+          "description": "Функція-фільтр без інструментів.\n1. Оголоси функцію onlyBigger(list, limit = 10), яка повертає НОВИЙ масив лише з елементів, більших за limit.\n2. Усередині: порожній масив result, цикл for...of, умова, push, return result.\n3. Виведи onlyBigger([5, 12, 30, 8]) та onlyBigger([5, 12, 30, 8], 7).\n4. Перевір, що початковий масив не змінився: виведи його після викликів.\n5. Напиши функцію maxArgs без параметрів, яка через arguments повертає найбільше число (мінімум 1 аргумент). Виведи maxArgs(3, 9, 4).\n6. Передбач усі результати в коментарі до запуску.",
+          "starter": "// Твій код тут",
+          "example": "function onlyShort(list, n = 3) {\n  const out = [];\n  for (const w of list) {\n    if (w.length <= n) out.push(w);\n  }\n  return out;\n}\nconsole.log(onlyShort(['a', 'abcd', 'ab']));   // a, ab"
+        }
+      ]
+    }
+  ]
+}

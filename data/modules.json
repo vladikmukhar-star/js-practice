@@ -8,5 +8,10 @@
     "module": 2,
     "title": "Модуль 2: розгалуження і цикли",
     "file": "data/module-2.json"
+  },
+  {
+    "module": 3,
+    "title": "Модуль 3: масиви",
+    "file": "data/module-3.json"
   }
 ]
