@@ -86,7 +86,7 @@ function taskHTML(t) {
     <label>Мій код</label>
     <textarea class="code" spellcheck="false"></textarea>
     ${t.html ? '<div class="stage"><div class="stage-label">Сторінка (клікай прямо тут)</div><iframe class="frame" sandbox="allow-scripts"></iframe></div>' : ''}
-    <button class="run">▶ Запустити</button>
+    <button class="run">▶ Запустити</button> <small class="kbd-hint">Cmd/Ctrl+Enter — запуск · Tab після log, for, forof, if, fn, af... — сніпет</small>
     <button class="sec reset">Скинути код</button>
     <div class="out"><span class="info">Тут буде консоль</span></div>
     <details><summary>Приклад такого ж формату (інші значення)</summary><pre><code>${esc(t.example || '')}</code></pre></details>
@@ -108,20 +108,27 @@ async function main() {
   m.topics.forEach(tp => tp.tasks.forEach(t => byId[t.id] = t));
   app.querySelectorAll('.task').forEach(el => {
     const id = el.dataset.id, t = byId[id];
-    const code = el.querySelector('.code'), pred = el.querySelector('.pred'), chk = el.querySelector('.chk');
+    const codeTa = el.querySelector('.code'), pred = el.querySelector('.pred'), chk = el.querySelector('.chk');
     const K = k => `jsp:${N}:${id}:${k}`;
-    code.value = store.get(K('code'), t.starter || '');
+    const run = () => t.html
+      ? runDom(getCode(), t.html, el.querySelector('.frame'), el.querySelector('.out'))
+      : runCode(getCode(), el.querySelector('.out'));
+    codeTa.value = store.get(K('code'), t.starter || '');
+    const cm = makeEditor(codeTa, run);
+    const getCode = () => cm ? cm.getValue() : codeTa.value;
+    const setCode = v => { if (cm) cm.setValue(v); else codeTa.value = v; };
     pred.value = store.get(K('pred'), '');
     chk.checked = store.get(K('done'), '') === '1';
-    code.oninput = () => store.set(K('code'), code.value);
+    if (cm) cm.on('change', () => store.set(K('code'), cm.getValue()));
+    else {
+      codeTa.oninput = () => store.set(K('code'), codeTa.value);
+      codeTa.onkeydown = e => { if (e.key === 'Tab') { e.preventDefault(); document.execCommand('insertText', false, '  '); } };
+    }
     pred.oninput = () => store.set(K('pred'), pred.value);
     chk.onchange = () => store.set(K('done'), chk.checked ? '1' : '');
-    code.onkeydown = e => { if (e.key === 'Tab') { e.preventDefault(); document.execCommand('insertText', false, '  '); } };
-    el.querySelector('.run').onclick = () => t.html
-      ? runDom(code.value, t.html, el.querySelector('.frame'), el.querySelector('.out'))
-      : runCode(code.value, el.querySelector('.out'));
+    el.querySelector('.run').onclick = run;
     if (t.html) el.querySelector('.frame').srcdoc = '<!doctype html><body style="font-family:system-ui;padding:10px">' + t.html + '</body>';
-    el.querySelector('.reset').onclick = () => { if (confirm('Скинути код до початкового?')) { code.value = t.starter || ''; store.set(K('code'), code.value); } };
+    el.querySelector('.reset').onclick = () => { if (confirm('Скинути код до початкового?')) { setCode(t.starter || ''); store.set(K('code'), getCode()); } };
   });
 }
 main();
