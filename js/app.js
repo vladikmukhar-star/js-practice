@@ -99,11 +99,56 @@ async function main() {
   const m = await res.json();
   document.title = m.title;
   document.getElementById('title').textContent = m.title;
+  const exportText = (topics) => {
+    const lines = [`# ${m.title}`, `Експорт: ${new Date().toLocaleString('uk-UA')}`, ''];
+    let started = 0, total = 0;
+    for (const tp of topics) {
+      lines.push(`==== Тема ${tp.id}: ${tp.title} ====`, '');
+      for (const t of tp.tasks) {
+        total++;
+        const code = store.get(`jsp:${N}:${t.id}:code`, t.starter || '');
+        const pred = (store.get(`jsp:${N}:${t.id}:pred`, '') || '').trim();
+        const done = store.get(`jsp:${N}:${t.id}:done`, '') === '1';
+        const touched = code.trim() !== (t.starter || '').trim() || pred || done;
+        const title = (t.description || '').split('\n')[0];
+        lines.push(`--- Завдання ${t.id} (${t.level}) · ${title} · ${done ? 'позначено зробленим' : 'не позначено'} ---`);
+        if (!touched) { lines.push('(не починав)', ''); continue; }
+        started++;
+        lines.push('```js', code.replace(/\s+$/, ''), '```');
+        if (pred) lines.push('Моє передбачення: ' + pred);
+        lines.push('');
+      }
+    }
+    lines.splice(2, 0, `Завдань: ${total}, із кодом: ${started}`);
+    return lines.join('\n');
+  };
+  const download = (name, text) => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+    a.download = name;
+    document.body.append(a); a.click(); a.remove();
+  };
+  const bar = document.createElement('div');
+  bar.className = 'exportbar';
+  bar.innerHTML = '<button id="exp-all">⬇ Експорт модуля (.txt)</button> <button id="exp-copy" class="sec-btn">📋 Копіювати весь код</button> <small id="exp-msg"></small>';
+  app.before(bar);
+  bar.querySelector('#exp-all').onclick = () => download(`module-${N}-export.txt`, exportText(m.topics));
+  bar.querySelector('#exp-copy').onclick = async () => {
+    const msg = bar.querySelector('#exp-msg');
+    try { await navigator.clipboard.writeText(exportText(m.topics)); msg.textContent = 'Скопійовано'; }
+    catch { msg.textContent = 'Не вдалося скопіювати, користуйся кнопкою експорту'; }
+  };
   app.innerHTML = m.topics.map(tp => `
-    <section class="topic"><h2>${esc(tp.title)}</h2>
+    <section class="topic"><h2>${esc(tp.title)} <button class="exp-topic sec-btn" data-topic="${tp.id}" title="Зберегти код цієї теми у файл для перевірки">⬇ Експорт теми</button></h2>
     <div class="intro">${md(tp.intro || '')}</div>
     ${tp.tasks.map(taskHTML).join('')}</section>`).join('');
 
+  app.querySelectorAll('.exp-topic').forEach(btn => {
+    btn.onclick = () => {
+      const tp = m.topics.find(x => x.id === btn.dataset.topic);
+      download(`module-${N}-topic-${tp.id}.txt`, exportText([tp]));
+    };
+  });
   const byId = {};
   m.topics.forEach(tp => tp.tasks.forEach(t => byId[t.id] = t));
   app.querySelectorAll('.task').forEach(el => {
