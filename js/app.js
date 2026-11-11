@@ -77,19 +77,28 @@ function runDom(code, html, frame, out) {
 }
 
 function taskHTML(t) {
+  const title = esc((t.description || '').split('\n')[0]);
   return `<div class="task" data-id="${t.id}">
-    <span class="lvl">${t.level}</span>
-    <input type="checkbox" class="chk done" title="Зроблено"> <small>Зроблено</small>
-    <pre><code>${esc(t.description)}</code></pre>
-    <details class="predbox"><summary>Моє передбачення (необов'язково)</summary>
-    <textarea class="pred" placeholder="Напиши, що очікуєш у консолі…"></textarea></details>
-    <label>Мій код</label>
-    <textarea class="code" spellcheck="false"></textarea>
-    ${t.html ? '<div class="stage"><div class="stage-label">Сторінка (клікай прямо тут)</div><iframe class="frame" sandbox="allow-scripts"></iframe></div>' : ''}
-    <button class="run">▶ Запустити</button> <small class="kbd-hint">Cmd/Ctrl+Enter — запуск · Tab після log, for, forof, if, fn, af... — сніпет</small>
-    <button class="sec reset">Скинути код</button>
-    <div class="out"><span class="info">Тут буде консоль</span></div>
-    <details><summary>Приклад такого ж формату (інші значення)</summary><pre><code>${esc(t.example || '')}</code></pre></details>
+    <div class="task-head" role="button" tabindex="0">
+      <span class="fold">▾</span>
+      <span class="lvl">${t.level}</span>
+      <span class="task-title">${title}</span>
+      <label class="done-wrap"><input type="checkbox" class="chk done"> Зроблено</label>
+    </div>
+    <div class="task-body">
+      <div class="col-spec">
+        <pre><code>${esc(t.description)}</code></pre>
+        <details><summary>Приклад такого ж формату (інші значення)</summary><pre><code>${esc(t.example || '')}</code></pre></details>
+        <details class="predbox"><summary>Моє передбачення (необов'язково)</summary>
+        <textarea class="pred" placeholder="Напиши, що очікуєш у консолі…"></textarea></details>
+      </div>
+      <div class="col-work">
+        <textarea class="code" spellcheck="false"></textarea>
+        ${t.html ? '<div class="stage"><div class="stage-label">Сторінка (клікай прямо тут)</div><iframe class="frame" sandbox="allow-scripts"></iframe></div>' : ''}
+        <div class="actions"><button class="run">▶ Запустити</button> <button class="sec reset">Скинути код</button> <small class="kbd-hint">Cmd/Ctrl+Enter — запуск · Tab після log, for, forof, if, fn, af… — сніпет</small></div>
+        <div class="out"><span class="info">Тут буде консоль</span></div>
+      </div>
+    </div>
   </div>`;
 }
 
@@ -130,7 +139,7 @@ async function main() {
   };
   const bar = document.createElement('div');
   bar.className = 'exportbar';
-  bar.innerHTML = '<button id="exp-all">⬇ Експорт модуля (.txt)</button> <button id="exp-copy" class="sec-btn">📋 Копіювати весь код</button> <small id="exp-msg"></small>';
+  bar.innerHTML = '<button id="exp-all">⬇ Експорт модуля (.txt)</button> <button id="exp-copy" class="sec-btn">📋 Копіювати весь код</button> <small id="exp-msg"></small> <strong id="exp-progress" class="progress"></strong>';
   app.before(bar);
   bar.querySelector('#exp-all').onclick = () => download(`module-${N}-export.txt`, exportText(m.topics));
   bar.querySelector('#exp-copy').onclick = async () => {
@@ -139,9 +148,9 @@ async function main() {
     catch { msg.textContent = 'Не вдалося скопіювати, користуйся кнопкою експорту'; }
   };
   app.innerHTML = m.topics.map(tp => `
-    <section class="topic"><h2>${esc(tp.title)} <button class="exp-topic sec-btn" data-topic="${tp.id}" title="Зберегти код цієї теми у файл для перевірки">⬇ Експорт теми</button></h2>
-    <div class="intro">${md(tp.intro || '')}</div>
-    ${tp.tasks.map(taskHTML).join('')}</section>`).join('');
+    <section class="topic" data-topic="${tp.id}"><h2 class="topic-head" role="button" tabindex="0"><span class="tfold">▾</span> <span class="ttitle">${esc(tp.title)}</span> <span class="tprog"></span> <button class="exp-topic sec-btn" data-topic="${tp.id}" title="Зберегти код цієї теми у файл для перевірки">⬇ Експорт теми</button></h2>
+    <div class="topic-body"><div class="intro">${md(tp.intro || '')}</div>
+    ${tp.tasks.map(taskHTML).join('')}</div></section>`).join('');
 
   app.querySelectorAll('.exp-topic').forEach(btn => {
     btn.onclick = () => {
@@ -170,10 +179,57 @@ async function main() {
       codeTa.onkeydown = e => { if (e.key === 'Tab') { e.preventDefault(); document.execCommand('insertText', false, '  '); } };
     }
     pred.oninput = () => store.set(K('pred'), pred.value);
-    chk.onchange = () => store.set(K('done'), chk.checked ? '1' : '');
+    el._cm = cm;
+    chk.onclick = e => e.stopPropagation();
+    chk.onchange = () => {
+      store.set(K('done'), chk.checked ? '1' : '');
+      setTaskFold(el, chk.checked);
+      updateTopic(el.closest('.topic'), true);
+    };
     el.querySelector('.run').onclick = run;
     if (t.html) el.querySelector('.frame').srcdoc = '<!doctype html><body style="font-family:system-ui;padding:10px">' + t.html + '</body>';
     el.querySelector('.reset').onclick = () => { if (confirm('Скинути код до початкового?')) { setCode(t.starter || ''); store.set(K('code'), getCode()); } };
+  });
+
+  // --- згортання завдань і тем ---
+  function setTaskFold(el, collapsed) {
+    el.classList.toggle('collapsed', collapsed);
+    el.querySelector('.fold').textContent = collapsed ? '▸' : '▾';
+    if (!collapsed && el._cm) setTimeout(() => el._cm.refresh(), 0);
+  }
+  function setTopicFold(sec, collapsed) {
+    sec.classList.toggle('collapsed', collapsed);
+    sec.querySelector('.tfold').textContent = collapsed ? '▸' : '▾';
+    if (!collapsed) sec.querySelectorAll('.task:not(.collapsed)').forEach(t => t._cm && setTimeout(() => t._cm.refresh(), 0));
+  }
+  function updateTopic(sec, fromUser) {
+    const tasks = sec.querySelectorAll('.task');
+    const done = [...tasks].filter(t => t.querySelector('.chk').checked).length;
+    sec.querySelector('.tprog').textContent = `${done}/${tasks.length}` + (done === tasks.length ? ' ✓' : '');
+    sec.classList.toggle('complete', done === tasks.length);
+    if (done === tasks.length && fromUser) {
+      setTopicFold(sec, true);
+      const next = sec.nextElementSibling;
+      if (next) next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    const all = app.querySelectorAll('.task'), allDone = [...all].filter(t => t.querySelector('.chk').checked).length;
+    const pr = document.getElementById('exp-progress');
+    if (pr) pr.textContent = `Готово: ${allDone} / ${all.length}`;
+  }
+  app.querySelectorAll('.task').forEach(el => {
+    const head = el.querySelector('.task-head');
+    const toggle = () => setTaskFold(el, !el.classList.contains('collapsed'));
+    head.onclick = toggle;
+    head.onkeydown = e => { if ((e.key === 'Enter' || e.key === ' ') && e.target === head) { e.preventDefault(); toggle(); } };
+    if (el.querySelector('.chk').checked) setTaskFold(el, true);
+  });
+  app.querySelectorAll('.topic').forEach(sec => {
+    const head = sec.querySelector('.topic-head');
+    const toggle = () => setTopicFold(sec, !sec.classList.contains('collapsed'));
+    head.onclick = e => { if (e.target.closest('.exp-topic')) return; toggle(); };
+    head.onkeydown = e => { if ((e.key === 'Enter' || e.key === ' ') && e.target === head) { e.preventDefault(); toggle(); } };
+    updateTopic(sec, false);
+    if (sec.classList.contains('complete')) setTopicFold(sec, true);
   });
 }
 main();
