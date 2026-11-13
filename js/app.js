@@ -139,8 +139,17 @@ async function main() {
   };
   const bar = document.createElement('div');
   bar.className = 'exportbar';
-  bar.innerHTML = '<button id="exp-all">⬇ Експорт модуля (.txt)</button> <button id="exp-copy" class="sec-btn">📋 Копіювати весь код</button> <small id="exp-msg"></small> <strong id="exp-progress" class="progress"></strong>';
+  bar.innerHTML = '<button id="exp-all">⬇ Експорт модуля (.txt)</button> <button id="exp-copy" class="sec-btn">📋 Копіювати весь код</button> <small id="exp-msg"></small> <strong id="exp-progress" class="progress"></strong> <span class="fsgroup"><button class="fsbtn" id="fs-minus" title="Менший шрифт">A−</button> <button class="fsbtn" id="fs-plus" title="Більший шрифт">A+</button></span>';
   app.before(bar);
+  const applyFs = px => {
+    document.documentElement.style.setProperty('--fs', px + 'px');
+    store.set('jsp:fs', String(px));
+    document.querySelectorAll('.task').forEach(t => t._cm && t._cm.refresh());
+  };
+  let fs = parseInt(store.get('jsp:fs', '17'), 10) || 17;
+  applyFs(fs);
+  bar.querySelector('#fs-minus').onclick = () => { fs = Math.max(12, fs - 1); applyFs(fs); };
+  bar.querySelector('#fs-plus').onclick = () => { fs = Math.min(26, fs + 1); applyFs(fs); };
   bar.querySelector('#exp-all').onclick = () => download(`module-${N}-export.txt`, exportText(m.topics));
   bar.querySelector('#exp-copy').onclick = async () => {
     const msg = bar.querySelector('#exp-msg');

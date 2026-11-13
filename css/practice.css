@@ -58,3 +58,15 @@ details{margin-top:10px}
 .out{min-height:34px;max-height:220px;overflow:auto}
 .task .CodeMirror{height:auto;min-height:150px}
 .task .CodeMirror-scroll{min-height:150px}
+
+/* --- розмір шрифту (регулюється кнопками A− / A+) --- */
+:root{--fs:16px}
+.col-spec pre,.intro pre{font-size:var(--fs)!important;line-height:1.55}
+.task .CodeMirror,.CodeMirror{font-size:var(--fs)!important;line-height:1.55}
+.out{font-size:var(--fs)!important;line-height:1.5}
+.task-head .task-title{font-size:calc(var(--fs) - 1px)}
+.intro,.intro p{font-size:calc(var(--fs) + 1px);line-height:1.6}
+.col-spec summary,.predbox summary{font-size:calc(var(--fs) - 1px)}
+.col-spec textarea.pred{font-size:var(--fs)}
+.kbd-hint{font-size:13px}
+.fsbtn{background:#e2e8f0!important;color:#0f172a!important;padding:6px 10px!important;font-weight:700}
