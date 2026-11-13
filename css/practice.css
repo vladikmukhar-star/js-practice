@@ -60,7 +60,7 @@ details{margin-top:10px}
 .task .CodeMirror-scroll{min-height:150px}
 
 /* --- розмір шрифту (регулюється кнопками A− / A+) --- */
-:root{--fs:16px}
+:root{--fs:15px}
 .col-spec pre,.intro pre{font-size:var(--fs)!important;line-height:1.55}
 .task .CodeMirror,.CodeMirror{font-size:var(--fs)!important;line-height:1.55}
 .out{font-size:var(--fs)!important;line-height:1.5}
@@ -70,3 +70,12 @@ details{margin-top:10px}
 .col-spec textarea.pred{font-size:var(--fs)}
 .kbd-hint{font-size:13px}
 .fsbtn{background:#e2e8f0!important;color:#0f172a!important;padding:6px 10px!important;font-weight:700}
+
+/* --- ширший екран: на всю ширину, більші вікна --- */
+.container.wide,.exportbar{max-width:none;width:96vw;margin-left:auto;margin-right:auto}
+.task-body{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:22px;padding:18px}
+.task .CodeMirror,.task .CodeMirror-scroll{min-height:340px}
+.out{min-height:90px;max-height:340px}
+.col-spec pre{max-height:none}
+.col-spec textarea.pred{min-height:110px}
+@media (max-width:980px){.task-body{grid-template-columns:1fr}}
