@@ -486,21 +486,21 @@
         {
           "id": "2-18-1",
           "level": "Легка",
-          "description": "Перевірка пароля.\n1. Оголоси функцію checkPassword з параметром password.\n2. Якщо довжина password менше 8, поверни \"Короткий\".\n3. Інакше якщо password містить пробіл, поверни \"Є пробіл\".\n4. Інакше поверни \"Надійний\".\n5. Виведи checkPassword(\"abc\"), checkPassword(\"my pass word\"), checkPassword(\"MyPass123\") трьома console.log.\n6. Перед запуском у коментарі запиши, що виведеться.\n7. Запусти код і порівняй.",
+          "description": "Перевірка пароля.\n1. Зроби функцію checkPassword. У дужках одне слово: password.\n2. Якщо в паролі менше 8 літер, поверни (return) \"Короткий\".\n3. Якщо в паролі є пробіл (includes), поверни \"Є пробіл\".\n4. В усіх інших випадках поверни \"Надійний\".\n5. Виклич функцію три рази й виведи результат: checkPassword(\"abc\"), checkPassword(\"my pass word\"), checkPassword(\"MyPass123\").\n6. Не запускай. У коментарі запиши, що, на твою думку, виведеться.\n7. Запусти і порівняй.",
           "starter": "// Твій код тут",
           "example": "function checkNick(nick) {\n  if (nick.length < 3) {\n    return 'Закороткий';\n  } else if (nick.includes('@')) {\n    return 'Не можна @';\n  }\n  return 'Гарний';\n}\nconsole.log(checkNick('ab'));      // Закороткий\nconsole.log(checkNick('a@bc'));    // Не можна @\nconsole.log(checkNick('Max'));     // Гарний"
         },
         {
           "id": "2-18-2",
           "level": "Середня",
-          "description": "Лічильник голосних.\n1. Оголоси функцію countVowels з параметром text.\n2. Усередині: let count = 0.\n3. for по літерах text. Кожну літеру приводь до малої (toLowerCase).\n4. Якщо рядок \"aeiou\" містить цю літеру (includes), збільшуй count на 1.\n5. Після циклу поверни count.\n6. Виведи countVowels(\"Education\") і countVowels(\"rhythm\") двома console.log.\n7. Перед запуском у коментарі запиши, що виведеться.\n8. Запусти код і порівняй.",
+          "description": "Лічильник голосних.\n1. Зроби функцію countVowels з одним параметром text.\n2. Усередині зроби лічильник: let count = 0.\n3. Зроби цикл for по всіх літерах слова text. Літеру на кожному колі бери так: text[i] (як у задачі \"Слово по літерах\").\n4. На кожному колі зроби літеру малою (toLowerCase).\n5. Якщо ця літера є в рядку \"aeiou\" (перевір через includes), додай до count одиницю.\n6. Після циклу поверни (return) count.\n7. Виведи countVowels(\"Education\") і countVowels(\"rhythm\").\n8. Не запускай. У коментарі запиши, що, на твою думку, виведеться.\n9. Запусти і порівняй.",
           "starter": "// Твій код тут",
           "example": "function countDigits(text) {\n  let count = 0;\n  for (let i = 0; i < text.length; i = i + 1) {\n    if ('0123456789'.includes(text[i])) {\n      count = count + 1;\n    }\n  }\n  return count;\n}\nconsole.log(countDigits('a1b22'));   // 3"
         },
         {
           "id": "2-18-3",
           "level": "Складніша",
-          "description": "Розбір email.\n1. Оголоси функцію parseEmail з параметром email.\n2. Якщо email не містить \"@\" (використай !), поверни \"Некоректний email\".\n3. Далі for по літерах: знайди індекс символу \"@\" і запиши в змінну at (let at = -1 перед циклом), потім break.\n4. Оголоси const name: частина email до \"@\" (slice).\n5. Оголоси const domain: частина email після \"@\" (slice).\n6. Поверни шаблонний рядок: Імʼя: <name>, домен: <domain>.\n7. Виведи parseEmail(\"vlad@gmail.com\") і parseEmail(\"vlad.gmail.com\") двома console.log.\n8. Перед запуском у коментарі запиши, що виведеться.\n9. Запусти код і порівняй.",
+          "description": "Розбір email.\n1. Зроби функцію parseEmail з параметром email.\n2. Якщо в email немає \"@\" (includes і знак !), поверни (return) \"Некоректний email\".\n3. Перед циклом зроби: let at = -1.\n4. Зроби цикл for по літерах email. Коли email[i] дорівнює \"@\", запиши i в at і зупини цикл через break.\n5. Зроби const name: усе до \"@\" (slice від 0 до at).\n6. Зроби const domain: усе після \"@\" (slice від at + 1).\n7. Поверни рядок: Імʼя: name, домен: domain. Підставляй значення через зворотні лапки й ${}.\n8. Виведи parseEmail(\"vlad@gmail.com\") і parseEmail(\"vlad.gmail.com\").\n9. Не запускай. У коментарі запиши, що, на твою думку, виведеться.\n10. Запусти і порівняй.",
           "starter": "// Твій код тут",
           "example": "function splitPair(text) {\n  let dash = -1;\n  for (let i = 0; i < text.length; i = i + 1) {\n    if (text[i] === '-') {\n      dash = i;\n      break;\n    }\n  }\n  if (dash === -1) {\n    return 'Немає дефіса';\n  }\n  return `Ліва: ${text.slice(0, dash)}, права: ${text.slice(dash + 1)}`;\n}\nconsole.log(splitPair('ab-cd'));   // Ліва: ab, права: cd"
         }

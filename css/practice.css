@@ -1,3 +1,7 @@
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('../lib/fonts/jetbrains-mono-cyrillic-400-normal.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:700;font-display:swap;src:url('../lib/fonts/jetbrains-mono-cyrillic-700-normal.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('../lib/fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:700;font-display:swap;src:url('../lib/fonts/jetbrains-mono-latin-700-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 .topic{background:#fff;border-radius:12px;padding:20px;margin:24px 0;box-shadow:0 1px 3px #0001}
 .topic h2{margin-bottom:8px}
 .intro pre,.task pre{background:#0f172a;color:#e2e8f0;padding:12px;border-radius:8px;overflow:auto;font-size:14px}
@@ -79,3 +83,17 @@ details{margin-top:10px}
 .col-spec pre{max-height:none}
 .col-spec textarea.pred{min-height:110px}
 @media (max-width:980px){.task-body{grid-template-columns:1fr}}
+
+/* --- вертикальний макет: ТЗ зверху, код, потім приклад --- */
+.task-body{display:flex!important;flex-direction:column;gap:16px;padding:18px}
+.blk-label{font-size:13px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.col-example pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;margin:0;white-space:pre-wrap}
+.col-example .predbox{margin-top:10px}
+.task .CodeMirror,.task .CodeMirror-scroll{min-height:260px}
+/* шрифт з кирилицею для коду */
+:root{--mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace}
+.col-spec pre,.col-example pre,.intro pre,.out,.task textarea,.CodeMirror,.CodeMirror pre,.CodeMirror-hints{font-family:var(--mono)!important;font-variant-ligatures:none;-webkit-font-smoothing:auto}
+.col-spec pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;margin:0;white-space:pre-wrap}
+.col-spec pre,.col-example pre{font-size:calc(var(--fs) + 1px)!important;line-height:1.6}
+:root{--fs:16px}
+.task.collapsed .task-body{display:none!important}

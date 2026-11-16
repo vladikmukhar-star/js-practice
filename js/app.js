@@ -87,16 +87,21 @@ function taskHTML(t) {
     </div>
     <div class="task-body">
       <div class="col-spec">
+        <div class="blk-label">Завдання (ТЗ)</div>
         <pre><code>${esc(t.description)}</code></pre>
-        <details><summary>Приклад такого ж формату (інші значення)</summary><pre><code>${esc(t.example || '')}</code></pre></details>
-        <details class="predbox"><summary>Моє передбачення (необов'язково)</summary>
-        <textarea class="pred" placeholder="Напиши, що очікуєш у консолі…"></textarea></details>
       </div>
       <div class="col-work">
+        <div class="blk-label">Твій код</div>
         <textarea class="code" spellcheck="false"></textarea>
         ${t.html ? '<div class="stage"><div class="stage-label">Сторінка (клікай прямо тут)</div><iframe class="frame" sandbox="allow-scripts"></iframe></div>' : ''}
         <div class="actions"><button class="run">▶ Запустити</button> <button class="sec reset">Скинути код</button> <small class="kbd-hint">Cmd/Ctrl+Enter — запуск · Tab після log, for, forof, if, fn, af… — сніпет</small></div>
         <div class="out"><span class="info">Тут буде консоль</span></div>
+      </div>
+      <div class="col-example">
+        <div class="blk-label">Приклад, як це має виглядати (інші значення)</div>
+        <pre><code>${esc(t.example || '')}</code></pre>
+        <details class="predbox"><summary>Моє передбачення (необов'язково)</summary>
+        <textarea class="pred" placeholder="Напиши, що очікуєш у консолі…"></textarea></details>
       </div>
     </div>
   </div>`;
