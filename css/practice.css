@@ -97,3 +97,12 @@ details{margin-top:10px}
 .col-spec pre,.col-example pre{font-size:calc(var(--fs) + 1px)!important;line-height:1.6}
 :root{--fs:16px}
 .task.collapsed .task-body{display:none!important}
+
+/* --- режим повторення --- */
+.rev-help{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.rev-result{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid #e2e8f0}
+.rev-result .res-state{font-weight:600;color:#15803d}
+.col-example [hidden]{display:none!important}
+.col-example .old-box pre,.col-example .ex-box pre{margin:0 0 10px}
+.exportbar select{font-size:15px;padding:6px 8px;border-radius:8px;margin-left:4px}
+.exportbar label{font-weight:600}

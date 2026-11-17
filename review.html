@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Повторення</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/practice.css">
+  <link rel="stylesheet" href="lib/codemirror/codemirror.css">
+  <link rel="stylesheet" href="lib/codemirror/material-darker.css">
+  <link rel="stylesheet" href="lib/codemirror/show-hint.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Повторення</h1>
+    <nav><a href="index.html">← Головна</a></nav>
+  </header>
+  <div class="exportbar" id="rev-head">
+    <button class="new">🔁 Нова добірка</button>
+    <label>Завдань: <select class="cnt"><option>2</option><option>3</option><option>5</option></select></label>
+    <button class="sec exp">⬇ Експорт (.txt)</button>
+    <button class="sec cp">📋 Копіювати код</button>
+    <strong class="sum progress"></strong>
+  </div>
+  <p class="exportbar" style="color:#475569;font-size:15px;line-height:1.5">Це вже зроблені тобою завдання. Пиши з нуля, без підглядання. Приклад і старе рішення відкривай <b>тільки після спроби</b>. Чесно познач результат: так сайт дає тобі частіше те, що не виходить.</p>
+  <main class="container wide" id="app"></main>
+  <script src="lib/codemirror/codemirror.js"></script>
+  <script src="lib/codemirror/javascript.js"></script>
+  <script src="lib/codemirror/closebrackets.js"></script>
+  <script src="lib/codemirror/matchbrackets.js"></script>
+  <script src="lib/codemirror/comment.js"></script>
+  <script src="lib/codemirror/show-hint.js"></script>
+  <script src="lib/codemirror/javascript-hint.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/review.js"></script>
+</body>
+</html>
