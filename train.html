@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тренажер</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/practice.css">
+  <link rel="stylesheet" href="lib/codemirror/codemirror.css">
+  <link rel="stylesheet" href="lib/codemirror/material-darker.css">
+  <link rel="stylesheet" href="lib/codemirror/show-hint.css">
+</head>
+<body>
+  <header class="header">
+    <h1>Тренажер</h1>
+    <nav><a href="review.html">🔁 Повторення</a> &nbsp; <a href="index.html">← Головна</a></nav>
+  </header>
+  <div class="exportbar"><strong id="tr-sum" class="progress"></strong></div>
+  <p class="exportbar" style="color:#475569;font-size:15px;line-height:1.5">Щодня нові завдання з іншими числами. «Передбач»: напиши, що виведе консоль, сайт сам перевірить і, якщо помилився, покаже розбір по колах. «Напиши»: сайт сам проганяє твій код тестами. Заходь щодня хоч на 10 хвилин: серія днів росте.</p>
+  <main class="container wide" id="app"></main>
+  <script src="lib/codemirror/codemirror.js"></script>
+  <script src="lib/codemirror/javascript.js"></script>
+  <script src="lib/codemirror/closebrackets.js"></script>
+  <script src="lib/codemirror/matchbrackets.js"></script>
+  <script src="lib/codemirror/comment.js"></script>
+  <script src="lib/codemirror/show-hint.js"></script>
+  <script src="lib/codemirror/javascript-hint.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/train.js"></script>
+</body>
+</html>
