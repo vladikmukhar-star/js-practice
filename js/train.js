@@ -142,7 +142,7 @@ function predictCard(g, id, st, doneAlready) {
   <div class="task-body">
     <div class="col-spec"><div class="blk-label">Що виведе консоль? Код не запускай.</div><pre><code>${esc(g.code)}</code></pre></div>
     <div class="col-work">
-      <div class="blk-label">Твоя відповідь (кожен рядок консолі з нового рядка)</div>
+      <div class="blk-label">Твоя відповідь (кожен рядок консолі з нового рядка; масив пиши як у консолі: [1,2,3])</div>
       <textarea class="pred" rows="4" spellcheck="false" placeholder="Напиши, що виведе консоль…" style="width:100%;font-family:var(--mono);font-size:17px;padding:10px;border-radius:8px;border:1px solid #cbd5e1"></textarea>
       <div class="actions"><button class="chk-btn">Перевірити</button> <button class="sec show-tr">Показати розбір по колах</button></div>
       <div class="res" style="margin-top:10px;font-weight:600"></div>
@@ -153,7 +153,8 @@ function predictCard(g, id, st, doneAlready) {
   el.querySelector('.show-tr').onclick = () => { tr.hidden = !tr.hidden; };
   el.querySelector('.chk-btn').onclick = () => {
     const got = ta.value.split('\n').map(x => x.trim()).filter(Boolean);
-    const ok = got.length === g.out.length && got.every((x, i) => x === g.out[i]);
+    const nz = x => String(x).replace(/\s+/g, '').replace(/'/g, '"');
+    const ok = got.length === g.out.length && got.every((x, i) => nz(x) === nz(g.out[i]));
     if (ok) {
       res.style.color = '#15803d'; res.textContent = '✓ Правильно!';
       if (!el.dataset.marked) { el.dataset.marked = 1; mark(st, id); refreshHead(st); el.querySelector('.tdone').textContent = '✓ зроблено'; }
@@ -201,6 +202,7 @@ function writeCard(w, id, st, doneAlready) {
     } else add('info', `Пройдено ${pass} з ${r.out.length}. Виправ і запусти ще раз.`);
   };
   const cm = makeEditor(ta, check);
+  if (cm) { setTimeout(() => cm.refresh(), 0); setTimeout(() => cm.refresh(), 300); }
   if (cm) { cm.on('change', () => store.set(CK, cm.getValue())); cm.setCursor(cm.lineCount(), 0); }
   else ta.oninput = () => store.set(CK, ta.value);
   el.querySelector('.run').onclick = check;
@@ -236,6 +238,7 @@ function bugCard(b, id, st, doneAlready) {
     }
   };
   const cm = makeEditor(ta, check);
+  if (cm) { setTimeout(() => cm.refresh(), 0); setTimeout(() => cm.refresh(), 300); }
   if (cm) cm.on('change', () => store.set(CK, cm.getValue())); else ta.oninput = () => store.set(CK, ta.value);
   el.querySelector('.run').onclick = check;
   el.querySelector('.hint-btn').onclick = () => { const h = el.querySelector('.hint-box'); h.textContent = b.hint; h.hidden = false; };
@@ -250,45 +253,52 @@ function refreshHead(st) {
 function main() {
   const st = loadState();
   const today = dayKey();
-  const r = rng('daily-' + today);
+  const topic = store.get('jsp:train:topic', 'loops'); const TP = TRAIN_TOPICS[topic] || TRAIN_TOPICS.loops;
+  const r = rng('daily-' + today + (topic === 'loops' ? '' : ':' + topic));
   // 3 різні генератори на день
-  const keys = GEN_KEYS.slice().sort(() => r() - 0.5).slice(0, 3);
+  const keys = TP.gens.slice().sort(() => r() - 0.5).slice(0, 3);
   const doneToday = (st.days && st.days[today]) || {};
   app.innerHTML = '';
   const add = el => app.appendChild(el);
   const h = t => { const d = document.createElement('h2'); d.textContent = t; d.style.margin = '22px 0 8px'; add(d); };
-  h(`Сьогодні, ${today}`);
-  keys.forEach((k, i) => { const rr = rng(`${today}:${k}`); const g = GEN[k](rr); const id = `p:${today}:${i}`; add(predictCard(g, id, st, !!doneToday[id])); });
+  const tabs = document.createElement('div'); tabs.className = 'exportbar'; tabs.style.cssText = 'padding:0;margin:0 0 6px';
+  tabs.innerHTML = Object.entries(TRAIN_TOPICS).map(([k, v]) => `<button class="${k === topic ? '' : 'sec'}" data-t="${k}" style="${k === topic ? 'outline:3px solid #0f172a;outline-offset:2px' : 'opacity:.75'}">${v.name}</button>`).join(' ');
+  tabs.onclick = e => { const b = e.target.closest('button[data-t]'); if (b) { store.set('jsp:train:topic', b.dataset.t); main(); } };
+  add(tabs);
+  h(`Сьогодні, ${today} · ${TP.name}`);
+  keys.forEach((k, i) => { const rr = rng(`${today}:${k}`); const g = GEN[k](rr); const id = `p:${today}:${topic}:${i}`; add(predictCard(g, id, st, !!doneToday[id])); });
   // 1 завдання на написання: спочатку ще не розв'язані
   const wp = st.wpassed || {};
-  const unsolved = WRITE.filter(w => !wp[w.id]);
+  const WR = WRITE.filter(w => TP.write.includes(w.id));
+  const unsolved = WR.filter(w => !wp[w.id]);
   const dayNum = Math.floor(new Date(today).getTime() / 86400000);
-  const pool = unsolved.length ? unsolved : WRITE;
+  const pool = unsolved.length ? unsolved : WR;
   const w = pool[dayNum % pool.length];
-  const wid = `w:${today}`;
+  const wid = `w:${today}:${topic}`;
   add(writeCard(w, wid, st, !!doneToday[wid]));
   // знайди помилку: спершу ті, що ще не пройдені
   const bp = st.bpassed || {};
-  const bpool = BUGS.filter(x => !bp[x.id]).length ? BUGS.filter(x => !bp[x.id]) : BUGS;
+  const BG = BUGS.filter(b => TP.bugs.includes(b.id));
+  const bpool = BG.filter(x => !bp[x.id]).length ? BG.filter(x => !bp[x.id]) : BG;
   const bug = bpool[dayNum % bpool.length];
-  const bid = `b:${today}`;
+  const bid = `b:${today}:${topic}`;
   add(bugCard(bug, bid, st, !!doneToday[bid]));
   // додаткові
   const more = document.createElement('div'); more.style.margin = '18px 0'; more.className = 'exportbar'; more.style.padding = '0';
   more.innerHTML = '<button class="more-p">+ Ще одне «передбач»</button> <button class="sec more-w">+ Ще одне «напиши»</button> <button class="sec more-b">+ Ще одне «знайди помилку»</button>';
   add(more);
   const holder = document.createElement('div'); add(holder);
-  more.querySelector('.more-p').onclick = () => { const k = pickOne(Math.random, GEN_KEYS); const g = GEN[k](Math.random); holder.prepend(predictCard(g, `px:${Date.now()}`, st, false)); };
+  more.querySelector('.more-p').onclick = () => { const k = pickOne(Math.random, TP.gens); const g = GEN[k](Math.random); holder.prepend(predictCard(g, `px:${Date.now()}`, st, false)); };
   more.querySelector('.more-w').onclick = () => {
-    const rest = WRITE.filter(x => !(st.wpassed || {})[x.id] && x.id !== w.id);
-    const x = rest.length ? pickOne(Math.random, rest) : pickOne(Math.random, WRITE);
+    const rest = WR.filter(x => !(st.wpassed || {})[x.id] && x.id !== w.id);
+    const x = rest.length ? pickOne(Math.random, rest) : pickOne(Math.random, WR);
     holder.prepend(writeCard(x, `wx:${Date.now()}`, st, false));
   };
   more.querySelector('.more-b').onclick = () => {
-    const rest = BUGS.filter(x => !(st.bpassed || {})[x.id] && x.id !== bug.id);
-    const x = rest.length ? pickOne(Math.random, rest) : pickOne(Math.random, BUGS);
+    const rest = BG.filter(x => !(st.bpassed || {})[x.id] && x.id !== bug.id);
+    const x = rest.length ? pickOne(Math.random, rest) : pickOne(Math.random, BG);
     holder.prepend(bugCard(x, `bx:${Date.now()}`, st, false));
   };
   refreshHead(st);
 }
-main();
+// main() запускається з train-arrays.js (після підключення тем)

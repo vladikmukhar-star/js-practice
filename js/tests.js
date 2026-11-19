@@ -22,6 +22,35 @@
     }
     postMessage({ out });
   };`;
+
+  // Підказка про ТИПОВУ причину розбіжності. Готового рішення не дає, лише куди дивитися.
+  let _seen = new Set();
+  function hintFor(got, exp) {
+    const g = String(got), e = String(exp);
+    const num = x => x.trim() !== '' && !isNaN(Number(x));
+    let h = '';
+    if (/is not a function/.test(g)) h = 'Ти викликаєш те, що не є функцією. Перевір назву, дужки та що саме ти викликаєш.';
+    else if (/is not defined/.test(g)) h = 'Такої змінної нема: помилка в назві (великі/малі літери!) або вона оголошена не там, де її видно.';
+    else if (/Cannot read properties of (undefined|null)/.test(g)) h = 'Ти береш властивість у undefined. Ланцюжок обірвався раніше: перевір ключі й індекси по порядку.';
+    else if (/Assignment to constant/.test(g)) h = 'const не можна перезаписати. Для змінюваного значення потрібен let.';
+    else if (g === 'undefined') h = 'Вийшло undefined. Типові причини: забув return; звертаєшся до неіснуючого індексу чи ключа; змінна без значення.';
+    else if (g === 'NaN') h = 'NaN: десь рахуєш з undefined або з текстом. Виведи проміжні значення й знайди, де воно з’являється.';
+    else if (g === '[object Object]') h = 'Об’єкт склеївся з рядком. Бери потрібний ключ: obj.key.';
+    else if (num(g) && num(e) && Math.abs(Number(g) - Number(e)) === 1) h = 'Різниця рівно в 1. Це майже завжди межа: < чи <=, старт з 0 чи з 1, length чи length - 1.';
+    else if (num(e) && !num(g) && /^["']?\d+["']?$/.test(g.replace(/"/g, ''))) h = 'Це рядок, а треба число. Перетвори через Number().';
+    else if (num(g) && num(e) && Number(g) === 0) h = 'Вийшов 0. Лічильник чи сума не змінювалися: чи спрацьовує умова, чи дійшов цикл до потрібних елементів?';
+    else if ((g === 'true' && e === 'false') || (g === 'false' && e === 'true')) h = 'Відповідь протилежна. Перевір умову: знак порівняння (>, >=, ===, !==), або що саме ти повертаєш.';
+    else if (g.toLowerCase() === e.toLowerCase()) h = 'Відрізняється лише регістр літер (велика/мала).';
+    else if (g.replace(/[^\p{L}\p{N}]/gu, '') === e.replace(/[^\p{L}\p{N}]/gu, '')) h = 'Слова збігаються, відрізняється розділовий знак чи пробіл. Порівняй символ за символом.';
+    else if (g.startsWith('[') && e.startsWith('[')) {
+      let a, b; try { a = JSON.parse(g); b = JSON.parse(e); } catch {}
+      if (a && b) h = a.length < b.length ? 'У масиві не вистачає елементів. Чи всі потрапляють у умову? Чи не рано завершується цикл?' : a.length > b.length ? 'У масиві зайві елементи. Умова пропускає більше, ніж треба.' : 'Кількість елементів та сама, але вміст чи порядок інший. Перевір, що кладеш у масив і в якому порядку.';
+    } else if (g.length > e.length && g.includes(e)) h = 'У тебе зайвий текст до/після потрібного.';
+    else if (e.length > g.length && e.includes(g)) h = 'У тебе не вистачає частини тексту.';
+    if (!h || _seen.has(h)) return '';
+    _seen.add(h);
+    return '\n   💡 ' + h;
+  }
   const norm = v => typeof v === 'string' ? v.replace(/[ʼ’]/g, "'") : v;
   const same = (a, b) => JSON.stringify(a, (k, v) => norm(v)) === JSON.stringify(b, (k, v) => norm(v));
   const show = v => v === '__undef__' ? 'undefined' : JSON.stringify(v);
@@ -38,13 +67,13 @@
 
   // малює результат у панель out, повертає {pass,total}
   function render(out, r, showExpected) {
-    out.innerHTML = '';
+    out.innerHTML = ''; _seen = new Set();
     const add = (cls, t) => { const d = document.createElement('div'); if (cls) d.className = cls; d.textContent = t; out.appendChild(d); };
     if (r.err) { add('err', r.err); return { pass: 0, total: 0, err: true }; }
     let pass = 0;
     r.out.forEach(t => {
       const ok = !t.bad && same(t.got, t.exp); if (ok) pass++;
-      add(ok ? '' : 'err', `${ok ? '✓' : '✗'} ${t.fn}(${argStr(t.args)}) → ${show(t.got)}${ok || !showExpected ? '' : `   (треба ${show(t.exp)})`}`);
+      add(ok ? '' : 'err', `${ok ? '✓' : '✗'} ${t.fn}(${argStr(t.args)}) → ${show(t.got)}${ok || !showExpected ? '' : `   (треба ${show(t.exp)})${hintFor(t.bad ? t.got : show(t.got), show(t.exp))}`}`);
     });
     add(pass === r.out.length ? '' : 'info', pass === r.out.length ? `🎉 Усі ${pass} тести пройдено!` : `Пройдено ${pass} з ${r.out.length}. Виправ і перевір ще раз.`);
     return { pass, total: r.out.length, err: false };
@@ -70,22 +99,29 @@
   const nl = x => String(x).replace(/\s+/g, ' ').trim().replace(/[\u02BC\u2019]/g, "'");
   // tc = { logs:[...], must:[[regex,msg],...] }; повертає {pass,total,err}
   async function checkLogs(code, tc, out) {
-    out.innerHTML = '';
+    out.innerHTML = ''; _seen = new Set();
     const add = (cls, t) => { const d = document.createElement('div'); if (cls) d.className = cls; d.textContent = t; out.appendChild(d); };
     for (const [re, msg] of (tc.must || [])) if (!new RegExp(re).test(code)) { add('err', '✗ ' + msg); return { pass: 0, total: tc.logs.length, err: true }; }
     const r = await runLogs(code);
-    if (r.err) { add('err', r.err); return { pass: 0, total: tc.logs.length, err: true }; }
-    const got = r.logs, exp = tc.logs;
+    if (r.err) { add('err', r.err + hintFor(r.err, '')); return { pass: 0, total: tc.logs.length, err: true }; }
+    const got = r.logs;
+    const flat = l => l.map(nl).join(' ').trim();
+    // правильним вважаємо: збіг по рядках, або той самий текст (напр. console.log(a, b) замість двох рядків), або запасний варіант alt
+    const variants = [tc.logs].concat(tc.alt || []);
+    const same = variants.find(v => v.length === got.length && v.every((x, i) => nl(x) === nl(got[i]))) ||
+                 variants.find(v => flat(v) === flat(got));
+    const exp = same || tc.logs;
     let pass = 0;
     const n = Math.max(got.length, exp.length);
     for (let i = 0; i < n; i++) {
       const g = got[i], e = exp[i];
       if (g !== undefined && e !== undefined && nl(g) === nl(e)) { pass++; add('', `✓ рядок ${i + 1}: ${g}`); }
+      else if (same && g !== undefined) { pass++; add('', `✓ рядок ${i + 1}: ${g}`); }
       else if (g === undefined) add('err', `✗ рядок ${i + 1}: нічого нема (треба "${e}")`);
       else if (e === undefined) add('err', `✗ рядок ${i + 1}: зайвий вивід "${g}"`);
-      else add('err', `✗ рядок ${i + 1}: вийшло "${g}" (треба "${e}")`);
+      else add('err', `✗ рядок ${i + 1}: вийшло "${g}" (треба "${e}")${hintFor(g, e)}`);
     }
-    const all = pass === exp.length && got.length === exp.length;
+    const all = !!same;
     add(all ? '' : 'info', all ? `🎉 Усі ${exp.length} рядків збіглися!` : `Збіглося ${pass} з ${exp.length}. Виправ і перевір ще раз.`);
     return { pass: all ? exp.length : pass, total: exp.length, err: false };
   }
