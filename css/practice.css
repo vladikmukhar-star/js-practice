@@ -106,3 +106,10 @@ details{margin-top:10px}
 .col-example .old-box pre,.col-example .ex-box pre{margin:0 0 10px}
 .exportbar select{font-size:15px;padding:6px 8px;border-radius:8px;margin-left:4px}
 .exportbar label{font-weight:600}
+/* теплова карта і резервна копія */
+.hm{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:middle;margin:2px 3px;border:1px solid rgba(0,0,0,.25)}
+.hm-grey{background:#c9ccd1}.hm-yellow{background:#f2c200}.hm-green{background:#2fb344}.hm-red{background:#e03131}
+.hm-row{display:flex;gap:12px;align-items:center;margin:6px 0}.hm-row>a{min-width:80px;font-weight:600}
+.hm-dots a{text-decoration:none}.hm-legend{font-size:14px}
+.backup{margin-top:48px;padding:16px;border:1px solid #ccc;border-radius:8px}.backup .warn{color:#c92a2a;font-weight:600}
+.tprog .hm{margin-left:6px}

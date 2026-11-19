@@ -49,8 +49,12 @@ async function loadAll() {
 
 function weight(t, stats) {
   const st = stats[t.key] || { ok: 0, fail: 0, last: 0 };
-  const days = st.last ? Math.min(14, (Date.now() - st.last) / 86400000) : 14;
-  let w = 1 + st.fail * 3 + days / 2 - st.ok * 0.3;
+  // дні від останнього УСПІШНОГО повторення; ніколи не виходило / не повторював = як 10 днів
+  const days = st.lastOk ? Math.min(30, (Date.now() - st.lastOk) / 86400000) : 10;
+  // старі невдачі «згасають», якщо після них був успіх
+  const failW = st.fail * (st.lastOk && st.lastOk > (st.lastFail || 0) ? 1.5 : 3);
+  let w = 1 + failW + days / 3 - Math.min(st.ok, 5) * 0.3;
+  try { const ts = JSON.parse(localStorage.getItem('jsp:' + t.key + ':tstat') || 'null'); if (ts && ts.passed === false) w += 3; } catch {}
   if (/передбач/i.test(t.description)) w *= 0.3;      // задачі «передбач» менш корисні для письма
   if (/підсумков|фінальн/i.test(t.topic)) w *= 1.3;   // підсумкові — цінніші
   return Math.max(w, 0.2);
@@ -154,7 +158,7 @@ async function main() {
       };
       const mark = ok => {
         const s = loadStats(); const st = s[t.key] || { ok: 0, fail: 0, last: 0 };
-        ok ? st.ok++ : st.fail++; st.last = Date.now(); s[t.key] = st; saveStats(s);
+        ok ? st.ok++ : st.fail++; st.last = Date.now(); if (ok) st.lastOk = st.last; else st.lastFail = st.last; s[t.key] = st; saveStats(s);
         el.querySelector('.res-state').textContent = ok ? ' записано: вийшло ✓' : ' записано: ще повторимо';
         head.querySelector('.sum').textContent = summary(s);
       };

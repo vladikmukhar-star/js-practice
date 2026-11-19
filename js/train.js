@@ -208,6 +208,39 @@ function writeCard(w, id, st, doneAlready) {
   return el;
 }
 
+function bugCard(b, id, st, doneAlready) {
+  const el = document.createElement('div');
+  el.className = 'task rev';
+  el.innerHTML = `<div class="task-head" style="cursor:default"><span class="lvl">Знайди помилку</span><span class="task-title">${esc(b.title)}</span><span class="tdone">${doneAlready ? '✓ вже зроблено' : ''}</span></div>
+  <div class="task-body">
+    <div class="col-spec"><div class="blk-label">Завдання</div><pre><code>${esc(b.text)}</code></pre></div>
+    <div class="col-work">
+      <div class="blk-label">Код з помилкою. Виправ його прямо тут</div>
+      <textarea class="code" spellcheck="false"></textarea>
+      <div class="actions"><button class="run">▶ Перевірити тестами</button> <button class="sec hint-btn">Підказка (одна)</button> <button class="sec reset">Скинути код</button></div>
+      <div class="hint-box" hidden style="margin-top:8px;padding:10px 12px;background:#fef9c3;border-radius:8px;color:#713f12"></div>
+      <div class="out" style="margin-top:8px"><span class="info">Тут буде результат тестів</span></div>
+    </div>
+  </div>`;
+  const ta = el.querySelector('.code'), out = el.querySelector('.out');
+  const CK = `jsp:train:code:${b.id}`;
+  ta.value = store.get(CK, b.code);
+  const check = async () => {
+    out.textContent = 'Перевіряю…';
+    const r = await JSPTests.runChecks(cm ? cm.getValue() : ta.value, [{ fn: b.fn, tests: b.tests }]);
+    const res = JSPTests.render(out, r, true);
+    if (!res.err && res.pass === res.total && !el.dataset.marked) {
+      el.dataset.marked = 1; st.bpassed = st.bpassed || {}; st.bpassed[b.id] = 1; mark(st, id); refreshHead(st);
+      el.querySelector('.tdone').textContent = '✓ зроблено';
+    }
+  };
+  const cm = makeEditor(ta, check);
+  if (cm) cm.on('change', () => store.set(CK, cm.getValue())); else ta.oninput = () => store.set(CK, ta.value);
+  el.querySelector('.run').onclick = check;
+  el.querySelector('.hint-btn').onclick = () => { const h = el.querySelector('.hint-box'); h.textContent = b.hint; h.hidden = false; };
+  el.querySelector('.reset').onclick = () => { if (confirm('Повернути код з помилкою?')) { if (cm) cm.setValue(b.code); else ta.value = b.code; store.set(CK, b.code); } };
+  return el;
+}
 function refreshHead(st) {
   const k = dayKey(), today = Object.keys((st.days || {})[k] || {}).length;
   document.getElementById('tr-sum').textContent = `Серія: ${streak(st)} дн. · Сьогодні зроблено: ${today}`;
@@ -233,9 +266,15 @@ function main() {
   const w = pool[dayNum % pool.length];
   const wid = `w:${today}`;
   add(writeCard(w, wid, st, !!doneToday[wid]));
+  // знайди помилку: спершу ті, що ще не пройдені
+  const bp = st.bpassed || {};
+  const bpool = BUGS.filter(x => !bp[x.id]).length ? BUGS.filter(x => !bp[x.id]) : BUGS;
+  const bug = bpool[dayNum % bpool.length];
+  const bid = `b:${today}`;
+  add(bugCard(bug, bid, st, !!doneToday[bid]));
   // додаткові
   const more = document.createElement('div'); more.style.margin = '18px 0'; more.className = 'exportbar'; more.style.padding = '0';
-  more.innerHTML = '<button class="more-p">+ Ще одне «передбач»</button> <button class="sec more-w">+ Ще одне «напиши»</button>';
+  more.innerHTML = '<button class="more-p">+ Ще одне «передбач»</button> <button class="sec more-w">+ Ще одне «напиши»</button> <button class="sec more-b">+ Ще одне «знайди помилку»</button>';
   add(more);
   const holder = document.createElement('div'); add(holder);
   more.querySelector('.more-p').onclick = () => { const k = pickOne(Math.random, GEN_KEYS); const g = GEN[k](Math.random); holder.prepend(predictCard(g, `px:${Date.now()}`, st, false)); };
@@ -243,6 +282,11 @@ function main() {
     const rest = WRITE.filter(x => !(st.wpassed || {})[x.id] && x.id !== w.id);
     const x = rest.length ? pickOne(Math.random, rest) : pickOne(Math.random, WRITE);
     holder.prepend(writeCard(x, `wx:${Date.now()}`, st, false));
+  };
+  more.querySelector('.more-b').onclick = () => {
+    const rest = BUGS.filter(x => !(st.bpassed || {})[x.id] && x.id !== bug.id);
+    const x = rest.length ? pickOne(Math.random, rest) : pickOne(Math.random, BUGS);
+    holder.prepend(bugCard(x, `bx:${Date.now()}`, st, false));
   };
   refreshHead(st);
 }

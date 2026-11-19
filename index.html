@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JS Practice — Практика JavaScript</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/practice.css">
+  <script src="js/progress.js"></script>
 </head>
 <body>
   <header class="header">
@@ -103,10 +105,12 @@
         <a href="module.html?m=8">Відкрити →</a>
       </div>
     </div>
+    <div id="progress-host"></div>
   </main>
 
   <footer class="footer">
     JS Practice · Пиши JS сам · Дивись консоль (F12)
   </footer>
+<script>const h=document.getElementById("progress-host");JSPProgress.indexMap(h).then(()=>JSPProgress.backupPanel(h));</script>
 </body>
 </html>

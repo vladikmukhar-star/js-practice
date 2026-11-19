@@ -163,6 +163,8 @@ async function main() {
       download(`module-${N}-topic-${tp.id}.txt`, exportText([tp]));
     };
   });
+  let TESTS = {};
+  try { TESTS = await (await fetch('data/tests.json')).json(); } catch {}
   const byId = {};
   m.topics.forEach(tp => tp.tasks.forEach(t => byId[t.id] = t));
   app.querySelectorAll('.task').forEach(el => {
@@ -192,6 +194,23 @@ async function main() {
       updateTopic(el.closest('.topic'), true);
     };
     el.querySelector('.run').onclick = run;
+    const tc = TESTS[id];
+    if (tc && window.JSPTests) {
+      const b = document.createElement('button');
+      b.className = 'chkbtn'; b.textContent = '✔ Перевірити';
+      el.querySelector('.run').after(' ', b);
+      b.onclick = async () => {
+        const out = el.querySelector('.out');
+        out.innerHTML = '<span class="info">Перевіряю…</span>';
+        const r = window.JSPTests.render(out, await window.JSPTests.runChecks(getCode(), tc.checks), true);
+        if (r.err) return;
+        let st; try { st = JSON.parse(store.get(K('tstat'), '{}')); } catch { st = {}; }
+        const ok = r.pass === r.total;
+        st.ok = (st.ok || 0) + (ok ? 1 : 0); st.fail = (st.fail || 0) + (ok ? 0 : 1); st.last = Date.now(); st.passed = ok;
+        store.set(K('tstat'), JSON.stringify(st));
+        updateTopic(el.closest('.topic'), false);
+      };
+    }
     if (t.html) el.querySelector('.frame').srcdoc = '<!doctype html><body style="font-family:system-ui;padding:10px">' + t.html + '</body>';
     el.querySelector('.reset').onclick = () => { if (confirm('Скинути код до початкового?')) { setCode(t.starter || ''); store.set(K('code'), getCode()); } };
   });
@@ -210,7 +229,7 @@ async function main() {
   function updateTopic(sec, fromUser) {
     const tasks = sec.querySelectorAll('.task');
     const done = [...tasks].filter(t => t.querySelector('.chk').checked).length;
-    sec.querySelector('.tprog').textContent = `${done}/${tasks.length}` + (done === tasks.length ? ' ✓' : '');
+    sec.querySelector('.tprog').innerHTML = `${done}/${tasks.length}` + (done === tasks.length ? ' ✓' : '') + (window.JSPProgress && sec._topic ? JSPProgress.dot(JSPProgress.topicState(N, sec._topic).color, 'колір теми: ' + JSPProgress.LABEL[JSPProgress.topicState(N, sec._topic).color]) : '');
     sec.classList.toggle('complete', done === tasks.length);
     if (done === tasks.length && fromUser) {
       setTopicFold(sec, true);
@@ -229,6 +248,7 @@ async function main() {
     if (el.querySelector('.chk').checked) setTaskFold(el, true);
   });
   app.querySelectorAll('.topic').forEach(sec => {
+    sec._topic = m.topics.find(x => x.id === sec.dataset.topic);
     const head = sec.querySelector('.topic-head');
     const toggle = () => setTopicFold(sec, !sec.classList.contains('collapsed'));
     head.onclick = e => { if (e.target.closest('.exp-topic')) return; toggle(); };
