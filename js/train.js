@@ -211,7 +211,7 @@ function writeCard(w, id, st, doneAlready) {
 function bugCard(b, id, st, doneAlready) {
   const el = document.createElement('div');
   el.className = 'task rev';
-  el.innerHTML = `<div class="task-head" style="cursor:default"><span class="lvl">Знайди помилку</span><span class="task-title">${esc(b.title)}</span><span class="tdone">${doneAlready ? '✓ вже зроблено' : ''}</span></div>
+  el.innerHTML = `<div class="task-head" style="cursor:default"><span class="lvl">Знайди помилку${b.level ? ' · ' + b.level : ''}</span><span class="task-title">${esc(b.title)}</span><span class="tdone">${doneAlready ? '✓ вже зроблено' : ''}</span></div>
   <div class="task-body">
     <div class="col-spec"><div class="blk-label">Завдання</div><pre><code>${esc(b.text)}</code></pre></div>
     <div class="col-work">
@@ -232,6 +232,7 @@ function bugCard(b, id, st, doneAlready) {
     if (!res.err && res.pass === res.total && !el.dataset.marked) {
       el.dataset.marked = 1; st.bpassed = st.bpassed || {}; st.bpassed[b.id] = 1; mark(st, id); refreshHead(st);
       el.querySelector('.tdone').textContent = '✓ зроблено';
+      JSPTests.explainBox(el.querySelector('.col-work'), `jsp:train:explain:${b.id}`, false);
     }
   };
   const cm = makeEditor(ta, check);

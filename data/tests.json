@@ -730,5 +730,422 @@
     ]
    }
   ]
+ },
+ "2-14-1": {
+  "logs": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "must": [
+   [
+    "\\bwhile\\b",
+    "Тут має бути цикл while"
+   ]
+  ]
+ },
+ "2-14-2": {
+  "logs": [
+   "5",
+   "4",
+   "3",
+   "2",
+   "1",
+   "Старт!"
+  ],
+  "must": [
+   [
+    "\\bwhile\\b",
+    "Тут має бути цикл while"
+   ]
+  ]
+ },
+ "2-14-3": {
+  "logs": [
+   "55"
+  ],
+  "must": [
+   [
+    "\\bwhile\\b",
+    "Тут має бути цикл while"
+   ]
+  ]
+ },
+ "2-15-1": {
+  "logs": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "2-15-2": {
+  "logs": [
+   "3 x 1 = 3",
+   "3 x 2 = 6",
+   "3 x 3 = 9",
+   "3 x 4 = 12",
+   "3 x 5 = 15"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "2-15-3": {
+  "logs": [
+   "c",
+   "a",
+   "t"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "2-16-1": {
+  "logs": [
+   "1",
+   "2"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ],
+   [
+    "\\bbreak\\b",
+    "Тут треба оператор break"
+   ]
+  ]
+ },
+ "2-16-2": {
+  "logs": [
+   "Знайшов n на позиції 2"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ],
+   [
+    "\\bbreak\\b",
+    "Тут треба оператор break"
+   ]
+  ]
+ },
+ "2-16-3": {
+  "logs": [
+   "5"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ],
+   [
+    "\\bbreak\\b",
+    "Тут треба оператор break"
+   ]
+  ]
+ },
+ "3-5-1": {
+  "logs": [
+   "пн",
+   "вт",
+   "ср",
+   "чт",
+   "пт"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "3-5-2": {
+  "logs": [
+   "45",
+   "19"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "3-5-3": {
+  "logs": [
+   "[2,4,6,8]",
+   "4"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "3-6-1": {
+  "logs": [
+   "Тварина: кіт",
+   "Тварина: пес",
+   "Тварина: лис"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(\\s*(const|let)\\s+\\w+\\s+of\\b",
+    "Тут має бути for...of"
+   ]
+  ]
+ },
+ "3-6-2": {
+  "logs": [
+   "4"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(\\s*(const|let)\\s+\\w+\\s+of\\b",
+    "Тут має бути for...of"
+   ]
+  ]
+ },
+ "3-6-3": {
+  "logs": [
+   "82",
+   "День 1: 12",
+   "День 2: 25",
+   "День 3: -3",
+   "День 4: 30",
+   "День 5: 18"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(\\s*(const|let)\\s+\\w+\\s+of\\b",
+    "Тут має бути for...of"
+   ],
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "3-9-3": {
+  "logs": [
+   "7",
+   "12"
+  ],
+  "must": [
+   [
+    "\\bfor\\s*\\(",
+    "Тут має бути цикл for"
+   ]
+  ]
+ },
+ "7-4-1": {
+  "dom": {
+   "assert": [
+    {
+     "d": "Текст #title = «Новий заголовок»",
+     "e": "$('#title').textContent==='Новий заголовок'",
+     "g": "JSON.stringify($('#title').textContent)"
+    },
+    {
+     "d": "У #text є клас big",
+     "e": "$('#text').classList.contains('big')",
+     "g": "$('#text').className"
+    },
+    {
+     "d": "Консоль вивела true",
+     "e": "__logs.indexOf('true')>-1",
+     "g": "JSON.stringify(__logs)"
+    },
+    {
+     "d": "#title червоний",
+     "e": "isRed($('#title'))",
+     "g": "getComputedStyle($('#title')).color"
+    }
+   ]
+  }
+ },
+ "7-6-1": {
+  "dom": {
+   "assert": [
+    {
+     "d": "У #list рівно 2 li",
+     "e": "$$('#list li').length===2",
+     "g": "$$('#list li').length"
+    },
+    {
+     "d": "Перший li = «Яблуко»",
+     "e": "$('#list li').textContent==='Яблуко'",
+     "g": "$('#list li').textContent"
+    },
+    {
+     "d": "#card порожній",
+     "e": "$('#card').innerHTML===''",
+     "g": "JSON.stringify($('#card').innerHTML)"
+    },
+    {
+     "d": "Консоль вивела кількість 2",
+     "e": "__logs.indexOf('2')>-1",
+     "g": "JSON.stringify(__logs)"
+    }
+   ]
+  }
+ },
+ "7-7-1": {
+  "dom": {
+   "assert": [
+    {
+     "d": "У #list 3 елементи",
+     "e": "$('#list').children.length===3",
+     "g": "$('#list').children.length"
+    },
+    {
+     "d": "Порядок: Нульовий, Перший, Другий",
+     "e": "Array.from($('#list').children).map(x=>x.textContent).join(',')==='Нульовий,Перший,Другий'",
+     "g": "Array.from($('#list').children).map(x=>x.textContent).join(',')"
+    },
+    {
+     "d": "Консоль вивела 3",
+     "e": "__logs.indexOf('3')>-1",
+     "g": "JSON.stringify(__logs)"
+    }
+   ]
+  }
+ },
+ "7-8-1": {
+  "dom": {
+   "assert": [
+    {
+     "d": "#msg видалено",
+     "e": "$('#msg')===null"
+    },
+    {
+     "d": "Лишилось 3 li",
+     "e": "$$('#list li').length===3",
+     "g": "$$('#list li').length"
+    },
+    {
+     "d": "Перший li «Один» видалено",
+     "e": "$('#list li').textContent==='Два'",
+     "g": "$('#list li').textContent"
+    },
+    {
+     "d": "Консоль вивела 3",
+     "e": "__logs.indexOf('3')>-1",
+     "g": "JSON.stringify(__logs)"
+    }
+   ]
+  }
+ },
+ "7-9-1": {
+  "dom": {
+   "steps": [
+    "$('#btn').click();$('#btn').click();$('#box').dispatchEvent(new MouseEvent('mouseenter'))"
+   ],
+   "assert": [
+    {
+     "d": "Після 2 кліків: два рядки «Клік!»",
+     "e": "__logs.filter(function(x){return x==='Клік!'}).length===2",
+     "g": "JSON.stringify(__logs)"
+    },
+    {
+     "d": "Після наведення: «Наведено»",
+     "e": "__logs.indexOf('Наведено')>-1",
+     "g": "JSON.stringify(__logs)"
+    }
+   ]
+  }
+ },
+ "7-14-1": {
+  "dom": {
+   "steps": [
+    "__s={};$('#plus').click();$('#plus').click();__s.two=$('#value').textContent;__s.g=isGreen($('#value'));$('#reset').click();__s.zero=$('#value').textContent;__s.b=isBlack($('#value'));$('#minus').click();__s.neg=$('#value').textContent;__s.r=isRed($('#value'))"
+   ],
+   "assert": [
+    {
+     "d": "Два «+» дають 2",
+     "e": "__s.two==='2'",
+     "g": "__s.two"
+    },
+    {
+     "d": "Значення 2 зелене",
+     "e": "__s.g===true"
+    },
+    {
+     "d": "«Скинути» дає 0",
+     "e": "__s.zero==='0'",
+     "g": "__s.zero"
+    },
+    {
+     "d": "0 чорне",
+     "e": "__s.b===true"
+    },
+    {
+     "d": "«−» зі стану 0 дає -1",
+     "e": "__s.neg==='-1'",
+     "g": "__s.neg"
+    },
+    {
+     "d": "-1 червоне",
+     "e": "__s.r===true"
+    }
+   ]
+  }
+ },
+ "8-1-1": {
+  "dom": {
+   "steps": [
+    "$('#inner').click()"
+   ],
+   "assert": [
+    {
+     "d": "Клік по кнопці: inner, middle, outer (саме в такому порядку)",
+     "e": "JSON.stringify(__logs)==='[\"inner\",\"middle\",\"outer\"]'",
+     "g": "JSON.stringify(__logs)"
+    }
+   ]
+  }
+ },
+ "8-4-1": {
+  "dom": {
+   "steps": [
+    "__s={};$('#list span').click();__s.a=$$('#list li').length;$('#list .del').click();__s.b=$$('#list li').length;Array.from($$('#list .del')).forEach(function(b){b.click()});__s.c=$$('#list li').length"
+   ],
+   "assert": [
+    {
+     "d": "Клік по тексту li нічого не видаляє",
+     "e": "__s.a===3",
+     "g": "__s.a"
+    },
+    {
+     "d": "Клік по кнопці x видаляє один li",
+     "e": "__s.b===2",
+     "g": "__s.b"
+    },
+    {
+     "d": "Усі кнопки працюють (лишилось 0)",
+     "e": "__s.c===0",
+     "g": "__s.c"
+    }
+   ]
+  }
  }
 }

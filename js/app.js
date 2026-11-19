@@ -180,9 +180,10 @@ async function main() {
     const setCode = v => { if (cm) cm.setValue(v); else codeTa.value = v; };
     pred.value = store.get(K('pred'), '');
     chk.checked = store.get(K('done'), '') === '1';
-    if (cm) cm.on('change', () => store.set(K('code'), cm.getValue()));
+    const t0 = () => { if (!store.get(K('t0'), '')) store.set(K('t0'), String(Date.now())); };
+    if (cm) cm.on('change', () => { store.set(K('code'), cm.getValue()); t0(); });
     else {
-      codeTa.oninput = () => store.set(K('code'), codeTa.value);
+      codeTa.oninput = () => { store.set(K('code'), codeTa.value); t0(); };
       codeTa.onkeydown = e => { if (e.key === 'Tab') { e.preventDefault(); document.execCommand('insertText', false, '  '); } };
     }
     pred.oninput = () => store.set(K('pred'), pred.value);
@@ -195,20 +196,27 @@ async function main() {
     };
     el.querySelector('.run').onclick = run;
     const tc = TESTS[id];
-    if (tc && window.JSPTests) {
+    if (tc && window.JSPTests && (tc.checks || tc.logs || tc.dom)) {
       const b = document.createElement('button');
       b.className = 'chkbtn'; b.textContent = '✔ Перевірити';
       el.querySelector('.run').after(' ', b);
       b.onclick = async () => {
         const out = el.querySelector('.out');
         out.innerHTML = '<span class="info">Перевіряю…</span>';
-        const r = window.JSPTests.render(out, await window.JSPTests.runChecks(getCode(), tc.checks), true);
-        if (r.err) return;
+        const r = tc.dom ? await window.JSPTests.checkDom(getCode(), t.html, tc.dom, out) : tc.logs ? await window.JSPTests.checkLogs(getCode(), tc, out) : window.JSPTests.render(out, await window.JSPTests.runChecks(getCode(), tc.checks), true);
+        if (r.err && !r.total) return;
         let st; try { st = JSON.parse(store.get(K('tstat'), '{}')); } catch { st = {}; }
-        const ok = r.pass === r.total;
+        const ok = !r.err && r.pass === r.total;
+        t0();
+        if (ok && !st.passed) { // перший успіх після невдач/початку: рахуємо час (ігноруємо > 2 год: схоже, ти відходив)
+          const sec = (Date.now() - (+store.get(K('t0'), '') || Date.now())) / 1000;
+          if (sec > 5 && sec < 7200) { st.times = (st.times || []).concat(Math.round(sec)).slice(-5); }
+          store.set(K('t0'), '');
+        }
         st.ok = (st.ok || 0) + (ok ? 1 : 0); st.fail = (st.fail || 0) + (ok ? 0 : 1); st.last = Date.now(); st.passed = ok;
         store.set(K('tstat'), JSON.stringify(st));
         updateTopic(el.closest('.topic'), false);
+        if (ok) window.JSPTests.explainBox(el.querySelector('.col-work'), K('explain'), /^(Склад|Серед)/.test(t.level || ''));
       };
     }
     if (t.html) el.querySelector('.frame').srcdoc = '<!doctype html><body style="font-family:system-ui;padding:10px">' + t.html + '</body>';
@@ -229,7 +237,7 @@ async function main() {
   function updateTopic(sec, fromUser) {
     const tasks = sec.querySelectorAll('.task');
     const done = [...tasks].filter(t => t.querySelector('.chk').checked).length;
-    sec.querySelector('.tprog').innerHTML = `${done}/${tasks.length}` + (done === tasks.length ? ' ✓' : '') + (window.JSPProgress && sec._topic ? JSPProgress.dot(JSPProgress.topicState(N, sec._topic).color, 'колір теми: ' + JSPProgress.LABEL[JSPProgress.topicState(N, sec._topic).color]) : '');
+    sec.querySelector('.tprog').innerHTML = `${done}/${tasks.length}` + (done === tasks.length ? ' ✓' : '') + (window.JSPProgress && sec._topic ? JSPProgress.dot(JSPProgress.topicState(N, sec._topic).color, 'колір теми: ' + JSPProgress.LABEL[JSPProgress.topicState(N, sec._topic).color] + (JSPProgress.topicState(N, sec._topic).avgMin ? ' · середній час на завдання ~' + JSPProgress.topicState(N, sec._topic).avgMin + ' хв' : '')) : '');
     sec.classList.toggle('complete', done === tasks.length);
     if (done === tasks.length && fromUser) {
       setTopicFold(sec, true);

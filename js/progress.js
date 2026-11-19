@@ -27,7 +27,10 @@
     else if (allDone && c('green') >= st.length / 2) color = 'green';
     else if (c('yellow') || c('green')) color = 'yellow';
     else color = 'grey';
-    return { color, red: c('red'), green: c('green'), yellow: c('yellow'), total: st.length };
+    const times = [];
+    topic.tasks.forEach(t => { const ts = J(`jsp:${N}:${t.id}:tstat`, null); if (ts && ts.times && ts.times.length) times.push(...ts.times); });
+    const avg = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length / 60 * 10) / 10 : null;
+    return { color, red: c('red'), green: c('green'), yellow: c('yellow'), total: st.length, avgMin: avg };
   }
   const LABEL = { grey: 'не починав', yellow: 'зроблено, але не підтверджено перевіркою', green: 'добре: зроблено і підтверджено', red: 'слабко: є невдалі спроби' };
   const dot = (color, tip) => `<span class="hm hm-${color}" title="${tip}"></span>`;
@@ -86,7 +89,7 @@
         const row = document.createElement('div');
         row.className = 'hm-row';
         row.innerHTML = `<a href="module.html?m=${N}">Модуль ${N}</a> <span class="hm-dots">` +
-          m.topics.map(tp => { const s = topicState(N, tp); return `<a href="module.html?m=${N}#${tp.id}">${dot(s.color, tp.title + ' — ' + LABEL[s.color])}</a>`; }).join('') + '</span>';
+          m.topics.map(tp => { const s = topicState(N, tp); return `<a href="module.html?m=${N}#${tp.id}">${dot(s.color, tp.title + ' — ' + LABEL[s.color] + (s.avgMin ? ' · середній час на завдання ~' + s.avgMin + ' хв' : ''))}</a>`; }).join('') + '</span>';
         list.appendChild(row);
       } catch {}
     }
